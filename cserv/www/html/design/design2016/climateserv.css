@@ -1,0 +1,4 @@
+.dimmed.dimmable>.ui.animating.dimmer, .dimmed.dimmable>.ui.visible.dimmer, .ui.active.dimmer {
+	max-height: 100%;
+    	overflow: scroll;
+}

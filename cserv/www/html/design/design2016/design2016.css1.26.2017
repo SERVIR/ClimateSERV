@@ -1,0 +1,320 @@
+/* 
+    Created on : 2016
+    Author     : Cris Squared, Kris Stanton
+*/
+
+
+/* Elements with large graphics */
+.servir_design2016_header_bg
+{
+    min-height: 60px; /* 78px; */   /* Also works with 'servir_helper_maxHeight_78px' */
+    max-height: 60px; /* 78px; */
+    background: url("images/header_bg_space.jpg") no-repeat;
+    background-size: cover;   
+}
+.servir_design2016_footer_bg
+{
+    min-height: 36px;
+    max-height: 36px;
+    background: url("images/footer_bg_aqua.png") no-repeat;
+    background-size: cover; 
+}
+
+
+/* Text elements */
+.servir_text_menu_item
+{
+    cursor:pointer;
+    color:#AAAAAA !important;
+    font-family: Trebuchet MS;
+    font-size: 1rem;
+}
+.servir_text_menu_item:hover
+{
+    color:#FFFFFF !important;
+    font-size: 1.05rem;
+}
+.servir_text_footer_credit 
+{
+    color:#AAAAAA !important;
+    font-family: Trebuchet MS;
+    font-size: 0.8rem;
+}
+
+
+.servir_text_welcome_header
+{
+    color:#AAAAAA !important;
+    font-family: 'Open Sans', Arial, Helvetice Neue, sans-serif;   /*    font-family: Trebuchet MS;*/
+    font-size: 3.2rem;
+}
+.servir_text_welcome_subtext
+{
+    color:#AAAAAA !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+}
+
+.servir_text_fixedModal_subtleTitle
+{
+    color:#6a6a6a !important;
+    font-family: Trebuchet MS;
+    font-size: 0.7rem;
+    font-weight: bold !important;
+}
+.servir_text_fixedModal_mainTitle
+{
+    color:#111111 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.75rem;
+}
+.servir_text_fixedModal_subtext
+{
+    color:#666666 !important;
+    font-family: Trebuchet MS;
+    font-size: 0.8rem;
+}
+.servir_text_fixedModal_fieldLabel
+{
+    color:#666666 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+    font-weight: bold !important;
+}
+
+
+.servir_text_fixedModal_iconButton_mainText
+{
+    color:#666666 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+    font-weight:bold;
+}
+.servir_text_fixedModal_iconButton_subtleText
+{
+    color:#6a6a6a !important;
+    font-family: Trebuchet MS;
+    font-size: 0.8rem;
+}
+
+.servir_text_button_main
+{
+    color:#eeeeee !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+}
+.servir_text_button_main_09Text
+{
+    color:#eeeeee !important;
+    font-family: Trebuchet MS;
+    font-size: 0.9rem;
+}
+.servir_text_button_sub
+{
+    color:#dddddd !important;
+    font-family: Trebuchet MS;
+    font-size: 0.7rem;
+    padding-top: 0.4rem; /* Vertical spacing between button main text and button sub text */
+}
+
+.servir_tooltip_header
+{
+    color:#ffffff !important;
+    font-family: Trebuchet MS;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.servir_tooltip_body
+{
+    color:#ffffff !important;
+    font-family: Trebuchet MS;
+    font-size: 0.8rem;
+}
+.servir_tooltip_link
+{
+    color:#0489b8 !important;
+    font-family: Trebuchet MS;
+    cursor:pointer;
+    font-size: 0.8rem;
+}
+
+/* Button width */
+.servir_design2016_button_wide
+{
+    padding-left:1.5rem;
+    padding-right:1.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+.servir_design2016_button_semiWide
+{
+    padding-left:1.1rem;
+    padding-right:1.1rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+.servir_design2016_button_semiNarrow
+{
+    padding-left:0.8rem;
+    padding-right:0.8rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+.servir_design2016_button_narrow
+{
+    padding-left:0.6rem;
+    padding-right:0.6rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+/* Button background colors */
+.servir_design2016_button_blue_color        {    background-color:#0489b8 !important;   }  .servir_design2016_button_blue_color:hover       {    background-color:#024554 !important;   } 
+.servir_design2016_button_green_color       {    background-color:#0caa1d !important;   }  .servir_design2016_button_green_color:hover      {    background-color:#065507 !important;   }
+.servir_design2016_button_chartgreen_color  {    background-color:#71a795 !important;   }  .servir_design2016_button_chartgreen_color:hover {    background-color:#486267 !important;   } /* #8fd4bd */
+.servir_design2016_button_grey_color   {    background-color:#a7a7a7 !important;   } .servir_design2016_button_grey_color:hover { background-color:#575757 !important; }
+.servir_design2016_segment_nonButton_grey_color { background-color:#f5f6f9 !important; border:transparent !important; margin:0.5rem 0 !important;}
+.servir_design2016_segment_button_grey_color { background-color:#f5f6f9 !important; border:transparent !important; cursor:pointer; margin:0.5rem 0 !important;}
+.servir_design2016_segment_button_grey_color:hover { background-color:#e1e2e5 !important;  }
+.servir_buttonHelper_customPadding { padding: 0.5em 1.5em !important; }
+
+
+
+/* Helpers - Overrides */
+.servir_helper_maxHeight_10px {    max-height:10px !important;     }
+.servir_helper_maxHeight_78px {    max-height:78px !important;     }
+.servir_helper_maxHeight_60px {    max-height:60px !important;     }
+.servir_helper_minHeight_35rem {    min-height:3.5rem !important;     }
+.servir_helper_maxWidth_50pct { max-width: 50%; } 
+.servir_helper_width_112rem { width: 11.2rem; }
+.servir_helper_width_132rem { width: 13.2rem; }
+.servir_helper_width_142rem { width: 14.2rem; }
+.servir_helper_width_180rem { width: 18.0rem; }
+.servir_helper_width_192rem { width: 19.2rem; }
+.servir_helper_width_215rem { width: 21.5rem; }
+.servir_helper_width_100pct { width: 100% !important; }
+.servir_helper_topMargin_01em {    margin-top:0.1em !important;    }
+.servir_helper_topMargin_02em {    margin-top:0.2em !important;    }
+.servir_helper_topMargin_04em {    margin-top:0.4em !important;    }
+.servir_helper_topMargin_30em {    margin-top:3.0em !important;    }
+.servir_helper_topMargin_40em {    margin-top:4.0em !important;    }
+.servir_helper_bottomMargin_40em {    margin-bottom:4.0em !important;    }
+.servir_helper_bottomMargin_0 { margin-bottom:0 !important; }
+.servir_helper_topPadding_0 { padding-top:0 !important; }
+.servir_helper_topPadding_03rem { padding-top:0.3rem !important; }
+.servir_helper_topPadding_04rem { padding-top:0.4rem !important; }
+.servir_helper_topPadding_07rem { padding-top:0.7rem !important; }
+.servir_helper_topPadding_075rem { padding-top:0.75rem !important; }
+.servir_helper_topPadding_05rem { padding-top:0.5rem !important; }
+.servir_helper_topPadding_10rem { padding-top:1.0rem !important; }
+.servir_helper_topPadding_17rem { padding-top:1.7rem !important; }
+.servir_helper_topPadding_08rem { padding-top:0.8rem !important; }
+.servir_helper_topPadding_11rem { padding-top:1.1rem !important; }
+.servir_helper_topPadding_30rem { padding-top:3.0rem !important; }
+.servir_helper_topPadding_50rem { padding-top:5.0rem !important; }
+.servir_helper_topbotPadding_0 { padding-top:0 !important; padding-bottom:0 !important; }
+.servir_helper_topbotPadding_01 { padding-top:0.1rem !important; padding-bottom:0.1rem !important; }
+.servir_helper_topbotMargin_0 { margin-top:0 !important; margin-bottom:0 !important; }
+.servir_helper_leftPadding_30rem { padding-top:3.0rem !important; }
+.servir_helper_leftMargin_10rem { margin-left:1.0rem !important; }
+.servir_helper_fixedHeight_78px { max-height:78px; min-height:78px; height:78px; }
+.servir_helper_fixedHeight_60px { max-height:60px; min-height:60px; height:60px; }
+.servir_helper_fixedHeight_36px { max-height:36px; min-height:36px; height:36px; }
+.servir_helper_noScroll_Vert { overflow-y: hidden; }
+.servir_helper_roundedCornerTop_Override {border-radius: .8rem .8rem 0 0 !important;}
+.servir_helper_roundedCornerBottom_Override {border-radius: 0 0 .8rem .8rem !important;}
+.servir_helper_roundedCornerAll_Override {border-radius: .8rem !important;}
+.servir_helper_cursor_Pointer {cursor:pointer;}
+.servir_helper_stretchDropdown_70pct { width:70%; }
+.servir_helper_minWidth_15rem { min-width:1.5rem; }
+.servir_helper_hidden { display:none !important; }
+.servir_helper_visible { display:block; }
+.servir_helper_textColor_777777 { color:#777777 !important; }
+
+.servir_climateserv_subpage {}
+
+/* Other Pages ... (About ClimateSERV and pages like that, etc) */
+.servir_otherPages_text_mainTitle
+{
+    color:#111111 !important;
+    font-family: Trebuchet MS;
+    font-size: 3.65rem;
+}
+.servir_otherPages_text_subTitle
+{
+    color:#666666 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+}
+.servir_otherPages_text_mainBody
+{
+    color:#999999 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+}
+.servir_otherPages_text_mainBodyHeading
+{
+    color:#555555 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.1rem;
+}
+.servir_otherPages_text_preFooter
+{
+    color:#666666 !important;
+    font-family: Trebuchet MS;
+    font-size: 1.0rem;
+}
+.servir_download_factSheet_iconFix { top: 2px; position:relative;}
+.servir_aboutPage_USAID_iconFix { top: 14px; position:relative;}
+.servir_aboutPage_Facebook_iconFix { top: 8px; position:relative;}
+.servir_aboutPage_Twitter_iconFix { top: 9px; position:relative;}
+
+
+
+
+/* Message Banner */
+.servir_topMap_Message_Container 
+{
+    position:absolute;
+    z-index:1000;
+    margin-left:6em;
+}
+
+/* jQuery Theme Override for Calendar */
+.ui-widget-content 
+{
+    background:none !important; /* override 'background' image  */
+    background-color: grey !important;
+    
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default 
+{
+    background:none; /* override 'background' image  */
+    background-color: darkgrey !important;
+}
+
+.ui[class*="very huge"].left.sidebar, .ui[class*="very huge"].right.sidebar {
+    width: 90%; /*475px;*/
+}
+
+/* So my IDE stops complaining... */
+.controlClass_selectData_Form_SeasonalForecast {}
+.controlClass_selectData_Form_Default {}
+
+/* GeoJSON Upload DropZone Override */
+.stitched_drop 
+{
+    background: #ded8be !important;
+    box-shadow: none;
+}
+
+
+
+/* Some kind of override.. missing brackets? */
+.ui.segments:not(.horizontal)>.segment:first-child 
+
+
+
+/* Override Dimmer opacity, Fix for 'set opacity' not working properly */
+/*.dimmed.dimmable>.ui.visible.dimmer, .ui.active.dimmer {    opacity: 0.5;  }*/
+
+

@@ -1,0 +1,273 @@
+﻿html, body, #map, #viewDiv, #form1, #index {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #FFF; /*overflow: hidden;*/
+    font-family: "Trebuchet MS";
+}
+
+.map {
+    z-index: 1;
+}
+
+#navtoolHolder {
+    pointer-events: none;
+    position: absolute; /*top: -3px;*/
+    z-index: 98;
+    width: 100%;
+}
+
+#navtools {
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    pointer-events: auto;
+}
+.quicknavbtn{
+position: relative;
+    float: left;
+    z-index: 98;
+    /* border: 3px solid #CAED4D; */
+    background-color: #00ACEC;
+    -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px;
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+#btnfullMap {
+    position: relative;
+    float: left;
+    z-index: 98; /* border: 3px solid #CAED4D; */
+    background-color: #00ACEC;
+    -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px;
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+.bold{
+font-weight:600;
+}
+    #btnfullMap:hover {
+        background: #0FB013;
+    }
+
+#map_graphics_layer {
+    display: none !important;
+}
+
+#BasemapToggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 50;
+}
+
+.carousel {
+    max-height: 80%;
+}
+/*  #layerOpacity{
+         display:none;
+         }
+         .ui-slider-track{
+         margin-left:15px;
+         }*/
+
+#templatemo-carousel {
+    margin-top: 0px!important;
+}
+
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+body {
+    /*font-family: sans-serif;
+  padding: 60px 20px;*/
+}
+
+@media (max-width: 370px) {
+    .templatemo-top-menu
+    {
+    min-height:auto;
+    }
+    .templatemo-top-menu .navbar-brand {
+    margin: 10px 0 0 0;
+}
+.templatemo-top-menu .navbar-toggle {
+     margin-top: 8px; 
+   
+}
+    #templatemo-top{
+    display:none;
+    }
+    .nomobile{
+    display:none!important;
+    }
+}
+
+@media (max-width: 352px) {
+    img#logoimage {
+        width: 200px;
+    }
+    #templatemo-top{
+    display:none;
+    }
+}
+@media (max-width: 305px) {
+    img#logoimage {
+        width: 150px;
+    }
+}
+.range-slider {
+    margin: 15px 0 10px 0%;
+}
+
+.range-slider {
+    width: 100%;
+    z-index: 5002;
+}
+
+.range-slider__range {
+    -webkit-appearance: none;
+    width: calc(100% - (73px));
+    height: 10px;
+    border-radius: 5px;
+    background: #d7dcdf;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+    .range-slider__range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #00ACEC; /*#2c3e50;*/
+        cursor: pointer;
+        -webkit-transition: background .15s ease-in-out;
+        transition: background .15s ease-in-out;
+        z-index: 5002;
+    }
+
+        .range-slider__range::-webkit-slider-thumb:hover {
+            background: #0FB013; /*#1abc9c;*/
+        }
+
+    .range-slider__range:active::-webkit-slider-thumb {
+        background: #0FB013; /*#1abc9c;*/
+    }
+
+    .range-slider__range::-moz-range-thumb {
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 50%;
+        background: #00ACEC; /*#2c3e50;*/
+        cursor: pointer;
+        -webkit-transition: background .15s ease-in-out;
+        transition: background .15s ease-in-out;
+    }
+
+        .range-slider__range::-moz-range-thumb:hover {
+            background: #0FB013; /*#1abc9c;*/
+        }
+
+    .range-slider__range:active::-moz-range-thumb {
+        background: #0FB013; /*#1abc9c;*/
+    }
+
+.range-slider__value {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    background: #00ACEC; /*#2c3e50;*/
+    padding: 5px 10px;
+    margin-left: 8px;
+    display: none;
+}
+
+    .range-slider__value:after {
+        position: absolute;
+        top: 8px;
+        left: -7px;
+        width: 0;
+        height: 0;
+        border-top: 7px solid transparent;
+        border-right: 7px solid #00ACEC; /*#2c3e50;*/
+        border-bottom: 7px solid transparent;
+        content: '';
+    }
+
+::-moz-range-track {
+    background: #d7dcdf;
+    border: 0;
+}
+
+input::-moz-focus-inner, input::-moz-focus-outer {
+    border: 0;
+}
+
+
+#search {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 81px;
+    left: 20px;
+}
+
+.arcgisSearch .searchBtn {
+    padding: 6px 0 0 0;
+    height: 24px;
+    width: 30px;
+}
+
+#justContainer {
+    
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+    
+  
+}
+
+.box1, .box2, .box3, .box4 {
+    
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+  
+}
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+.box1, .box3 {
+   
+}
+.box2, .box4 {
+   
+}
+#templatemo-blog{
+max-width:99%;
+}

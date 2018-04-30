@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Request Logs</title>
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.10.4.custom.css" />
+        <link rel="stylesheet" href="css/jquery.css" />
+        
+        <style>
+            body{background-color: #333; color:white;}
+            #resultsContainer_Detail{max-height: 400px; overflow-y: scroll;}
+        </style>
+        
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        <script type="text/javascript">
+            
+            
+            // Props
+            var theLogs = [];
+            var isLocalMode = false; 
+            var baseURL = "http://chirps.nsstc.nasa.gov/";
+            var baseRequestURL = "http://chirps.nsstc.nasa.gov/chirps/";
+            var debugCSV = [];
+            
+            // Reset Form
+            function reset_Form()
+            {
+                $("#datePicker_Early").val("");
+                $("#datePicker_Late").val("");
+                $("#key1").val("");
+                $("#key2").val("");
+            }
+            function reset_Page()
+            {
+                theLogs = [];  
+                $("#resultsContainer").html("There are no results to display..");
+                $("#resultsControlContainer").hide();
+                $("#resultsContainer").hide();
+                if (window.location.hostname === 'localhost') 
+                {
+                    isLocalMode = true;
+                    baseURL = "http://localhost/";
+                    baseRequestURL = "http://localhost:8000/";
+                    
+                } 
+                else 
+                {
+                    isLocalMode = false;
+                    baseURL = "http://chirps.nsstc.nasa.gov/";
+                    baseRequestURL = "http://chirps.nsstc.nasa.gov/chirps/";
+                }
+            }
+            
+            
+            // A Better replace all method
+            function improved_ReplaceAll(str_To_Find, replacement_String, string_To_Operate_On)
+            {
+                var str_Find = str_To_Find; //"-";
+                var str_Replace = replacement_String; //"/";
+                var regEx_Find = new RegExp(str_Find, 'g');
+                // USAGE:  // str = str.replace(regEx_Find, str_Replace);
+                var retString = string_To_Operate_On.replace(regEx_Find, str_Replace);
+                return retString;
+            }
+            
+            // File out processing
+            // Same Function as found in servirnasa.js
+            compareFunction = function (a,b){return a-b;}
+            // //Enable saving of the data output to Comma Seperated variable.
+            function saveCSV(theBaseFileName) 
+            {
+                // Grab the Array to convert to CSV
+                var theLogsList = theLogs;
+                
+                // Filter: Convert it back to a JSON string and remove all the commas.
+                //var json_Logs = JSON.stringify(theLogsList);
+                //var json_Logs_NoCommas = improved_ReplaceAll(",", "_comma_", json_Logs);
+                
+                // Headings and content strings
+                var heading_String = "";
+                var content_String = "";
+                
+                // Iterate through each log item and create the CSV Content (Also define headings here)
+                heading_String += "KeyTime PyFormat(%Y_%m_%d_%H_%M_%S_%f)" + ",";
+                heading_String += "ISO_DateTime" + ",";
+                heading_String += "IP" + ",";
+                heading_String += "API URL Path" + ",";
+                heading_String += "httpUserAgent" + ",";
+                heading_String += "Request Params" + ",";
+                heading_String += "\n";
+                for(var i = 0; i<theLogsList.length;i++)
+                {
+                    try
+                    {
+                        // Placing this here helps ensure that in the event of a row that fails to parse, the content won't have missing commas in particular rows
+                        var contentRow_String = "";
+                        
+                        var currentLog = theLogsList[i];
+                        var unwrapped_SingleLogItem = JSON.parse(currentLog.value);
+                        //contentRow_String += improved_ReplaceAll(",", "_comma_", json_Logs) //
+                        
+                        // KeyTime
+                        try{contentRow_String += improved_ReplaceAll(",", "_comma_", currentLog.key);}catch(err){ contentRow_String += "ERROR: currentLog.key";} 
+                        //try{contentRow_String += currentLog.key;}catch(err){ contentRow_String += "ERROR: currentLog.key";} 
+                        contentRow_String += ",";
+                        
+                        // ISO_DateTime
+                        try{contentRow_String += improved_ReplaceAll(",", "_comma_", unwrapped_SingleLogItem.iso_DateTime);}catch(err){ contentRow_String += "ERROR: currentLog.key";}
+                        //try{contentRow_String += unwrapped_SingleLogItem.iso_DateTime;}catch(err){ contentRow_String += "ERROR: currentLog.key";}
+                        contentRow_String += ",";
+                        
+                        // IP
+                        try{contentRow_String += improved_ReplaceAll(",", "_comma_", unwrapped_SingleLogItem.request_Data.client_ip);}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.client_ip";}
+                        //try{contentRow_String += unwrapped_SingleLogItem.request_Data.client_ip;}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.client_ip";}
+                        contentRow_String += ",";
+                        
+                        // API URL Path (Short part of the URL)
+                        try{contentRow_String += improved_ReplaceAll(",", "_comma_", unwrapped_SingleLogItem.request_Data.API_URL_Path);}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.API_URL_Path";}
+                        //try{contentRow_String += unwrapped_SingleLogItem.request_Data.API_URL_Path;}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.API_URL_Path";}
+                        contentRow_String += ",";
+                        
+                        // httpUserAgent (Browser info)
+                        try{contentRow_String += improved_ReplaceAll(",", "_comma_", unwrapped_SingleLogItem.request_Data.httpUserAgent);}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.httpUserAgent";}
+                        //try{contentRow_String += unwrapped_SingleLogItem.request_Data.httpUserAgent;}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.httpUserAgent";}
+                        contentRow_String += ",";
+                        
+                        // RequestParams (Items passed in as params on the URL String)
+                        try{contentRow_String += improved_ReplaceAll(",", "_comma_", unwrapped_SingleLogItem.request_Data.RequestParams);}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.RequestParams";}
+                        //try{contentRow_String += unwrapped_SingleLogItem.request_Data.RequestParams;}catch(err){ contentRow_String += "ERROR: currentLog.request_Data.RequestParams";}
+                        // For now, this is the last item.. so don't put a comma!
+                        //contentRow_String += ",";
+                        
+
+
+                        // Add a line end char
+                        contentRow_String += "\n";
+                        
+                        // Only if we made it all the way down, add a row!
+                        content_String += contentRow_String;
+                    }
+                    catch(errWithCurrentItem)
+                    {
+                        var itemNumber = i;
+                        var errorMessage = "Item Number: " + itemNumber + " failed.  System Error Message: " + errWithCurrentItem;
+                        debugCSV.push(errorMessage);
+                        debugCSV.push(theLogsList[i]);
+                        
+                    }
+                    
+                }
+                
+                var outputString = "";
+                outputString += heading_String + content_String;
+                
+                //var outputstring = 'date,'+parameterTypes[parameterType]['lname']+'\n';
+                //for (var i in myArray.sort(compareFunction)) {
+                //    var valueToProcess = hashData[myArray[i]];
+                //    outputstring += valueToProcess['date']+', '+valueToProcess[parameterTypes[parameterType]['lname']]+"\n";
+                //}
+                
+                //downloadTextFile("results.csv",outputstring);
+                downloadTextFile(theBaseFileName+".csv", outputString)
+            }
+            // // Same Function as found in servirnasa.js
+            //Download a text file. Used by CSV to enable downloading of the file containing text.
+            function downloadTextFile(filename, text) 
+            {
+                var pom = document.createElement('a');
+                pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                pom.setAttribute('download', filename);
+                pom.click();
+            }
+            
+            // Results Data Wrapper
+            function wrap_Results(theResults_HTML_String)
+            {
+                var theHTML = "";
+                theHTML += "<div id='resultsContainer_Detail'>";
+                theHTML += theResults_HTML_String;
+                theHTML += "</div>";
+                return theHTML;
+            }
+            
+            // Process Logs for Display - Results Display format 1
+            function display_TheLogs__Format1()
+            {
+                var theLogsList = theLogs;
+                
+                var theHTML = "";
+                theHTML += "<fieldset><legend>Results (Display Format 1: Simple Table)</legend>";
+                
+                var theHTML_Rows = "";
+                theHTML_Rows += "<table>";
+                //theHTML_Rows += "<tr><th>Date Time (python format: '%Y_%m_%d_%H_%M_%S_%f')</th><th>The Data</th></tr>"
+                theHTML_Rows += "<tr><th style='min-width: 110px;'>Date Time (iso)</th><th>The Data</th></tr>"
+                for(var i = 0; i<theLogsList.length;i++)
+                {
+                    theHTML_Rows += "<tr>";
+                    try
+                    {
+                        var currentLog = theLogsList[i];
+                        var unwrapped_SingleLogItem = JSON.parse(currentLog.value);
+                        
+                        // Column 1 (DateTime of log entry)
+                        theHTML_Rows += "<td>";
+                        
+                        //theHTML_Rows += currentLog.key;
+                        //theHTML_Rows += unwrapped_SingleLogItem.iso_DateTime;
+                        try{theHTML_Rows += unwrapped_SingleLogItem.iso_DateTime;}catch(err){ theHTML_Rows += "KeyDate: " + currentLog.key;}
+                        
+                        theHTML_Rows += "</td>";
+                        
+                        
+                        
+                        // Column 2 (Data Items for a single entry)
+                        theHTML_Rows += "<td>";
+                        
+                        // IP
+                        theHTML_Rows += "IP: "
+                        try{theHTML_Rows += unwrapped_SingleLogItem.request_Data.client_ip;}catch(err){ theHTML_Rows += "No IP Entry";}
+                        theHTML_Rows += "<br />";
+                        
+                        // API Path (Short part of the URL)
+                        theHTML_Rows += "API Path: "
+                        try{theHTML_Rows += unwrapped_SingleLogItem.request_Data.API_URL_Path;}catch(err){ theHTML_Rows += "No API_URL_Path Entry";}
+                        theHTML_Rows += "<br />";
+                        
+                        // httpUserAgent (Browser info)
+                        theHTML_Rows += "httpUserAgent: "
+                        try{theHTML_Rows += unwrapped_SingleLogItem.request_Data.httpUserAgent;}catch(err){ theHTML_Rows += "No httpUserAgent Entry";}
+                        theHTML_Rows += "<br />";
+                        
+                        // RequestParams (Browser info)
+                        theHTML_Rows += "RequestParams: "
+                        try{theHTML_Rows += unwrapped_SingleLogItem.request_Data.RequestParams;}catch(err){ theHTML_Rows += "No RequestParams Entry";}
+                        theHTML_Rows += "<br />";
+                        
+                        
+                
+                        theHTML_Rows += "</td>";
+                        
+                    }
+                    catch(e)
+                    {
+                        theHTML_Rows += "<td>Javascript Log Processing Error:</td><td>Javascript Error Message: "+e+"</td>";
+                    }
+                    //theHTML_Rows += "<br /><hr /><br />";
+                    theHTML_Rows += "</tr>";
+                }
+                theHTML_Rows += "</table>";
+                
+                // Wrap the Results for styling
+                theHTML += wrap_Results(theHTML_Rows); 
+                
+                theHTML += "</fieldset>";
+                $("#resultsContainer").html(theHTML);
+                
+            }
+            // Process Logs for Display - JSON raw dump, 
+            function display_TheLogs__RawDump(theLogsList)
+            {
+                var theLogsList = theLogs;
+                
+                var theHTML = "";
+                theHTML += "<fieldset><legend>Results (Raw Dump - JSON)</legend>";
+                theHTML += wrap_Results(JSON.stringify(theLogsList));
+                theHTML += "</fieldset>";
+                $("#resultsContainer").html(theHTML);
+            }
+            
+            // On Return.. (process the logs and show the UI)
+            function successCallback(theData)
+            {
+                theLogs = theData;
+                $("#resultsControlContainer").show();
+                $("#resultsContainer").show();
+                
+                // Default processing
+                //display_TheLogs__RawDump(theLogs);
+                //display_TheLogs__RawDump();
+                display_TheLogs__Format1();
+                
+            }
+            // On Return 
+            function getLogs_Return(theData)
+            {
+                
+            }
+            // Get the Logs
+            function getLogs_Send(theReqData)
+            {
+                //alert(theReqData);
+                $.ajax(
+                {
+                    url: baseRequestURL+'getRequestLogs/?callback=?',
+                    type: "post",       
+                    data: theReqData,
+                    dataType: "jsonp",
+                    jsonpCallback: 'successCallback',
+                    async: true,
+                    beforeSend: function() 
+                    {
+
+                    },
+                    complete: function() 
+                    {
+
+                    },
+                    success: function (result) 
+                    {
+                        
+
+                    },
+                    error: function (request,error) 
+                    {
+                        alert("Ajax Error (Something wrong during communication with the communication server, try again!) ");
+                        //console.log("Got an error");
+                    }, 
+                    successCallback:function()
+                    {
+
+                    }
+                });
+            }
+            
+            // Event Handlers
+            function button_GetLogs_Clicked()
+            {
+                try
+                {
+                    
+                    var dateParts_Early = $("#datePicker_Early").val().split("/");
+                    var dateParts_Late = $("#datePicker_Late").val().split("/");
+                    var key1 = $("#key1").val();
+                    var key2 = $("#key2").val();
+                    var send_Request_Object = 
+                    {
+                        "sYear":dateParts_Early[2],
+                        "sMonth":dateParts_Early[0],
+                        "sDay":dateParts_Early[1],
+                        "eYear":dateParts_Late[2],
+                        "eMonth":dateParts_Late[0],
+                        "eDay":dateParts_Late[1]
+                    };
+                    send_Request_Object[key1] = key2;
+                    
+                    // DEBUG OVERRIDE
+                    /*
+                    alert("REMOVE THESE DEFUALTS BEFORE FINISHING!!");
+                    send_Request_Object["sYear"] = "2015";
+                    send_Request_Object["sMonth"] = "09";
+                    send_Request_Object["sDay"] = "30";
+                    send_Request_Object["eYear"] = "2015";
+                    send_Request_Object["eMonth"] = "10";
+                    send_Request_Object["eDay"] = "31";
+                    send_Request_Object["hmm"] = "hmm";
+                    */
+                    // alert("REMOVE THESE DEFUALTS BEFORE FINISHING!!")
+                    
+                    getLogs_Send(send_Request_Object);
+                }
+                catch(e)
+                {
+                    alert("Something is wrong with the inputs.. no request sent.  System Error Message: " + e);
+                }
+            }
+            function button_Reset_Clicked()
+            {
+                reset_Form();
+                reset_Page();
+                
+            }
+            function button_saveCSV_Clicked()
+            {
+                var earlyDate = $("#datePicker_Early").val();
+                var earlyDate_Part = improved_ReplaceAll("/", "-", earlyDate);
+                var lateDate = $("#datePicker_Late").val();
+                var lateDate_Part = improved_ReplaceAll("/", "-", lateDate);
+                
+                var the_BaseFileName = "";
+                the_BaseFileName += "LogReport_From_";
+                the_BaseFileName += earlyDate_Part;
+                the_BaseFileName += "_To_";
+                the_BaseFileName += lateDate_Part;
+                // The '.csv' part is added inside function saveCSV()
+                
+                saveCSV(the_BaseFileName);
+                
+            }
+            
+            
+            // Page Init
+            
+            function init_Form()
+            {
+                reset_Form();
+                reset_Page();
+            }
+            
+            function init_JQuery()
+            {
+                $("#datePicker_Early").datepicker(
+                {
+                    numberOfMonths: 3,
+                    onClose: function( selectedDate ) 
+                    {
+                        $( "#datePicker_Late" ).datepicker( "option", "minDate", selectedDate );
+                    }
+                });
+                $("#datePicker_Late").datepicker(
+                {
+                    numberOfMonths: 3,
+                    onClose: function( selectedDate ) 
+                    {
+                        $( "#datePicker_Early" ).datepicker( "option", "maxDate", selectedDate );
+                    }
+                });
+                $("#button_GetLogs").button().click(function( event ) {button_GetLogs_Clicked();});
+                $("#button_Reset").button().click(function( event ) {button_Reset_Clicked();});
+                $("#button_saveCSV").button().click(function( event ) {button_saveCSV_Clicked();});
+                $("#radio_Buttons_ResultControls").buttonset();
+            }
+            
+            $(document).ready(function()
+            {
+                init_JQuery();
+                init_Form();
+            });
+            
+        </script>
+    </head>
+    <body>
+        <div id="pageContainer">
+            
+            <div id="formContainer">
+                <br /><hr /><br />
+                <div>Instructions: Fill out the form.  Get Logs</div>
+                <br /><hr /><br />
+                <fieldset><legend>Fill out the form.</legend>
+                    <div>
+                        Select a Date Range:
+                        &nbsp;
+                        From: <input type="text" id="datePicker_Early" >
+                        &nbsp;
+                        To: <input type="text" id="datePicker_Late" >
+                    </div>
+                    <br />        
+                    <div>
+                        Enter Keys:
+                        &nbsp;
+                        Key 1: <input type="text" id="key1" >
+                        &nbsp;
+                        Key 2: <input type="text" id="key2" >
+                    </div>
+                    <br /> 
+                    <div>
+                        <div id="formButtonsContainer" style="margin-left: 50%;">
+                            <button id="button_GetLogs">[Get Logs]</button>
+                            &nbsp; | &nbsp;
+                            <button id="button_Reset">[Reset]</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <br /><hr /><br />
+            <div id="resultsControlContainer">
+                <div id="radio_Buttons_ResultControls">
+                    <input type="radio" id="button_Results_Format1" name="radio" checked="checked"><label for="button_Results_Format1">Format 1</label>
+                    <input type="radio" id="button_Results_RawDump" name="radio" ><label for="button_Results_RawDump">Raw Dump</label>
+                </div>
+                <br />
+                <button id="button_saveCSV">[Export To CSV]</button>
+                &nbsp; | &nbsp;
+                <!--<button id="button_Reset">[JSON Output]</button>-->
+                <br /><hr /><br />
+            </div>
+            <div id="resultsContainer">
+                (default) There are no results to display..
+            </div>
+        </div>
+    </body>
+    
+
+    
+</html>

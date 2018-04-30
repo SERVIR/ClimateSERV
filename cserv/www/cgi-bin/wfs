@@ -1,0 +1,3 @@
+#!/bin/sh
+MAPSERV="/usr/local/bin/mapserv"
+MS_MAPFILE="/data/data/gis/mapfiles/wfs.map" exec ${MAPSERV}

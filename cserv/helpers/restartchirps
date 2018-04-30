@@ -1,0 +1,3 @@
+sh /data/data/cserv/helpers/chirps stop
+sleep 5
+sh /data/data/cserv/helpers/chirps start

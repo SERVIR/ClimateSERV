@@ -1,0 +1,233 @@
+
+Author: Kris Stanton, 2015 Kris.Stanton@nasa.gov
+Document Status:  Still under development, for questions, email: Kris.Stanton@nasa.gov
+
+	
+URL Paths to the API
+
+	Accessed via http request to 
+		http://_PathToAPI_/<API_Path_Name>/
+	
+	On the Current Live Server, this path is
+		_PathToAPI_ : 					http://chirps.nsstc.nasa.gov/chirps/
+		Full URL To an API Request : 	http://chirps.nsstc.nasa.gov/chirps/<API_Path_Name>/
+		
+		Alternative Root Domain aliases that also work:
+			ClimateSERV.nsstc.nasa.gov
+			ClimateSERV.servirglobal.net
+			
+		
+	List of API Path Names
+    	getParameterTypes/			
+    	getFeatureLayers/
+		getClimateScenarioInfo/	
+		getCapabilitiesForDataset/		// Currently only works for dataset numbers 6 - 26	
+    	submitDataRequest/
+    	getDataRequestProgress/
+    	getDataFromRequest/
+    	
+    	getRequiredElements/			// Unused (broken)
+    	getDataTypes/					// Unused (broken)
+    	
+    	
+    	
+    	
+    API Paths Detail
+    
+    	Call back support,
+    		For ALL API requests, pass in the param 
+    			"?callback=callBackFunctionName" 
+    				and the return data will be wrapped into a javascript function call ( 'callBackFunctionName(returnedObject)' in the above line ).
+    			
+    	
+    	getParameterTypes/
+    		Path:  				http://chirps.nsstc.nasa.gov/chirps/getParameterTypes/
+    		Purpose:			Get a list of the current supported statistical operation types and their code values.
+    		Params (input):		<none>
+    		Returns (output): 	Array[] 
+    		Details
+    			Return type is a list of items.  
+    			Each item is a list with 3 elements.  
+    			Each item represents a currently supported statistical operation type.
+    			
+    			Client Object Details
+	    			currentListItem = returnList[n] 
+    				currentListItem[0]  // (int), operation type.  This is the value that the server understands as the operation type
+    				currentListItem[1]  // (string), ???? Short name for operation type
+    				currentListItem[2]  // (string), More readable name for the operation type (current client uses this as the label on the dropdown part of the UI
+    		
+    			Example Output:
+    				[[0, "max", "Max"], [1, "min", "Min"], [2, "median", "Median"], [3, "range", "Range"], [4, "sum", "Sum"], [5, "avg", "Average"]]
+    	
+    	
+    	getFeatureLayers/
+    		Path:  				http://chirps.nsstc.nasa.gov/chirps/getFeatureLayers/
+    		Purpose:			Get a list of the current feature layers
+    		Params (input):		<none>
+    		Returns (output): 	Array[] (of feature layers info)
+    		Details
+    			TODO! Elaborate further on how the client displays the layers and how the server has a custom field in the attribute table which works with the part of the system that 'selects' a bounding box for clipping the dataset
+    			Example:
+    				[
+    					{"visible": "true", "displayName": "Countries", "id": "country"}, 
+    					{"visible": "false", "displayName": "Admin #1", "id": "admin_1_earth"}, 
+    					{"visible": "false", "displayName": "Admin #2", "id": "admin_2_af"}
+    				]
+    	
+	
+    	getClimateScenarioInfo/		
+    		Path:  				http://chirps.nsstc.nasa.gov/chirps/getClimateScenarioInfo/
+    		Purpose:			Get information about the data structure of currently supported climate scenario datatypes
+    							Use the info from this call to build the climate scenario section of the UI dynamically.
+    		Params (input):		<none>
+    		Returns (output): 	Object{} 
+    		Details
+    			Note on Climate Scenario Datatypes and how they relate to 'Data Type Numbers'
+	    			At this time there are a total of 10 'Climate_Ensembles'
+	    			Each 'Climate_Ensemble' can have 1, 2, or n 'Climate_Variables'
+	    			The combination of 'Climate_Ensemble' and 'Climate_Variable' is unique and matches up to an individual dataset.
+	    				(so 1 list of images per 'Climate_Ensemble' + 'Climate_Variable' combination.)
+	    			To integrate this new data structure with the existing system of processing and serving out datasets, these combinations have been mapped to a unique datatype number.	
+    			
+    			Client Details
+    			
+    				// Return Object
+    				returnObject.RequestName  					// (string) Static, should be the name of the request (at this time that is: 'getClimateScenarioInfo')
+    				returnObject.isError						// (bool)
+    				returnObject.climate_DataTypeCapabilities	// (array[])
+    				returnObject.climate_DatatypeMap			// (array[])
+    				
+    				// climate_DataTypeCapabilities
+    				returnObject.climate_DataTypeCapabilities[n].dataTypeNumber  // (int) The server uses the datatype to match up to a dataset using this number.
+    				returnObject.climate_DataTypeCapabilities[n].current_Capabilities // (JSON encoded String) // Contains various additional properties related to the dataset (such as projection, forecast days, start/end date's for forecast range, fill value, projection, grid info, etc)
+	    				// List of props in the capabilities JSON String
+	    				capabilitiesItem = JSON.parse(returnObject.climate_DataTypeCapabilities[n].current_Capabilities);
+    					capabilitiesItem.data_category		// (string) // Data Type Category (for all climate datasets this should be the same)
+    					capabilitiesItem.date_FormatString_For_ForecastRange	(string) // Format of the 'endDateTime' and 'startDateTime' props written as a python format string (i.e. "%Y_%m_%d")
+    					capabilitiesItem.description		// (string) // Text description of this dataset
+    					capabilitiesItem.endDateTime		// (string) // Last Calendar date of the the forecast range for this dataset
+    					capabilitiesItem.ensemble			// (string) // 'Climate_Ensemble' for the current datatype
+    					capabilitiesItem.fillValue    		// (unsigned int) // The 'no data' value of the current dataset (usually set to -9999)
+    					capabilitiesItem.grid				// (array[6]) // 6 elements to describe geospatial raster resolution and positioning of this dataset
+    					capabilitiesItem.name				// (string) // shorter description of this dataset
+    					capabilitiesItem.number_Of_ForecastDays // (int) // Number of days in the forecast range
+    					capabilitiesItem.projection			// (string) // GIS Projection value as a string ( "GEOGCS["WGS 84",DATUM......]etc" ) 
+    					capabilitiesItem.size				// (array[2]) // X,Y  ([0],[1]) pixel size of original dataset image
+    					capabilitiesItem.startDateTime		// (string) // First Calendar date of the forecast range for this dataset
+    					capabilitiesItem.variable			// (string) // 'Climate_Variable' code
+    					capabilitiesItem.variable_Label		// (string) // Human readable version of the 'capabilitiesItem.variable' property.
+    				
+    				// climate_DatatypeMap
+    				returnObject.climate_DatatypeMap[n].climate_Ensemble		// (string) // parent 'Climate_Ensemble'
+    				returnObject.climate_DatatypeMap[n].climate_DataTypes		// (array[]) // list of 'Climate_Variables' and their DataTypeNumbers for the current 'Climate_Ensemble'
+    				returnObject.climate_DatatypeMap[n].climate_DataTypes[m].climate_Ensemble			// (string) // Current Climate Ensemble value (should match the parent prop)
+    				returnObject.climate_DatatypeMap[n].climate_DataTypes[m].climate_Ensemble_Label		// (string) // Human readable version of 'returnObject.climate_DatatypeMap[n].climate_DataTypes[m].climate_Ensemble'
+    				returnObject.climate_DatatypeMap[n].climate_DataTypes[m].climate_Variable			// (string) // Current Climate Variable
+    				returnObject.climate_DatatypeMap[n].climate_DataTypes[m].climate_Variable_Label		// (string) // Human readable version of 'returnObject.climate_DatatypeMap[n].climate_DataTypes[m].climate_Variable'
+    				returnObject.climate_DatatypeMap[n].climate_DataTypes[m].dataType_Number			// (int)	// The value the server uses to uniquely identify the current datatype (or 'climate_ensemble' + 'climate_variable' combination).
+    				
+    	
+    	
+    	submitDataRequest/
+    		Path:  				http://chirps.nsstc.nasa.gov/chirps/submitDataRequest/
+    		Purpose:			Submit a new processing request to the server.
+    		Params (input):		'datatype'  	// (int), the unique datatype number for the dataset which this request operates on
+    							'begintime' 	// (string), startDate for processing interval, format ("MM/DD/YYYY") 
+    							'endtime' 		// (string), endDate for processing interval, format ("MM/DD/YYYY") 
+    							'intervaltype' 	// (int), enumerated value that represents which type of time interval to process (daily, monthly, etc) (This enumeration is currently hardcoded in the mark up language of the current client).
+    							'operationtype' // (int), enumerated value that represents which type of statistical operation to perform on the dataset, see api call 'getParameterTypes/' for the list of currently available types.  
+    							// Either 'geometry' by itself or these other two params together, 'layerid' and 'featureids' are required feature
+    							(optional) 'geometry' // (object), the geometry that is defined by the user on the current client 
+    							(optional) 'layerid' // (??), Sorry this doc is still incomplete!
+    							(optional) 'featureids' // (??), Sorry this doc is still incomplete!
+    							// New Params coming in the next update
+    							'dateType_Category' // (string), This is not currently used on the server.
+    							(optional) 'isZip_CurrentDataType' // (string) // Leaving this blank converts to 'False' on the server.  Sending anything through equates to a 'True' value on the server.  This lets the server know that this is a job to zip up and return a full dataset.
+    		Returns (output): 	string,		// Returns either the job ID ('uniqueid') or an error message
+    		Details
+    			Submit the new datarequest and get the job ID as a response.
+    	
+    	
+    	getDataRequestProgress/
+    		Path:  				http://chirps.nsstc.nasa.gov/chirps/getDataRequestProgress/
+    		Purpose:			Get the current progress the server has made on processing the given request ID
+    		Params (input):		'id'  	// (string/uuid), the unique job id (UUID format) of the job to check
+    		Returns (output):	float // returns the progress value as a float between 0.0 and 100.0.  If error, a value of '-1' is returned instead 
+    		Details
+    			Ask the server what the progress on processing the current jobID is.
+    			Get a number back, display/update the client progress bar, wait a few seconds, make the request again. 
+    		
+    		
+    	getDataFromRequest/
+    		Path:  				http://chirps.nsstc.nasa.gov/chirps/getDataFromRequest/
+    		Purpose:			Get the data from a job that has completed it's processing
+    		Params (intput): 	'id'	// (string/uuid), the unique job id (UUID format) of the completed job
+    		Returns (output):	object // returns the data generated from the request (usually a list of numbers and dates, sorry incomplete file)
+    		Details
+    			Ask the server for the data for a given completed Job, passing in the id (UUID string).
+    			Server returns an object
+    			returnObject has the following structure
+    			retObj = {...}
+    			retObj.data  				// (Array[]) list of data granules that the processing job output created.
+    			retObj.data[n] 				// (object) single data granule 
+    			retObj.data[n].date 		// (string) readable date for current data granule. Format "d/m/y" not fixed length
+				retObj.data[n].workid		// (string) unique id for that process item (this ID is only used by the server internally.
+				retObj.data[n].epochTime	// (string) EpochTime (so we don't have to parse readable date strings on the client side)
+				retObj.data[n].value		// (obj).  The key in this object matches the statistical operation performed, and the value of that key is the value generated for that particular data granule 
+    		Example:
+    			For a completed job where the initial submit data request was for: User defined polygon, 'Daily' time interval, 'Max' statistical value and for the time range Jan 1, 2015 to Jan 31, 2015
+    			{
+    				"data": 
+    				[
+    					{
+    						"date": "1/1/2015", 
+    						"workid": "01f4839f-7b9c-447f-b50f-0ca257c0a339", 
+    						"epochTime": "1420092000", 
+    						"value": {"max": 0.3055223822593689}
+    					}, 
+    					{	
+    						"date": "1/2/2015", 
+    						"workid": "58b6f7ea-5490-4ccd-a715-5e028407ad16", 
+    						"epochTime": "1420178400", 
+    						"value": {"max": 0.15552784502506256}
+    					}, 
+    					{
+    						....,
+    						....,
+    					},
+    					{...}, ... ...
+    					, 
+    					{
+    						"date": "1/31/2015", 
+    						"workid": "e021a12c-7346-4b7b-a273-bd39c7fde99b", 
+    						"epochTime": "1422684000", 
+    						"value": {"max": 4.206714630126953}
+    					}
+    				]
+    			}
+    			
+    			
+    	
+ (This part of the documentation definitely needs to be cleaned up a bit!)
+Client Side Usage and UI Details
+	To view the clientside code that uses the api,
+		See 	http://chirps.nsstc.nasa.gov/js/servirnasa.js
+    
+    Here is a short description of the pipeline
+    Pipeline
+    	PageLoad
+    		Calls to getParameterTypes, getFeatureLayers, and getClimateScenarioInfo
+    		-ClimateScenario UI is dynamically built
+    	User fills a form out and clicks submit,
+    		Call 'submitDataRequest'
+    		Receive jobID, 
+    		wait n number of seconds, make a call to getDataRequestProgress
+    		Receive a number, update the UI to reflect progress, 
+    			Check the value, 
+    				if it is less than 100, repeat the 'wait n number of seconds' step,
+    				if it is at 100, make this request 'getDataFromRequest'	
+    					receive data, update graph/ui.
+    		
+    	
+    		
+    		

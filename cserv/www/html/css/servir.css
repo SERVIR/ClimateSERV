@@ -1,0 +1,175 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 16, 2014, 3:05:46 PM
+    Author     : jeburks
+*/
+
+//CSS for the look of the GeoJSON dropzone.
+#drop_zone {
+  border: 2px dashed #bbb;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 1px;
+  padding: 5px;
+  text-align: center;
+  font: 12pt bold 'Vollkorn';
+  color: #bbb;
+}
+
+
+//CSS of the editor dialog
+#editordialog{height:400}
+
+a,a:hover,a:click, a:visited, a:focus, a:active{
+  border:none;
+  outline:0;
+  text-decoration:none;
+  color:inherit;
+}
+
+a.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+}
+
+*:focus {
+    outline: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.searcharea_left {
+    float:left;
+    display:block;
+    min-width:180px;
+    width:180px;/*120px;*/
+}
+.searcharea_right {
+    float: left;
+    width:"100%";
+}
+.searcharea_newrow{
+    clear:both;
+}
+
+.stitched_drop {
+   padding: 5px;
+   margin: 5px;
+   background: #6f6f6f;
+   color: #000000;
+   font-size: 21px;
+   font-weight: bold;
+   line-height: 1.3em;
+   border: 2px dashed #2F2F2F;
+   border-radius: 10px;
+   box-shadow: 0 0 0 4px #6f6f6f, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+   text-shadow: -1px -1px #000000;
+   font-weight: normal;
+}
+
+#chartdialog {
+  font: 20px sans-serif;
+  background-color: white;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
+/* // KS Refactor Design 2016 Override // Updating Chart Colors */
+.dimple-series-0 {
+    /* This is now set dyanmically on a 'normal' chart work flow.  */
+    /*
+    fill:#8fd4bd;
+    stroke: #8fd4bd;
+    */
+}
+/* ORIGINAL
+.dimple-series-0 {
+    fill:#3e3ec6;
+    stroke: black;
+}
+*/
+
+.dimple-axis {
+    font-size: 15px;
+    font-style: normal;
+    
+}
+#logo-servir {
+    /*position: absolute;
+    left: 5px;
+    bottom: 82px;
+    width: 10px;
+    height: 10px;*/
+    z-index: 1;
+}
+
+#userHelper_Start {
+    position: absolute;
+    left: 39%;
+    top: 45px;
+    width: 140px;
+    height: 15px;
+    z-index: 1;
+    font-size: 15px;
+    display:none;
+    background: rgba(115, 173, 33, .7);/*#73AD21;*/
+    border: 3px solid darkorange;
+    border-radius: 15px;
+    padding: 10px;
+    cursor:pointer;
+}
+
+.sidebar-inject 
+{
+    cursor:pointer;
+}
+
+
+/* ABOUT PAGE */
+#about_Content_Container 
+{
+    max-width: 100%;
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+#about_Content_Container p a{ color: rgba(0, 255, 94, 0.77);}
+#about_Content_Container h3
+{
+    font-size: 16px;
+    margin-top: 20px;
+}
+#about_Content_Container p 
+{
+    font-size: 12px;
+    padding: 10px;
+}
+#about_Content_Container img
+{
+    max-width:500px;
+}
+.about_twoCol_Container { padding:10px; max-width:75%; font-size: 12px;}
+.about_twoCol_Col_1 { width:100%; float:left;}
+.about_twoCol_Col_2 { float:right; width:200px; margin-right: -200px;}
+.clearBoth {clear:both;}
+
+.about_Figure_CaptionText {font-size: 11px !important; width: 500px;}
+.about_Vertical_Spacer {height: 40px;}
+.about_ContentFoot_Container{padding:10px;}
+.about_Left{float:left;}
+.about_Right{float:right;}
+
+
+.SubmitDataRequest_UI{}
+.SubmitDataRequest_UI_Default{}
+.SubmitDataRequest_UI_ClimateModel{}

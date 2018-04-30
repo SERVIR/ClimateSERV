@@ -1,0 +1,53 @@
+{% load i18n %}{% load staticfiles %}<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" href="{% static "img/favicon.ico" %}">
+    <title>{% block title %}ClimateSERV Metrics{% endblock %}</title>
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap-responsive.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/fonts.css" %}" rel="stylesheet">
+    <link href="{% static "css/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top" style="">
+    <div class="navbar-inner">
+	<div class="container">
+            <a class="brand" href="/">ClimateSERV Metrics Dashboard</a>
+        </div>
+    </div>
+ </div>
+
+<div class="main" >
+    <div class="container">
+    {% block content %}
+	<div id="plotter"></div><br>
+	<div id="submitBar"></div><br>
+	<div id="getBar"></div><br>
+	<div id="downloadBar"></div>
+	<div id="metrics" class="metrics" name="metrics" style="display: none" data-metrics-json="{{metrics_json}}"></div>
+      </div>
+      <!-- /container -->
+ </div>
+<!-- /main -->
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/bootstrap.js" %}"></script>
+<script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://highcharts.github.io/export-csv/export-csv.js"></script>
+<script src="{% static "js/metrics.js" %}"></script>
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<head>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.1.0.min.js"></script>
+  <script src="js/libs/savefig/saveSvgAsPng.js">  </script>
+</head>
+<body>
+  <script type="text/javascript">
+    var svg = dimple.newSvg("body", 800, 600);
+    var data = [
+      { "Word":"Hello", "Awesomeness":2000 },
+      { "Word":"World", "Awesomeness":3000 }
+    ];
+    var chart = new dimple.chart(svg, data);
+    chart.defaultColors = [
+    new dimple.color("#FF0000"),
+    new dimple.color("#666666"),
+    new dimple.color("#999999"),
+    new dimple.color("#BBBBBB"),
+    new dimple.color("#EEEEEE")
+]; 
+    chart.addCategoryAxis("x", "Word");
+    chart.addMeasureAxis("y", "Awesomeness");
+    chart.addSeries(null, dimple.plot.bar);
+    chart.draw();
+   
+    function save() {
+         console.log("svg"+svg);
+         var svgtemp= document.getElementsByTagName("svg")[0];
+         saveSvgAsPng(svgtemp, "diagram.png", 3);
+    }
+  </script>
+  
+   <a onclick="save();">Help</a>
+</body>

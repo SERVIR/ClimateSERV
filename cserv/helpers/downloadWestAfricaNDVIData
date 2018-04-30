@@ -1,0 +1,5 @@
+#!/bin/sh
+cd /data/data/cserv/pythonCode/serviringest/sh/operational
+./runDownloadNewWestAfricaNDVIData.sh $1 $2
+
+

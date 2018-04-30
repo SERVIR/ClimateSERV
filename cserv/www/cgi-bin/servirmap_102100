@@ -1,0 +1,3 @@
+#!/bin/sh
+MAPSERV="/usr/bin/mapserv"
+MS_MAPFILE="/data/data/gis/mapfiles/servir_102100.map" exec ${MAPSERV}

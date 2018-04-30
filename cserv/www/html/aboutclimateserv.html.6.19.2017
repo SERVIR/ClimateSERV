@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!--
+Implementation by: Cris Squared (Kris Stanton)
+-->
+<html>
+<head>
+    <title>About ClimateSERV</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Design 2016 -->
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" type="text/css" />
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto Condensed" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="js/libs/semantic/dist/semantic.min.css">
+    <script src="js/libs/semantic/dist/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="design/design2016/design2016.css">
+    <script src="design/design2016/design2016.js"></script>
+    <!-- ClimateSERV Specific Overrides -->
+    <link rel="stylesheet" type="text/css" href="design/design2016/climateserv.css">
+    <script src="design/design2016/climateserv.js"></script>
+    
+</head>
+
+<body>
+
+    
+<div class="ui grid servir_helper_topbotMargin_0">
+    <div class="one column row servir_helper_fixedHeight_60px" data-role="header" style="background-color:#111111;">
+        <div class="column">
+        
+            <!-- Header with Nav Buttons -->
+            <div class="servir_design2016_header_bg">
+                <div class="ui grid servir_helper_maxHeight_60px">
+                    <div class="two wide column"></div>
+                    <!--<div class="two wide column servir_helper_topPadding_11rem"><img src="design/design2016/images/logo_climateserv_better3.png" alt="ClimateSERV" /></div>-->
+					<div class="two wide column servir_helper_topPadding_08rem"><img src="design/design2016/images/logo_climateserv_WithGlobe.png" alt="ClimateSERV" /></div>
+                    <div class="two wide column"></div>
+                    <div class="eight wide column">
+                        <div class="ui grid servir_helper_topMargin_01em">
+                            <div class="six wide center aligned column servir_helper_topPadding_04rem"><a href="index.html?s=getstarted" class="servir_text_menu_item" onclick="">GET STARTED</a></div>
+                            <!-- Hiding How it works Menu  Column widths, 4,4,4,4 works well with 3 menu items on this page.   For 2 items, trying, 6,6,4
+                            <div class="four wide center aligned column servir_helper_topPadding_04rem"><a href="index.html?s=howitworks" class="servir_text_menu_item" onclick="">HOW IT WORKS</a></div>
+                            -->
+                            <div class="six wide center aligned column servir_helper_topPadding_04rem"><a class="servir_text_menu_item" href="aboutclimateserv.html">ABOUT CLIMATESERV</a></div>
+                            <div class="four wide center aligned column servir_helper_topPadding_04rem"><!-- <a class="servir_text_menu_item" onclick="alert('TODO! CONNECT ME!')">LEARNING CENTER</a> --></div>
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+    <div class="one column row servir_helper_topbotPadding_0" data-role="contentAboutClimateSERV" style="background-color:white;">
+        <div class="column">
+            
+            
+            <div class="ui grid">
+                <div class="three column row">
+                    <div class="four wide column"></div>
+                    <div class="eight wide center aligned column">
+                        <div class="servir_helper_topPadding_50rem">
+                            <div class="servir_otherPages_text_mainTitle servir_helper_minHeight_35rem">
+                                ABOUT CLIMATESERV 
+                            </div>
+                            <div class="ui fitted divider"></div>
+                        </div>
+                    </div>
+                    <div class="four wide column"></div>
+                </div>
+            </div>
+            
+ 
+            
+            <div class="ui grid">
+                <div class="three column row">
+                    <div class="four wide column"></div>
+                    <div class="eight wide center aligned column">
+                        <div class="servir_otherPages_text_subTitle">
+                            This tool allows development practitioners, scientists/researchers, and government decision-makers to visualize and download historical rainfall data, vegetation condition data, and 180-day forecasts of rainfall and temperature to improve understanding of, and make improved decisions for, issues related to agriculture and water availability.
+                        </div>
+                    </div>
+                    <div class="four wide column"></div>
+                </div>
+            </div>
+
+            
+            
+            <div class="ui grid servir_helper_topMargin_30em">
+                <div class="four column row">
+                    <div class="two wide column"></div>
+                    <div class="eight wide column">
+                        <div>
+                            <div class='servir_otherPages_text_mainBody'>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                In SERVIR regions, where long-term ground observations of rainfall are sparse, there is a critical need for satellite and model-derived rainfall data for predicting droughts, estimating crop yields, and more. 
+                                Decision-makers need a way to accurately asses how severe a drought will be, how it compares to past droughts, and its potential effect on crop yields. 
+                                Such assessments require accurate estimations of rainfall variations in space and time. 
+                                It is important to place an evolving dryer-than-normal season into historical context in order to analyze the severity of rainfall deficits. 
+                                Until now, such analyses used rainfall data from specific points on the Earth's surface. 
+                                However, that data fails to show the region-wide variability that reveals comprehensive rainfall patterns.
+                            </div>
+                            <div class="ui hidden divider"></div>
+                            <div class='servir_otherPages_text_mainBodyHeading'>
+                                <b>Application Purpose</b>
+                            </div>
+                            <div class='servir_otherPages_text_mainBody'>
+                                SERVIR has created a user-friendly, web-based tool -- ClimateSERV -- that provides three important datasets together in one system to help decision-makers in SERVIR's data-sparse regions assess the evolving situation via holistic analysis of water and agriculture. 
+                                Using ClimateSERV, development practitioners, scientists/researchers, and government decision-makers can readily analyze historical rainfall for the past 30 years and compare it with the best available forecasts for the next 180 days for their defined area of interest to improve the understanding of, and make improved decisions for, issues related to agriculture and water availability. 
+                                The three key datasets that ClimateSERV provides to make this possible are as follows:
+                            </div>
+                            <div class="ui hidden divider"></div>
+                            <div class='servir_otherPages_text_mainBody'>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b class='servir_helper_textColor_777777'>
+                                    (1) Climate Hazards group IR Precipitation with Stations (CHIRPS):
+                                </b> 
+                                Scientists at Famine and Early Warning System (FEWS NET) who are members of the SERVIR Applied Sciences Team used 30 years' (1982- present) worth of multiple satellite data sources and ground observations to produce an unprecedented, global, spatially and temporally consistent and continuous 30-year record of satellite-derived rainfall data. This CHIRPS global dataset makes it possible to accurately assess and monitor large-scale rainfall patterns and analyze how they may be affected by climate change. The data are updated to the latest available rainfall estimates.
+                            </div>
+                            <div class="ui hidden divider"></div>
+                            <div class='servir_otherPages_text_mainBody'>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b class='servir_helper_textColor_777777'>
+                                    (2) North American Multi-Model Ensemble (NMME) dataset: 
+                                </b>
+                                Forecasts of future precipitation are also critical to decision-makers. 
+                                The NMME dataset, a compliation by National Oceanic and Atmospheric Administration (NOAA), reflects cutting edge work on seasonal forecasting. 
+                                A SERVIR AST project has taken the NMME data and performed bias correction and spatial disaggregation using standard, well-accepted techniques to generate daily, 180-day temperature and precipitation forecasts for the entire globe. These seasonal forecasts, along with the CHIRPS historical rainfall data, provide an overall perspective to connect rainfall patterns from the past to future rainfall (up to 180 days out) as projected by NMME.
+                            </div>
+                            <div class="ui hidden divider"></div>
+                            <div class='servir_otherPages_text_mainBody'>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b class='servir_helper_textColor_777777'>
+                                    (3) MODIS-derived Normalized Difference Vegetation Index (eMODIS NDVI): 
+                                </b> 
+                                SERVIR is also piloting the USGS pentadal eMODIS NDVI dataset at 250m spatial resolution over West Africa. 
+                                NDVI, a measure of vegetation condition, provides a proxy for agricultural productivity by showing photosynthetic activity. 
+                                By providing this 15 year dataset, SERVIR is enabling Ministries of Agriculure and the international donor community to explore how CHIRPS and NMME data link to vegetation growth and health. (The NDVI dataset is being expanded to other parts of Africa and beyond.)  ClimateSERV enables decision-makers to link historical precipitation trends (CHIRPS) to past vegetation trends (NDVI) to gain insight into potential vegetation growth and health based on seasonal (up to 180 days) precipitation and temperature forecasts (NMME).
+                                    
+                            </div>
+                            <div class="ui hidden divider"></div>
+                            <div class='servir_otherPages_text_mainBodyHeading'>
+                                <b>Application Uses</b>
+                            </div>
+                            <div class='servir_otherPages_text_mainBody'>
+                                With this tool, decision-makers can download, view, graph, and interpret the CHIRPS, eMODIS NDVI, and NMME seasonal forecast data in a web-based user interface. ClimateSERV can help decision-makers assess and monitor large-scale rainfall patterns, analyze how those patterns may be affected by climate change, determine likelihood of drought, and infer crop condition. Kenya Meteorological Service field offices are already using the data to provide climate resilience guidance to farmers. For example, KMS's Kericho office is using the CHIRPS dataset to downscale seasonal climate outlooks for farmers' use in planning crop cultivars and planting times. SERVIR hubs plan to train end-users in their regions to use and analyze the CHIRPS, NMME, and NDVI data through ClimateSERV. Use of seasonal forecasts by end-users has been increasing. ClimateSERV will assist in the conversion of these large datasets into actionable information.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="four wide column">
+                        
+                        <div>
+                            <div><img src="design/design2016/images/screen_Capture_01.png" alt="ScreenCap_01" width="350" height="230" /></div>
+                            <br />
+                            <div class='servir_helper_topPadding_10rem'><img src="design/design2016/images/screen_Capture_02.png" alt="ScreenCap_02" width="350" height="230" /></div>
+                            <br />
+                            <div class='servir_helper_topPadding_10rem'><img src="design/design2016/images/screen_Capture_03.png" alt="ScreenCap_03" width="350" height="230" /></div>
+                            <br />
+                            <div class='servir_helper_topPadding_10rem'>
+                                
+                                <div class="ui grid">
+                                    <div class="three column row">
+                                        <div class="one wide column"></div>
+                                        <div class="twelve wide column servir_helper_leftMargin_10rem">
+                                            
+                                            <button class="ui button servir_design2016_button_blue_color servir_helper_width_180rem" onclick="alert('TODO! HOOK ME UP TO SOMETHING!');">
+                                                <div class="content servir_design2016_button_narrow">
+                                                    <div class="center aligned">
+                                                        <div class="servir_text_button_main servir_helper_fontSize_Override_14px">
+                                                            <img src="design/design2016/images/icon_filein_small_inverted_bright.png" alt="Download Factsheet" width="18" height="16" class="servir_download_factSheet_iconFix" />
+                                                            &nbsp;
+                                                            DOWNLOAD FACTSHEET
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div class="one wide column"></div>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                </div>
+            </div>
+            
+            
+            <div class="ui grid servir_helper_topMargin_40em">
+                <div class="three column row">
+                    <div class="four wide column"></div>
+                    <div class="eight wide column">
+                        
+                        <div class="ui segment servir_design2016_segment_nonButton_grey_color ">
+                            
+                            <div class="ui grid">
+                                <div class="two column row">
+                                    <div class="six wide column">
+                                        <div class='servir_otherPages_text_mainBodyHeading'>
+                                            Geographic Region
+                                        </div>
+                                        <div class='servir_otherPages_text_mainBody servir_helper_topPadding_05rem'>
+                                            Global
+                                        </div>
+                                        <div>&nbsp;</div>
+                                        <div class='servir_otherPages_text_mainBodyHeading'>
+                                            Developer
+                                        </div>
+                                        <div class='servir_otherPages_text_mainBody servir_helper_topPadding_05rem'>
+                                            SERVIR Science Coordination Office
+                                        </div>
+                                        <div>&nbsp;</div>
+                                        <div class='servir_otherPages_text_mainBodyHeading'>
+                                            Contributors/Partners
+                                        </div>
+                                        <div class='servir_otherPages_text_mainBody servir_helper_topPadding_05rem'>
+                                            FEWS NET, NMME
+                                        </div>
+                                        <div class='servir_helper_maxHeight_10px'>&nbsp;</div>
+                                        <div><img src="design/design2016/images/logo_FEWS_NET.png" alt="FEWS NET" width="140" height="40" /></div>
+                                        <div><img src="design/design2016/images/logo_NMME.png" alt="NMME" width="140" height="40" /></div>
+                                    </div>
+                                    <div class="ten wide left aligned column">
+                                        <div class='servir_otherPages_text_mainBodyHeading'>
+                                            Users
+                                        </div>
+                                        <div>
+                                            <ul class='servir_otherPages_text_mainBody servir_helper_topMargin_02em'>
+                                                <li>IGAD (Intergovernmental Authority on Development) Climate Prediction Center</li>
+                                                <li>Ministries of Agriculture, Ethiopia and Kenya</li>
+                                                <li>Water and Land Information Management, Somalia</li>
+                                                <li>Kenya Meteorological Department</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class='servir_otherPages_text_mainBodyHeading'>
+                                            Earth Observations and NASA Products Used
+                                        </div>
+                                        <div>
+                                            <ul class='servir_otherPages_text_mainBody servir_helper_topMargin_02em'>
+                                                <li>TRMM (Tropical Rainfall Measuring Mission)</li>
+                                                <li>Global Precipitation Mission (GPM) precipitation data</li>
+                                                <li>MODIS NDVI data</li>
+                                                <li>NMME climate models, including NASA GOES-5 model products</li>
+                                            </ul>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="four wide column"></div>
+                </div>
+            </div>
+            
+            
+            
+             
+            <div class="ui grid servir_helper_topMargin_40em servir_helper_bottomMargin_40em">
+                <div class="three column row">
+                    <div class="three wide column"></div>
+                    <div class="ten wide center aligned column">
+                        <div class="servir_otherPages_text_preFooter">
+                            For more information on the SERVIR program, visit <b><a href="https://www.servirglobal.net">www.servirglobal.net</a></b>
+                        </div>
+                        <div>
+                            <img src="design/design2016/images/logo_USAID.png" alt="USAID" width="90" height="80" class="servir_aboutPage_USAID_iconFix" />
+                            <img src="design/design2016/images/logo_NASA.png" alt="NASA" width="72" height="54" />
+                            <img src="design/design2016/images/logo_RCMRD.png" alt="RCMRD" width="160" height="50" />
+                            <img src="design/design2016/images/logo_ICIMOD.png" alt="ICIMOD" width="160" height="45" />
+                        </div>
+                        <div class="servir_otherPages_text_preFooter servir_helper_topPadding_30rem">
+                            Connect with us on Social: 
+                            <img src="design/design2016/images/logo_social_facebook.png" alt="Facebook" width="30" height="30" class="servir_aboutPage_Facebook_iconFix" />
+                            <img src="design/design2016/images/logo_social_twitter.png" alt="Twitter" width="30" height="30" class="servir_aboutPage_Twitter_iconFix" />
+                        </div>
+                    </div>
+                    <div class="three wide column"></div>
+                </div>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+    
+    <div class="one column row servir_helper_fixedHeight_36px" data-role="footer" style="background-color:darkblue;">
+        <div class="column">
+
+            <!-- Footer -->
+            <div class="servir_design2016_footer_bg">
+                <div class="ui grid servir_helper_fixedHeight_36px servir_helper_bottomMargin_0">
+                    <div class="two wide column"></div>
+                    <div class="two wide right aligned column servir_text_footer_credit servir_helper_topPadding_07rem">POWERED BY </div>
+                    <div class="two wide column servir_helper_topPadding_05rem"><img src="design/design2016/images/logo_servir_global_better.png" alt="SERVIR GLOBAL" /></div>
+                    <div class="one wide column"></div>
+                    <div class="seven wide column servir_text_footer_credit servir_helper_topPadding_07rem"><b>CLIMATESERV</b> &copy; 2016 SERVIR GLOBAL | CREDIT FEWS NET, NMME OPENLAYERS V3.15.0</div>
+                    <div class="two wide column"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    
+    
+</body>
+</html>

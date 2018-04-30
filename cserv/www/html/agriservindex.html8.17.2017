@@ -1,0 +1,1368 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <link href="js/libs/semantic/dist/semantic.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.10.4.custom.css" />
+    <link rel="stylesheet" href="css/jquery.css" />
+    <link rel="stylesheet" href="css/ol.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+    <!--<link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css">-->
+    <link rel="stylesheet" href="css/red-glass/sidebar.css" />
+    <link rel="stylesheet" href="css/agriserv.css" />
+    <script src="js/libs/openlayers/ol.js" type="text/javascript"></script>
+    <!--<script src="https://openlayers.org/en/v4.2.0/build/ol.js"></script>-->
+    <script src="js/libs/openlayers/javascript.util.min.js"></script>
+    <script src="js/libs/openlayers/jsts.min.js"></script>
+    <script src="js/libs/jquery/jquery.js"></script>
+    <script src="js/libs/jqueryui/jquery-ui.js"></script>
+    <script src="js/libs/jquery-timer/jquery.timer.js"></script>
+    <!--<script src="js/libs/savefig/saveSvgAsPng.js"></script>-->
+    <script src="js/html2canvas.js"></script>
+    <script src="js/libs/JSZip/dist/jszip.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/highcharts-more.js"></script>
+    <script src="js/libs/jquery-sidebar/jquery.sidebar.js"></script>
+    <link rel="stylesheet" href="js/ol3-ext.css" />
+    <script type="text/javascript" src="js/ol3-ext.js"></script>
+    <script src="js/agriserv2017.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-27020636-5', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+          rel='stylesheet' type='text/css' />
+    <!-- Bootstrap core CSS -->
+    <!-- Custom styles for this template -->
+    <link href="js/colorbox/colorbox.css" rel='stylesheet' type='text/css' />
+    <link href="css/templatemo_style.css" rel='stylesheet' type='text/css' />
+    <link href="css/sitestyles.css" rel='stylesheet' type='text/css' />
+    <link href="css/shadowbox.css" rel="stylesheet" type="text/css" />
+    <script src="js/shadowbox.js" type="text/javascript"></script>
+    <script src="js/moment.min.js"></script>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <title>SERVIR AgriSERV</title>
+
+    <script src="js/libs/semantic/dist/semantic.min.js"></script>
+    <style>
+        #export-canvas {
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        .templatemo-top-menu, .templatemo-top-bar, .navbar-default {
+            background: transparent;
+        }
+
+        .topmenuWrapper {
+            background: url("images/headerbg.jpg") no-repeat;
+            background-size: cover;
+        }
+
+        .templatemo-top-menu {
+            min-height: 0px;
+            background: url("images/headerbg.jpg") no-repeat;
+            background-size: cover;
+        }
+
+        .sidebar-container {
+            z-index: 5001;
+        }
+
+        .ol-zoom {
+            right: .5em;
+            left: unset;
+            max-width: 32px;
+        }
+        .ol-control.ol-layerswitcher {
+            left: unset;
+            right:.5em;
+            top: 12em;
+        }
+
+        .ol-zoom-out.ol-has-tooltip:hover [role=tooltip] {
+            left: -6.2em;
+            border-radius: 4px 0 0 4px;
+        }
+        .ol-control button {
+            background-color: #00ACEC;
+            height: 2.0em;
+            width: 2.0em;
+        }
+
+        .ol-control button {
+            background-color: #00ACEC;
+            height: 2.0em;
+            width: 2.0em;
+        }
+
+            .ol-control button:hover {
+                background-color: #0FB013;
+            }
+
+        .ol-rotate {
+            display: none;
+        }
+
+        .ol-control {
+            background-color: #ffffff;
+            padding: 1px;
+        }
+
+            .ol-control:hover {
+                background-color: #ffffff;
+                padding: 1px;
+            }
+
+        .btnmaximize {
+            background-image: url(images/max.png);
+            background-size: cover;
+        }
+
+            .btnmaximize:hover {
+                background-image: url(images/maxhover.png);
+                background-size: cover;
+            }
+
+        .btnminimize {
+            background-image: url(images/min.png);
+            background-size: cover;
+        }
+
+            .btnminimize:hover {
+                background-image: url(images/minhover.png);
+                background-size: cover;
+            }
+
+        a {
+            color: #026F04;
+        }
+
+        #AgriservUI_Dialog {
+            border: 1px solid #666666;
+            background: #4F4F4F url('images/ui-bg_inset-soft_25_4F4F4F_1x100.png') 50% bottom repeat-x;
+            color: #ffffff;
+            position: absolute;
+            max-height: 100vh;
+            width: 300px;
+            top: 0px;
+            left: 0px;
+            display: none;
+            overflow: scroll;
+        }
+
+        #centerpoint {
+            top: 50%; /*0px;*/
+            left: 50%; /*0px;*/
+            position: absolute;
+            width: 10px;
+            height: 10px;
+        }
+
+        #formWizard {
+            position: relative;
+            width: 600px;
+            margin-left: -300px; /*0px;*/
+            height: auto;
+            margin-top: -300px; /*0px;*/
+            z-index: 100;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 7px 6px 0 rgba(192, 192, 192, 0.66);
+            top: 18px;
+            /*overflow-x: hidden;
+            overflow-y: auto;*/
+        }
+
+            #formWizard h2.title {
+                font-size: 16px;
+                line-height: 21px;
+                padding: 8px 0 6px;
+                font-weight: 600;
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+                padding: 5px 10px;
+                background: #00ACEC;
+                color: white;
+                box-shadow: 3px 0px 0 silver;
+            }
+
+        .fPage {
+            padding: 10px;
+        }
+
+        .wizardbtn {
+            margin: 1px;
+            color: #fff;
+            font-size: 1.14em;
+            font-weight: 700;
+            text-decoration: none;
+            text-align: center;
+            background-color: #00ACEC;
+            border-radius: 2px;
+            padding: 5px;
+        }
+
+            .wizardbtn:hover {
+                background-color: #0FB013;
+            }
+
+        #myProgress {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: #ddd;
+        }
+
+        #myBar {
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+        }
+
+        #label {
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+
+        .growingSeasonsTable {
+            width: 100%;
+        }
+
+            .growingSeasonsTable th, .growingSeasonsTable tr {
+                text-align: center;
+            }
+
+        /*#growingSeasonsTable0 {
+            float: left;
+            border-right: solid 1px #0FB013;
+        }
+
+        #growingSeasonsTable1 {
+            float: right;
+        }*/
+
+        .fPageBtn {
+            width: auto;
+        }
+
+        .servir_design2016_footer_bg {
+            min-height: 36px;
+            max-height: 36px;
+            background: url("/images/footer_bg_aqua.png") no-repeat;
+            background-size: cover;
+            margin-top: 10px;
+        }
+
+        .servir_helper_fixedHeight_36px {
+            max-height: 36px;
+            min-height: 36px;
+            height: 36px;
+        }
+
+        .servir_helper_topPadding_07rem {
+            /*padding-top: 0.7rem !important;*/
+        }
+
+        .servir_text_footer_credit {
+            color: #AAAAAA !important;
+            font-family: Trebuchet MS;
+            /*font-size: 0.8rem;*/
+        }
+
+        .ui.grid {
+            height: 36px;
+        }
+
+        .servir_helper_topPadding_05rem {
+            padding-top: 0.5rem !important;
+        }
+
+        .servir_design2016_footer_bg a {
+            color: white;
+        }
+
+            .servir_design2016_footer_bg a:hover {
+                color: wheat;
+            }
+
+        .ui-dialog .ui-dialog-titlebar-close {
+            background-image: url(/images/icon-close-16-over.png);
+        }
+
+            .ui-dialog .ui-dialog-titlebar-close:hover {
+                background-image: url(/images/icon-close-16.png);
+            }
+
+        .templatemo-top-menu .navbar-brand {
+            margin-top: 15px;
+        }
+    </style>
+
+    <script src="js/main.js"></script>
+    <!--<script></script>-->
+</head>
+<body>
+    <div id="centerpoint">
+        <div id="formWizard" style="display:none;">
+            <div id="fPage1" style="display:block;">
+                <h2 class="title">Select area of interest <span style="float:right; cursor:pointer;" onclick="closeWizard();">X</span></h2>
+                <section class="fPage">
+                    <p style="font-weight:500;">
+                        Compare Growing Seasons between two areas of interest.  Please click the button to begin
+                        your area of interest selection.  You may pan and zoom the map then click and draw to select the area.
+                    </p>
+                    <p style="text-align:center">
+                        <img src="images/SelectAOI.gif" alt="Select AOI" style="height:260px; ">
+                        <button onclick="closeWizard('fPage1'); openWizard('fPage2'); " class="wizardbtn" id="btnKeepAOI1">KEEP initial AOI</button>
+                        <button onclick="closeWizard('fPage1'); enableCustomPolygonDrawing_AgriservOverride(1);" class="wizardbtn">Select initial AOI</button>
+                        <button onclick="closeWizard('fPage1'); global_AOI_UseCase_Index = 1; $('#loadGeoJsonDialog').dialog();" class="wizardbtn">Upload GeoJSON</button>
+                        <button onclick="closeWizard('fPage1'); openWizard('fPage4'); showChart();" class="wizardbtn" id="btnShowPrevious">Show Previous</button>
+                        <!--<button onclick="closeWizard('fPage2'); openWizard('fPage4'); fullScreenWizard();" class="wizardbtn">Show Previous</button>-->
+                    </p>
+                </section>
+            </div>
+            <div id="fPage2" style="display:none;">
+                <h2 class="title">Select area to compare <span style="float:right; cursor:pointer;" onclick="closeWizard();">X</span></h2>
+                <section class="fPage">
+                    <p style="font-weight:500;">
+                        Select the areas you would like to compare to.  Please click the button to begin
+                        your area of interest selection.  You may pan and zoom the map then click and draw to select the area.
+                    </p>
+                    <p style="text-align:center">
+                        <img src="images/SelectAOI2.gif" alt="Select AOI to compare" style="height:260px; ">
+                        <button onclick="closeWizard('fPage2'); openWizard('fPage3');" class="wizardbtn" id="btnKeepAOI2">KEEP compare AOI</button>
+                        <button onclick="closeWizard('fPage2'); enableCustomPolygonDrawing_AgriservOverride(2);" class="wizardbtn">Select compare AOI</button>
+                        <button onclick="closeWizard('fPage2'); global_AOI_UseCase_Index = 2; $('#loadGeoJsonDialog').dialog();" class="wizardbtn">Upload GeoJSON</button>
+                        <button onclick="closeWizard('fPage2'); openWizard('fPage4'); showChart();" class="wizardbtn" id="btnShowPrevious2">Show Previous</button>
+                        <!--<button onclick="closeWizard('fPage2');openWizard('fPage4'); fullScreenWizard();" class="wizardbtn">Show Previous</button>-->
+                    </p>
+                </section>
+            </div>
+            <div id="fPage3" style="display:none;">
+                <h2 class="title">Confirm AOIs and Submit Job <span style="float:right; cursor:pointer;" onclick="closeWizard();">X</span></h2>
+                <section class="fPage">
+                    <p style="font-weight:500;">
+                        Confirm your AOIs and redraw if needed or simply submit your job!
+                    </p>
+                    <p style="text-align:center">
+                        <img src="images/RedrawAOI.gif" alt="Redraw AOI" style="height:260px; ">
+                        <button onclick="closeWizard('fPage3'); enableCustomPolygonDrawing_AgriservOverride(1);" class="wizardbtn">Redraw initial AOI</button>
+                        <button onclick="closeWizard('fPage3'); enableCustomPolygonDrawing_AgriservOverride(2);" class="wizardbtn">Redraw compare AOI</button>
+                        <button onclick="closeWizard('fPage3'); openWizard('fPage4'); showChart();" class="wizardbtn" id="btnShowPrevious3">Show Previous</button>
+                    </p>
+                    <div style="padding:5px 0px; text-align:center;">
+                        Select date range
+                        <select name="input_Agriserv_Select_YearStart" id="input_Agriserv_Select_YearStart">
+                            <option value="2000">2000</option>
+                            <option value="2001">2001</option>
+                            <option value="2002">2002</option>
+                            <option value="2003">2003</option>
+                            <option value="2004">2004</option>
+                            <option value="2005" selected>2005</option>
+                            <option value="2006">2006</option>
+                            <option value="2007">2007</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2014">2014</option>
+                            <option value="2015">2015</option>
+                        </select> | <select name="input_Agriserv_Select_YearEnd" id="input_Agriserv_Select_YearEnd">
+                            <option value="2000">2000</option>
+                            <option value="2001">2001</option>
+                            <option value="2002">2002</option>
+                            <option value="2003">2003</option>
+                            <option value="2004">2004</option>
+                            <option value="2005">2005</option>
+                            <option value="2006" selected>2006</option>
+                            <option value="2007">2007</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2014">2014</option>
+                            <option value="2015">2015</option>
+                        </select>
+                        <br />
+                        <button onclick="closeWizard('fPage3'); submit_UseCaseA_Input_EventHandler(); openWizard('fPage4');" class="wizardbtn" style="margin-top:10px;">Submit job</button>
+                    </div>
+
+                </section>
+            </div>
+            <div id="fPage4" style="display:none;">
+                <h2 class="title">Processing Results <span style="float:right; cursor:pointer;" onclick="closeWizard();">X</span></h2>
+                <section class="fPage">
+                    <div id="chartLogoContainer">
+                        <div id="logo-servir">
+                            <p>
+                                <img style="width: 200px;" src="images/Servir_Logo_Full_Color_Large.png">
+                            </p>
+                        </div>
+                    </div>
+                    <div id="myProgress">
+                        <div id="myBar">
+                            <div id="label">0%</div>
+                        </div>
+                    </div>
+                    <div id="chartdialogNot">
+                        <div id="plot" ></div>
+                        <div id="plot-years" class="hidden"></div>
+                        <div id="chirps-plot" class="hidden"></div>
+                        <div id="chirps-years" class="hidden"></div>
+                        <br style="clear:both;" />
+                        <!--<div id="growingSeasonsDiv">-->
+                        <p style="text-align:center;">
+
+                            <button value="Back" onclick="closeWizard('fPage4'); openWizard('fPage3');" class="wizardbtn">Back</button><button value="Close" onclick="closeWizard();" class="wizardbtn">Close</button><button onclick="get_years();" value="JSON" class="wizardbtn" id="show-overlay">Show Year on Year(NDVI)</button><button onclick="get_original();" value="JSON" class="wizardbtn hidden" id="show-original">Show Original(NDVI)</button><button onclick="get_chirps();" value="JSON" class="wizardbtn" id="show-chirps">Show Original(CHIRPS)</button><button onclick="get_chirps_years();" value="JSON" class="wizardbtn hidden" id="show-chirps-years">Show Year on Year (CHIRPS)</button><button onclick="get_GrowingSeasons_Summary_Output_As_CSV()" value="CSV" class="wizardbtn">Download Summary Data</button><button onclick="get_GrowingSeasonsOutput_As_CSV()" value="CSV" class="wizardbtn">Download Growing Season Data</button><button onclick="get_raw_As_CSV()" value="CSV" class="wizardbtn">Download raw Data</button><button onclick="get_aoi_JSON()" value="JSON" class="wizardbtn">Download Inputs</button>
+                        </p>
+                        <br />
+                        <div align="center"><h5>Area of Interest 1</h5></div>
+                            <table id="growingSeasonsTable0" class="table table-responsive">
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Days </th>
+                                    <th>Rainfall </th>
+                                    <th>Threshold </th>
+                                    <th>Area </th>
+                                </tr>
+                            </table>
+                        <div align="center"><h5>Area of interest 2</h5></div>
+                            <table id="growingSeasonsTable1" class="table table-responsive">
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Days </th>
+                                    <th>Rainfall </th>
+                                    <th>Threshold </th>
+                                    <th>Area </th>
+                                </tr>
+                            </table>
+                        <!--</div>-->
+                        <br style="clear:both;" />
+                        
+                        <div id="mapholder" style="height:10%;width:100%;">
+                            <div id="aoi1" style="float:left; height:100%;width:10%; margin:50px; border: 1px solid black;"></div>
+                            <div id="aoi2" style="float:right; height:100%; width:10%; margin:50px; border: 1px solid black;"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="templatemo-top-menu" id="templatemo-top">
+        <div class="container" id="HomeScroll">
+            <!-- Static navbar -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                        <a href="#" class="navbar-brand">
+                            <img src="images/agriservlogo.png" alt="AgriSERV" title="AgriSERV" style="margin-top:4px; height: 40px; width: auto; max-width: none;" id="logoimage" />
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse" id="templatemo-nav-bar">
+                        <ul class="nav navbar-nav navbar-right" style="margin-top: 40px;">
+                            <li class="active"><a href="#templatemo-carousel">HOME</a></li>
+                            <li><a href="javascript:openWizard();" class="external-link">GET STARTED</a></li>
+                            <li><a href="#templatemo-slogan">ABOUT</a></li>
+                            <!--<li><a href="javascript:toggleForm();" class="external-link">OPEN FORM</a></li>-->
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+                <!--/.container-fluid -->
+            </div>
+            <!--/.navbar -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!--</div>-->
+    <!-- Carousel -->
+    <div id="templatemo-carousel" class="carousel">
+        <div id="map" class="map">
+            <div id="search">
+            </div>
+            <div id="BasemapToggle">
+            </div>
+        </div>
+    </div>
+    <!-- /#templatemo-carousel -->
+    <div class="templatemo-welcome fullhide" id="templatemo-welcome">
+        <div class="container">
+            <div class="templatemo-slogan text-center">
+                <span class="txt_darkgrey">Welcome to </span><span class="txt_orange">AgriSERV</span>
+                <p class="txt_slogan">
+                    <i id="templatemo-slogan">A SERVIR tool for analyzing changes in agriculture practices</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="templatemo-team fullhide" id="templatemo-about">
+        <div class="container">
+            <div class="row">
+                <div class="templatemo-line-header">
+                    <div class="text-center">
+                        <hr class="team_hr team_hr_left" />
+                        <span>ABOUT AgriSERV</span>
+                        <hr class="team_hr team_hr_right" />
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+            </div>
+            <div>
+                <!-- SERVIR ClimateSERV Viewer -->
+                <h3>
+                    SERVIR AgriSERV Viewer
+                </h3>
+                <p>
+                    Agriculture interventions such as irrigation, improved fertilization, and advanced cultivars have the potential to increase food security and ensure climate resilience. However, to broaden support for such activities, environmental managers must be able to assess their impact. Field data are often difficult to obtain and decisions are made with limited information. Satellite products can provide relevant information at field- and village-wide scales to inform assessments of interventions.
+                </p>
+                <p>
+                    Vegetation health is a good indicator of crop vigor, and several studies have connected changes in satellite-derived vegetation indices to crop yields and the length of growing season. By analyzing the vegetation index data along with a rainfall dataset, areas with and without intervention can be compared and analyzed to assess the impacts of the intervention strategy and identify similar areas for potential future intervention. Towards that end, SERVIR has developed a web-based product called AgriSERV that can assist in this procedure.
+                </p>
+                <p>
+                    AgriSERV is a user-friendly, web-based tool that provides decision makers access to satellite- and model-derived products that can aid in assessing the impact of agriculture interventions. Two widely used datasets -- eMODIS Normalized Difference Vegetation Index (NDVI) and Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS) rainfall data -- provide the basis for the analysis. (For more information on these datasets, refer to the relevant sections below.) This tool allows users to draw (delineate) two areas of interest: one control area with no intervention and another area that has experienced intervention. A time period can be specified ranging back to the year 2000. Then, an on-demand comparative analysis can be performed. The user is presented with side-by-side charts and summary data that highlight the differences of the two areas in terms of vegetation health, derived growing season lengths, and rainfall. The analysis is based on an area weighted average of the gridded NDVI and rainfall data. The users can download the summary data table as well as the full dataset for the period specified.
+
+
+
+                    <div class="about_Vertical_Spacer"></div>
+
+                    <!-- eMODIS NDVI Dataset Info -->
+                    <h3>
+                        eMODIS NDVI
+                    </h3>
+                <p>
+                    The US Geological Survey Earth Resources Observation and Science EROS (USGS EROS) Center distributes a collection of satellite-derived vegetation products generated from the Moderate Resolution Imaging Spectroradiometer (MODIS). These products, known as "eMODIS," are used by operational land monitoring applications requiring near-real time NDVI data for comparison against historical records. Real-time and historical NDVI products are composited in 10-day intervals every 5 days on a geographic mapping grid.
+                </p>
+                <p>
+                    eMODIS 10-day maximum-value composite NDVI images at 250m spatial resolution are used to monitor vegetation condition. NDVI is a measure of the density of chlorophyll contained in vegetative cover and is defined as (NIR - RED) / (NIR + RED), where NIR is the near-infrared reflectance and RED is the visible-red reflectance. This vegetation product is calculated from MODIS L1B Terra surface reflectances, corrected for molecular scattering, ozone absorption, and aerosols using MODIS Science Team algorithms.
+                </p>
+                <p>
+                    The NDVI and NDVI anomaly maps are the products of a temporally smoothed 250m NDVI dataset. A time series smoothing technique developed by Swets et al. (1999) was used to smooth NDVI composites for the years 2001 to 2010. The technique uses a weighted least squares linear regression approach to correct observations that are of poor quality due to clouds or other atmospheric contamination This smoothed time series was used to derive a 10-year mean NDVI on a pixel-by-pixel basis for each of 72 composite periods per year. As current-year composites become available, they are added to the time series and smoothed, resulting in a smoothed composite comparable to the historical mean for a given 10-day period.
+                </p>
+                <p>
+                    While temporal smoothing can be effective at improving time series data, it can be problematic to implement in real time for areas of persistent cloud cover. Therefore, SERVIR has implemented a process that steps back in the time series and replaces data after six composite periods, allowing cloud-free observations to have been obtained. Prior to the final corrected data being made available, interim graphics for all products are masked with cloud flags from the original input data. More information about USGS eMODIS can be found in the USGS publication (Jenkerson et al., 2010) or at FEWS NET eMODIS product page at
+                    <a href="https://earlywarning.usgs.gov/fews/product/115#documentation" target="_blank">https://earlywarning.usgs.gov/fews/product/115#documentation</a>
+                </p>
+
+                <div class="about_Vertical_Spacer"></div>
+
+                <!-- Climate Models (NMME) Datasets Info -->
+                <h3>
+                    Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS)
+                </h3>
+                <p>
+                    Since 1999, U.S. Geological Survey (USGS) and Climate Hazards Group (CHG) scientists, supported by funding from the U.S. Agency for International Development (USAID), the National Aeronautics and Space Administration (NASA), and the National Oceanic and Atmospheric Administration (NOAA), have been developing techniques for producing historical rainfall maps, especially where surface data is sparse. This effort has led to CHIRPS, a 30+ year quasi-global rainfall dataset. Spanning 50°S-50°N (and all longitudes), starting in 1982 to near-present, CHIRPS incorporates 0.05° (~5 km) resolution satellite imagery with in-situ station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. As of February 12, 2015, version 2.0 of CHIRPS is complete and available to the public free of charge.
+                </p>
+                <p>
+                    Estimating rainfall variations in space and time is an important aspect of drought early warning and environmental monitoring. An evolving dryer-than-normal season must be placed in historical context so that the severity of rainfall deficits can be quickly evaluated. However, estimates derived from satellite data provide areal spatial averages that suffer from biases due to complex terrain, and therefore often underestimate the intensity of extreme precipitation events. Conversely, precipitation grids produced from station data may be inadequate in more rural regions where there are fewer rain gauge stations. CHIRPS was created in collaboration with scientists at the USGS EROS Center in order to deliver reliable, up to date, and more complete datasets for a number of early warning objectives (such as trend analysis and seasonal drought monitoring).
+                </p>
+                <p>
+                    Early research focused on combining models of terrain-induced precipitation enhancement with interpolated station data. More recently, new resources of satellite observations such as gridded satellite-based precipitation estimates from NASA and NOAA have been leveraged to build high-resolution (0.05°) gridded precipitation climatologies, which, when applied to satellite-based precipitation fields, can remove systematic bias. This was a key technique in the production of the CHIRPS dataset. The creation of CHIRPS has supported drought-monitoring efforts by FEWS NET. More information regarding CHIRPS can be found in the USGS publication (Funk et al., 2014), at the Funk et al. (2015), or at <a href="http://chg-wiki.geog.ucsb.edu/wiki/CHIRPS_FAQ">http://chg-wiki.geog.ucsb.edu/wiki/CHIRPS_FAQ</a>.
+                </p>
+                <div class="about_Vertical_Spacer"></div>
+
+                <!-- References -->
+                <h3>
+                    References
+                </h3>
+                <p>
+                    Funk C., Peterson P., Landsfeld M., Pedreros D., Verdin J., Shukla S., Husak G., Rowland J., Hoell A. and Michaelsen J. (2015) The climate hazards group infrared precipitation with stations - a new environmental record for monitoring extremes, Scientific Data, In Press.
+                </p>
+                <p>
+                    Funk, C. , Peterson P. , Landsfeld M. , Pedreros D. , Verdin J. , Rowland, J. , Romero B. , Husak, G. , Michaelsen, J. , Verdin A. (2014) A Quasi-global Precipitation Time Series for Drought Monitoring. USGS Data Series 832. https://pubs.usgs.gov/ds/832/pdf/ds832.pdf
+                </p>
+                <p>
+                    Jenkerson, C.B., Maiersperger, Thomas, Schmidt, Gail, 2010, eMODIS: A user-friendly data source: U.S. Geological Survey Open-File Report 2010–1055, 10 p.
+                </p>
+                <p>
+                    Swets, D. L., Reed, B. C., Rowland, J. R., & Marko, S. E. (1999). A weighted least-squares approach to temporal smoothing of NDVI. 1999 ASPRS Annual Conference, From Image to Information, Portland, Oregon, May 17 – 21, 1999, Proceedings: Bethesda, Maryland, American Society for Photogrammetry and Remote Sensing.
+                </p>
+
+                <div class="about_Vertical_Spacer"></div>
+
+                <div class="about_Vertical_Spacer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- /.templatemo-team -->
+    <!-- /.templatemo-portfolio -->
+    <div id="templatemo-blog" class="fullhide">
+
+    </div>
+
+    <div class="one column servir_helper_fixedHeight_36px" data-role="footer" style="background-color:#111122;">
+        <div class="column">
+            <!-- Footer -->
+            <div class="servir_design2016_footer_bg">
+                <div class="ui grid" style="margin-right: 0px">
+                    <div class="two wide column"></div>
+                    <div class="two wide right aligned column servir_text_footer_credit servir_helper_topPadding_07rem">POWERED BY </div>
+                    <div class="two wide column servir_helper_topPadding_05rem"><a href="https://servirglobal.net" target="_blank"><img src="images/logo_servir_global_better.png" alt="SERVIR GLOBAL" /></a></div>
+                    <div class="one wide column"></div>
+                    <div class="seven wide column servir_text_footer_credit servir_helper_topPadding_07rem"><b>AGRISERV</b> &copy; 2017 <a href="https://servirglobal.net" target="_blank">SERVIR GLOBAL</a> | CREDIT <a href="https://www.fews.net" target="_blank">FEWS NET</a>, NMME OPENLAYERS V3.15.0</div>
+                    <div class="two wide column"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/stickUp.min.js" type="text/javascript"></script>
+    <script src="js/colorbox/jquery.colorbox-min.js" type="text/javascript"></script>
+    <script src="js/templatemo_script.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var selectedFeatures = [];
+        var selectedLayer = 0;
+        var wmsbaseURL = "http://localhost/";
+        var polygonIsDefined = false;
+        var centerOfMap = [0, 10];
+        var zoomLevel = 8;
+        var clickEnabled = false;
+        var currentStringPolygon = "";
+        //Define projections to be used
+        var proj4326 = ol.proj.get('EPSG:4326');
+        var proj3857 = ol.proj.get('EPSG:3857');
+        var proj102100 = ol.proj.get('EPSG:102100');
+        //Define layers in a layer array for adding to map
+        var tileLayers = [];
+        var hLayers = [];
+        var MODISLayers = [];
+        var layerNames = [];
+        var layerIds = [];
+        var showLabel = false;
+        var hLayerURL = baseWMSurl + '&SERVICE=WMS&VERSION=1.1.1';
+
+        //Source Layer for the Vector being drawn by the user
+        var source = new ol.source.Vector();
+        var vectorLayer = new ol.layer.Vector({
+            title:'AOI Feature Layer',
+            source: source,
+            style: new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(204, 251, 255, 0.6)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#00ccff',
+                    width: 5
+                }),
+                image: new ol.style.Circle({
+                    radius: 15,
+                    fill: new ol.style.Fill({
+                        color: '#00ccff'
+                    })
+                })
+            })
+        });
+
+        var sourceBase = new ol.source.WMTS(
+            {
+                crossOrigin: 'anonymous',         // // KS Refactor Design 2016 Override // This should enable screenshot export around the CORS issue with Canvas.
+                url: "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/WMTS/",
+                layer: "World_Topo_Map",
+                format: "image/jpeg",
+                matrixSet: "EPSG:3857", //"EPSG3857",
+                tileGrid: new ol.tilegrid.WMTS(
+                    {
+                        origin: [-20037508.3428, 20037508.3428], // [ -2.0037508342787E7, 2.0037508342787E7 ]  //[-180, 90],
+                        resolutions: [
+                            156543.03392800014, // 0 // 0.5625,
+                            78271.51696399994,  // 1 // 0.28125,
+                            39135.75848200009,  // 2 // 0.140625,
+                            19567.87924099992,  // 3 // 0.0703125,
+                            9783.93962049996,   // 4 // 0.03515625,
+                            4891.96981024998,   // 5 // 0.017578125,
+                            2445.98490512499,   // 6 // 0.0087890625,
+                            1222.992452562495,  // 7 // 0.00439453125,
+                            611.4962262813797,  // 8 // 0.002197265625
+                            305.74811314055756, // 9 //
+                            152.87405657041106, // 10
+                            76.43702828507324,  // 11
+                            38.21851414253662,  // 12
+                            19.10925707126831,  // 13
+                            9.554628535634155,  // 14
+                            4.77731426794937,   // 15
+                            2.388657133974685,  // 16
+                            1.1943285668550503, // 17
+                            0.5971642835598172, // 18
+                            0.29858214164761665, // 19
+                            0.14929107082380833, // 20
+                            0.07464553541190416, // 21
+                            0.03732276770595208, // 22
+                            0.01866138385297604, // 23
+                        ],
+                        matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                        tileSize: 256
+                    })
+            });
+ 
+        var baseLayer = new ol.layer.Tile({
+            title: 'Base Map',
+            openInLayerSwitcher: true,
+            allwaysOnTop: true,
+            baseLayer:true,
+            source: sourceBase
+        });
+
+        var aoibaseLayer = new ol.layer.Tile({
+            source: sourceBase
+        });
+        var view = new ol.View({
+            center: ol.proj.transform(centerOfMap, 'EPSG:4326', 'EPSG:102100'),
+            zoom: zoomLevel,
+            projection: 'EPSG:102100' //'EPSG:4326'
+        });
+        var eastAfrica = new ol.Feature(new ol.geom.Polygon([[[2337709.3066587453, 2632018.637586423], [5788613.521250226, 2632018.637586423], [5788613.521250226, -1345708.4084091098], [2337709.3066587453, -1345708.4084091098], [2337709.3066587453, 2632018.637586423]]]));
+        var westAfrica = new ol.Feature(new ol.geom.Polygon([[[-2115070.325072198, 2391878.587944315], [3061285.996815023, 2391878.587944315], [3061285.996815023, 222684.20850554455], [-2115070.325072198, 222684.20850554455], [-2115070.325072198, 2391878.587944315]]]));
+        var southAfrica = new ol.Feature(new ol.geom.Polygon([[[459615.24567032314, -913337.287936579], [5788378.414485671, -913337.287936579], [5788378.414485671, -2493382.5988208624], [459615.24567032314, -2493382.5988208624], [459615.24567032314, -913337.287936579]]]));
+        var centralAsia = new ol.Feature(new ol.geom.Polygon([[[5120734.29456862, 7558415.65608178], [9796228.34404217, 7558415.65608178], [9796228.34404217, 2631995.93500921], [5120734.29456862, 2631995.93500921], [5120734.29456862, 7558415.65608178]]]));
+        var boundaryLayer = new ol.layer.Vector({
+            openInLayerSwitcher: true,
+            title:'Boundary Layer',
+            source: new ol.source.Vector(),
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: "red",
+                    width: 1
+                })
+            })
+        });
+
+        boundaryLayer.getSource().addFeatures([eastAfrica, westAfrica, southAfrica, centralAsia]);
+
+        //Create map for the display of the data
+        var map = new ol.Map({
+            target: 'map',
+            layers: [baseLayer, boundaryLayer],
+            controls: ol.control.defaults({ "attribution": false}).extend([
+                new ol.control.LayerSwitcher(),
+                new ol.control.ScaleLine()
+            ]),
+            view: view
+
+        });
+        appendmaxtoggle();
+        var switcher = new ol.control.LayerSwitcher(
+            {
+                target: $(".layerSwitcher").get(0),
+                show_progress: true
+               }
+            );
+        map.addControl(switcher);
+
+        var aoiLayer1 = new ol.layer.Vector({
+            openInLayerSwitcher: false,
+            source: new ol.source.Vector(),
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: "red",
+                    width: 1
+                })
+            })
+        });
+
+        var aoiLayer2 = new ol.layer.Vector({
+            openInLayerSwitcher: false,
+            source: new ol.source.Vector(),
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: "red",
+                    width: 1
+                })
+            })
+        });
+
+        var aoiview1 = new ol.View({
+            center: ol.proj.transform(centerOfMap, 'EPSG:4326', 'EPSG:102100'),
+            zoom: zoomLevel,
+            projection: 'EPSG:102100' //'EPSG:4326'
+        });
+
+        var aoiview2 = new ol.View({
+            center: ol.proj.transform(centerOfMap, 'EPSG:4326', 'EPSG:102100'),
+            zoom: zoomLevel,
+            projection: 'EPSG:102100' //'EPSG:4326'
+        });
+
+        var aoi1 = new ol.Map({
+            target: 'aoi1',
+            layers: [aoibaseLayer, aoiLayer1],
+            view: aoiview1
+        });
+
+        var aoi2 = new ol.Map({
+            target: 'aoi2',
+            layers: [aoibaseLayer, aoiLayer2],
+            view: aoiview2
+        });
+
+        function addLayer(layerName, layerid, visible) {
+            var tileLayer = new ol.layer.Tile({
+                openInLayerSwitcher: false,
+                source: new ol.source.TileWMS(({
+                    url: hLayerURL,
+                    params: { 'LAYERS': layerid, 'TILED': true, },
+                    serverType: 'mapserv'
+                }))
+            });
+            //Define country level map layer
+            var tileLayerh = new ol.layer.Tile({
+                openInLayerSwitcher: false,
+                source: new ol.source.TileWMS(({
+                    url: hLayerURL,
+                    params: { 'LAYERS': layerid + '_highlight', 'TILED': true },
+                    serverType: 'mapserv'
+                }))
+            });
+            tileLayer.setVisible(visible);
+            tileLayerh.setVisible(false);
+            tileLayers.push(tileLayer);
+            hLayers.push(tileLayerh);
+            layerNames.push(layerName);
+            layerIds.push(layerid);
+            redoLayers();
+        }
+        getMODISLayers();
+        function redoLayers() {
+            var layers = map.getLayers();
+            layers.clear();
+
+            layers.push(baseLayer);
+            for (i in MODISLayers) {
+                layers.push(MODISLayers[i]);
+            }
+            
+            layers.push(boundaryLayer);
+            layers.push(vectorLayer);
+            
+            
+            //for (i in hLayers) {
+            //    layers.push(hLayers[i]);
+            //}
+            
+
+
+        }
+
+        function respondToClicks(evt) {
+            var url = tileLayers[selectedLayer].getSource().getGetFeatureInfoUrl(evt.coordinate, map.getView().getResolution(), 'EPSG:4326', { 'INFO_FORMAT': 'json' });
+            if (url) {
+                processClickPoint(url);
+            }
+        }
+
+        //Create drawing interaction layer. This layer will contain the actual drawing of the polygon
+        var draw = new ol.interaction.Draw({
+            source: source,
+            type: "Polygon"
+        });
+        var theAIOTypeList = [];
+        //Setup callback so that when polygon defined it can be processed. This function will process the polygon
+        //source.on("change", function (e) {
+        draw.on('drawend', function (event) {
+            var successful = false;
+            geoJson = new ol.format.GeoJSON();
+            features = source.getFeatures();
+            if (features.length > 0) {
+                geom = features[features.length - 1].getGeometry();
+                //output = geoJson.writeGeometry(geom, { dataProjection: proj4326, featureProjection: proj4326 });
+                output = geoJson.writeGeometry(geom, { dataProjection: proj102100, featureProjection: proj102100 });
+                theOutPutString = output;
+                ///set polygon to got to server
+                currentStringPolygon = output// Not needed any more JSON.stringify(output);
+                setPolygonIsDefined(true);
+                disableCustomPolygonDrawing();
+                //zoomToPolygon();
+
+                if (global_AOI_UseCase_Index == 1) {
+                    features[features.length - 1].setId('firstAOI');
+                    if (document.getElementById("fPage3").style.display == '') {
+                        openWizard();
+                    }
+                    else {
+                        openWizard('fPage2');
+                    }
+                    var theRegion = whichRegion();
+                    if (theRegion == false || geom.getArea() > 350000000) {
+                        //send back to last selection
+                        hideAllPages();
+                        features.pop();
+                        alert("Area selected is too large! Try Again.");
+                        openWizard('fPage1');
+                    }
+                    else {
+                        successful = true;
+                        theAIOTypeList.push(theRegion);
+                    }
+
+                }
+                else if (global_AOI_UseCase_Index == 2) {
+                    features[features.length - 1].setId('secondAOI');
+                    if (document.getElementById("fPage3").style.display == '') {
+                        openWizard();
+                    }
+                    else {
+                        openWizard('fPage3');
+                    }
+                    var theRegion = whichRegion();
+                    if (theRegion == false || geom.getArea() > 350000000) {
+
+                        //send back to last selection
+                        hideAllPages();
+                        features.pop();
+                        alert("Area selected is too large! Try Again.");
+                        enableCustomPolygonDrawing_AgriservOverride(2);
+                        openWizard('fPage2');
+
+                    }
+                    else {
+
+                        successful = true;
+                        theAIOTypeList.push(theRegion);
+                        openWizard('fPage3');
+                    }
+
+                }
+
+                if (successful) {
+                    var projected_output = geoJson.writeGeometry(geom, { dataProjection: proj102100, featureProjection: proj102100 });
+                    var lastDrawn_Poly = projected_output; // JSON.stringify(projected_output);
+                    global_PolygonDrawingBuffer = lastDrawn_Poly;
+                    set_UseCase_AOI_FromPolygonDrawing();
+                }
+
+            }
+        });
+
+
+        function getCurrentPolygonAsGeoJson() {
+            geoJson = new ol.format.GeoJSON();
+            feature = source.getFeatures();
+
+            output = geoJson.writeFeatures(feature, { dataProjection: proj102100, featureProjection: proj102100 });
+            ///set polygon to got to server
+            return output; // JSON.stringify(output);
+
+        }
+
+        function updateSelectedHighlightedLayer() {
+            hLayers[selectedLayer].getSource().setUrl(hLayerURL + "&feat_ids=" + selectedFeatures.join());
+        }
+
+        function toggleLabel() {
+            var appended = "";
+
+            if (showLabel === false) {
+                showLabel = true;
+                appended = "_label";
+            } else {
+                showLabel = false;
+                appended = "";
+            }
+
+            for (i = 0; i < tileLayers.length; i++) {
+
+                var param = tileLayers[i].getSource().getParams();
+                param.LAYERS = layerIds[i] + appended;
+                tileLayers[i].getSource().updateParams(param);
+            }
+        }
+
+
+        function processClickPoint(url) {
+            $("#geometry_edit_button").text("Modify Location");
+            url = url + "&callback=?";
+            $.ajax({
+                type: "GET",
+                url: url,
+                async: 'true',
+                jsonpCallback: 'successCallback',
+                dataType: 'jsonp',
+                success: function (result) {
+                    value = result["data"];
+                    if (selectedFeatures.indexOf(value) != -1) {
+                        index = selectedFeatures.indexOf(value);
+                        delete selectedFeatures[index];
+                    } else {
+                        selectedFeatures.push(value);
+                    }
+                    if (selectedFeatures.length > 0) {
+                        enableCreateGraphLink();
+                    }
+                    updateSelectedHighlightedLayer();
+
+                },
+                error: function (error) {
+                    console.log("Got error" + error);
+                },
+                successCallback: function () {
+
+                },
+
+            });
+
+
+        }
+
+        function zoomToPolygon() {
+            var geomExtent = source.getExtent();
+            var newCenter = [(geomExtent[0] + geomExtent[2]) / 2.0, (geomExtent[1] + geomExtent[3]) / 2.0];
+            view.setCenter(newCenter);
+        }
+
+        //Function to enable custom drawing of polygons.
+        function enableCustomPolygonDrawing() {
+            if (clickEnabled === true) {
+                disableFeatureSelection();
+            }
+            map.addInteraction(draw);
+        }
+
+        //Function to disable custom polygon drawing.
+        function disableCustomPolygonDrawing() {
+            map.removeInteraction(draw);
+        }
+        function setSelectionLayer(layer_num) {
+            if (layer_num != selectedLayer) {
+                selectedFeatures = [];
+            }
+            tileLayers[selectedLayer].setVisible(false);
+            hLayers[selectedLayer].setVisible(false);
+            selectedLayer = layer_num;
+            tileLayers[selectedLayer].setVisible(true);
+            hLayers[selectedLayer].setVisible(true);
+            updateSelectedHighlightedLayer();
+        }
+        //Enable selecting of a single feature on the map.
+        function enableFeatureSelection() {
+            if (clickEnabled === false) {
+                map.on('singleclick', respondToClicks);
+                selectedFeatures = [];
+                clickEnabled = true;
+            }
+
+        }
+        //Disable selecting of a single feature on the map.
+        function disableFeatureSelection() {
+            map.un('singleclick', respondToClicks);
+            selectedFeatures = [];
+            hLayers[selectedLayer].setVisible(false);
+            clickEnabled = false;
+        }
+
+        //Clear the polygon from the layer.
+        function clearPolygon() {
+            source.clear();
+            currentStringPolygon = "";
+            setPolygonIsDefined(false);
+            disableCustomPolygonDrawing();
+        }
+        //Function that given a geojson entry can add it to the map.
+        function setPolygonWithGeoJSON(text) {
+
+            geoJson = new ol.format.GeoJSON();
+            feature = geoJson.readFeatures(convert_PolygonString_To_102100_ForSystemInput(text), { dataProjection: proj102100, featureProjection: proj102100 });
+            //vectorLayer.getSource().clear();
+            vectorLayer.getSource().addFeature(feature[0]);
+            centerOfNewPoly = calculateCenterOfGeom(feature[0].getGeometry());
+            if (feature.length > 0) {
+                geom = feature[feature.length - 1].getGeometry();
+                output = geoJson.writeGeometry(geom, { dataProjection: proj102100, featureProjection: proj102100 });
+                theOutPutString = output;
+                ///set polygon to got to server
+                currentStringPolygon = output// Not needed any more JSON.stringify(output);
+                setPolygonIsDefined(true);
+                disableCustomPolygonDrawing();
+                //zoomToPolygon();
+
+                if (global_AOI_UseCase_Index == 1) {
+                    feature[feature.length - 1].setId('firstAOI');
+                    if (document.getElementById("fPage3").style.display == '') {
+                        openWizard();
+                    }
+                    else {
+                        openWizard('fPage2');
+                    }
+                    theAIOTypeList.push(whichRegion());
+                }
+                else if (global_AOI_UseCase_Index == 2) {
+                    feature[feature.length - 1].setId('secondAOI');
+                    theAIOTypeList.push(whichRegion());
+                    openWizard('fPage3');
+                }
+
+
+                var projected_output = geoJson.writeGeometry(geom, { dataProjection: proj102100, featureProjection: proj102100 });
+                var lastDrawn_Poly = projected_output; // JSON.stringify(projected_output);
+                global_PolygonDrawingBuffer = lastDrawn_Poly;
+                set_UseCase_AOI_FromPolygonDrawing();
+
+            }
+
+        }
+        //Calculate the center of a geometry in order to center the map.
+        function calculateCenterOfGeom(geom) {
+            extent = geom.getExtent();
+            xcenter = (extent[2] + extent[0]) / 2.0;
+            ycenter = (extent[1] + extent[3]) / 2.0;
+            return [xcenter, ycenter];
+        }
+
+        //If a user wants to load a GeoJSON file this handles the file selection.
+        function handleFileSelect(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+
+            var f = evt.dataTransfer.files[0]; // FileList object.
+
+            // files is a FileList of File objects. List some properties.
+
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function (f) {
+                return function (e) {
+                    setPolygonWithGeoJSON(e.target.result);
+                    $("#loadGeoJsonDialog").dialog("close");
+                };
+            })(f);
+            reader.readAsText(f);
+        }
+
+        //Function to handle drag and drop.
+        function handleDragOver(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+        }
+
+        //Setup of initial dialogs and closes or opens them based on initial state.
+        $(function () {
+            checkMaintenanceMode();
+
+            //getParameterTypes();
+            getFeatureLayers();
+            if (map) $("a[download]").exportMap(map);
+            $("#progressdialog").dialog();
+            $("#progressdialog").dialog("close");
+            $("#editordialog").dialog();
+            $("#editordialog").dialog("close");
+            $("#polygondialog").dialog();
+            $("#polygondialog").dialog("close");
+
+            $("#selectAreaDialog").dialog();
+            $("#selectAreaDialog").dialog("close");
+            $("#chooseAreaMethodDialog").dialog();
+            $("#chooseAreaMethodDialog").dialog("close");
+            $("#loadGeoJsonDialog").dialog();
+            $("#loadGeoJsonDialog").dialog("close");
+            $("#selectInformationDialog").dialog();
+            $("#selectInformationDialog").dialog("close");
+            $("#cancelbutton").click(function () {
+                closeNewEditorDialog();
+            });
+
+            $("#datepickerbegin").datepicker();
+            $("#datepickerend").datepicker();
+            $('#selectlayer').change(function () {
+                var count = 0;
+                $("#selectlayer option").each(function () {
+                    tileLayers[count].setVisible(this.selected);
+                    ++count;
+                });
+            });
+            $('#showLabels').change(function () {
+                toggleLabel();
+            });
+
+            $('#selectmenu').change(function () {
+                var value;
+                var count = 0;
+                $("#selectmenu option").each(function () {
+                    if (this.selected) {
+                        value = count;
+                    }
+                    ;
+                    ++count;
+                });
+
+                setSelectionLayer(value);
+                enableFeatureSelection();
+
+            });
+            //Setup the drop zone for the geojson
+      //      document.getElementById('export-png').addEventListener('click', function() {
+      //  map.once('postcompose', function(event) {
+      //    var canvas = event.context.canvas;
+      //    if (navigator.msSaveBlob) {
+      //      navigator.msSaveBlob(canvas.msToBlob(), 'map.png');
+      //    } else {
+      //      canvas.toBlob(function(blob) {
+      //        saveAs(blob, 'map.png');
+      //      });
+      //    }
+      //  });
+      //  map.renderSync();
+      //});
+        });
+        function popAreaMenu() {
+            $("ul#top_menu").sidebar("close");
+            $("#chooseAreaMethodDialog").dialog();
+        }
+        function popGraphMenu() {
+            $("ul#top_menu").sidebar("close");
+            openNewEditorDialog();
+        }
+        function fixContentHeight() {
+            var viewHeight = $(window).height();
+            var header = $("div[data-role='header']:visible:visible");
+            var navbar = $("div[data-role='navbar']:visible:visible");
+            var content = $("div[data-role='content']:visible:visible");
+            var contentHeight = viewHeight - header.outerHeight() - navbar.outerHeight();
+            $('#map').height(contentHeight);
+            map.updateSize();
+        }
+        window.onload = function () {
+            // fixContentHeight();
+            setPolygonIsDefined(false);
+            var dropZone = document.getElementById('drop_zone');
+            dropZone.addEventListener('dragover', handleDragOver, false);
+            dropZone.addEventListener('drop', handleFileSelect, false);
+
+        }
+        window.onresize = function (event) {
+            if (mapIsFull) {
+                fullScreenMap();
+            }
+            try {
+                $("#chartdialogNot").css({ 'height': '80%', 'width': '100%', 'max-width': '100%', 'max-height': '80%' })
+            }
+            catch (e) {
+                console.log(e);
+            }
+        };
+
+        function setPolygonIsDefined(value) {
+
+            polygonIsDefined = value;
+            if (polygonIsDefined === false) {
+                disableCreateGraphLink();
+                closeNewEditorDialog();
+                $("#geometry_edit_button").text("Create Location");
+            } else {
+                enableCreateGraphLink();
+                /*************BillyZ Removed zoom ********************/
+                //zoomToPolygon();
+                $("#geometry_edit_button").text("Modify Location");
+            }
+
+        }
+
+        function disableCreateGraphLink() {
+            $('#creategraphlink').addClass('disabled');
+        }
+        function enableCreateGraphLink() {
+            $('#creategraphlink').removeClass('disabled');
+        }
+
+        function setupBaseFeatureSelection() {
+            if (selectedLayer == 0) {
+                setSelectionLayer(selectedLayer);
+                enableFeatureSelection();
+            }
+        }
+
+
+
+        function whichRegion(AOI) {
+            var theRegion = '';
+            var bob = JSON.parse(currentStringPolygon);
+
+            var polygon2 = new ol.Feature(new ol.geom.Polygon(bob.coordinates));
+
+            var format = new ol.format.GeoJSON();
+
+            var geojsonReader = new jsts.io.GeoJSONReader();
+
+
+            var eastAfricaJsts = geojsonReader.read(format.writeFeatureObject(eastAfrica)).geometry;
+            var westAfricaJsts = geojsonReader.read(format.writeFeatureObject(westAfrica)).geometry;
+            var southAfricaJsts = geojsonReader.read(format.writeFeatureObject(southAfrica)).geometry;
+            var centralAsiaJsts = geojsonReader.read(format.writeFeatureObject(centralAsia)).geometry;
+
+            var polygon2Jsts = geojsonReader.read(format.writeFeatureObject(polygon2)).geometry;
+
+            if (eastAfricaJsts.contains(polygon2Jsts) || eastAfricaJsts.intersects(polygon2Jsts)) {
+                theRegion = 2;
+            }
+            else if (westAfricaJsts.contains(polygon2Jsts) || westAfricaJsts.intersects(polygon2Jsts)) {
+                theRegion = 1;
+            }
+            else if (southAfricaJsts.contains(polygon2Jsts) || southAfricaJsts.intersects(polygon2Jsts)) {
+                theRegion = 5;
+            }
+            else if (centralAsiaJsts.contains(polygon2Jsts) || centralAsiaJsts.intersects(polygon2Jsts)) {
+                theRegion = 28;
+            }
+            else {
+                alert("No data for selected area!");
+                return false;
+            }
+
+            return theRegion;
+
+        }
+
+    </script>
+
+
+
+    <div id="progressdialog" title="Progress">
+        <div id="progressbar"></div>
+        <div id="progresslabel"></div>
+        <div id="requestId"></div>
+        <div id="downloadFileURL"></div>
+    </div>
+
+
+    <div id="loadGeoJsonDialog" style="clear:both;">
+        <div class="stitched_drop" style="width:92%; height:100px" id="drop_zone"><center><img style="vertical-align: middle;" src="images/browser-upload.png">   <font size="3">Drop GeoJSON file here</font></center></div>
+    </div>
+
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-27020636-4', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>

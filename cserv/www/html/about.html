@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>About ClimateSERV</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.10.4.custom.css" />
+        <link rel="stylesheet" href="css/jquery.css" />
+        <link rel="stylesheet" href="css/servir.css" />
+        
+        <style>
+            body{background-color: #333; color:white;}
+            #resultsContainer_Detail{max-height: 400px; overflow-y: scroll;}
+        </style>
+        
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        
+    </head>
+    <body>
+        <div id="about_Content_Container">
+            
+            
+            <!-- SERVIR ClimateSERV Viewer -->
+            <h3>
+                SERVIR ClimateSERV Viewer
+            </h3>
+            <p>
+                SERVIR regional hubs provide support to meet environmental needs in SERVIR regions in agriculture and food security, water and water related disasters, land cover and sustainable landscapes, and weather and climate. That support often includes hub development of tools and applications that use global satellite-derived datasets. Rainfall is one of the most widely-used and requested datasets. Satellite- and model-derived rainfall data is critically important to SERVIR regions, where long-term ground observations of rainfall are sparse. SERVIR Applied Sciences Team (AST) scientists, as part of Famine and Early Warning System (FEWS NET) and with support from NOAA and NASA, have developed a historical rainfall dataset for a large portion of the globe. This dataset, called CHIRPS (short for Climate Hazards Group InfraRed Precipitation with Station data), uses a combination of ground observations and satellite-derived estimates.
+            </p>
+            <p>
+                Not only are environmental managers interested in knowing what happened in the past; they also  want to know what is to come in the next few months. To provide seasonal forecasts of rainfall and temperature, another SERVIR AST project has employed a methodology to add value to an existing climate modeling framework using their routinely produced datasets. Each month, the Bias Corrected Spatially Disaggregated (BCSD) treatment to NOAA’s North American Multi-Model Ensemble (NMME) produces daily 50km spatial resolution rainfall and temperature forecasts for 180 days into the future. These seasonal forecasts, along with the historical rainfall data, provide an overall perspective to connect past rainfall patterns as compiled by CHIRPS to forecasts for the months of rainfall to come as projected by NMME. 
+            </p>
+            <p>
+                Vegetation growth is a good indicator of crop yield. Several studies around the world have connected changes in satellite-derived vegetation indices to crop yields. SERVIR is piloting the USGS pentadal eMODIS Normalized Difference Vegetation Index (NDVI) dataset at 250m spatial resolution over West Africa to enable Ministries of Agriculture and the international donor community to explore how the rainfall and temperature data from CHIRPS and NMME links with the vegetation growth. SERVIR believes the provision of these datasets together in one system will allow for a holistic analysis of water and agriculture in SERVIR’s data-sparse regions.
+            <p>
+                Toward that end, SERVIR has developed a user-friendly, web-based tool – the ClimateSERV Viewer -- that presents the NDVI, CHIRPS, and NMME datasets. This tool allows users to draw or select a geographic area of interest and perform simple statistics for all three datasets (CHIRPS, seasonal forecasts, and eMODIS NDVI) over that region and for the time period of their choice. The users can download the statistics as graphs or statistics tables, in addition to downloading the raw data at the granularity available. More details on each of the datasets can be found below and at the links at the end of these sections.
+            </p>
+            
+            
+            <div class="about_Vertical_Spacer"></div>
+            
+            
+            <!-- CHIRPS Dataset Info -->
+            <h3>
+                Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS)
+            </h3>
+            <p>
+                Since 1999, U.S. Geological Survey (USGS) and Climate Hazards Group (CHG) scientists, supported by funding from the U.S. Agency for International Development (USAID), the National Aeronautics and Space Administration (NASA), and the National Oceanic and Atmospheric Administration (NOAA), have been developing techniques for producing historical rainfall maps, especially where surface data is sparse.  This effort has led to CHIRPS, a 30+ year quasi-global rainfall dataset. Spanning 50°S-50°N (and all longitudes), starting in 1982 to near-present, CHIRPS incorporates 0.05° (~5 km) resolution satellite imagery with in-situ station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. As of February 12, 2015, version 2.0 of CHIRPS is complete and available to the public free of charge.
+            </p>
+            <p>
+                Estimating rainfall variations in space and time is an important aspect of drought early warning and environmental monitoring. An evolving dryer-than-normal season must be placed in historical context so that the severity of rainfall deficits can be quickly evaluated. However, estimates derived from satellite data provide areal spatial averages that suffer from biases due to complex terrain, and therefore often underestimate the intensity of extreme precipitation events. Conversely, precipitation grids produced from station data may be inadequate in more rural regions where there are fewer rain gauge stations. CHIRPS was created in collaboration with scientists at the USGS Earth Resources Observation and Science (EROS) Center in order to deliver reliable, up to date, and more complete datasets for a number of early warning objectives (such as trend analysis and seasonal drought monitoring).
+            </p>
+            <p>
+                Early research focused on combining models of terrain-induced precipitation enhancement with interpolated station data. More recently, new resources of satellite observations such as gridded satellite-based precipitation estimates from NASA and NOAA have been leveraged to build high-resolution (0.05°) gridded precipitation climatologies, which, when applied to satellite-based precipitation fields, can remove systematic bias. This was a key technique in the production of the CHIRPS dataset. The creation of CHIRPS has supported drought-monitoring efforts by FEWS NET. More information regarding CHIRPS can be found in the USGS publication (Funk et al., 2014), at the Funk et al. (2015), or at 
+                <a href="http://chg-wiki.geog.ucsb.edu/wiki/CHIRPS_FAQ" target="_blank" >http://chg-wiki.geog.ucsb.edu/wiki/CHIRPS_FAQ</a>.
+            </p>
+
+            
+            <div class="about_Vertical_Spacer"></div>
+            
+            
+            <!-- eMODIS NDVI Dataset Info -->
+            <h3>
+                eMODIS NDVI
+            </h3>
+            <p>
+                The USGS EROS Center distributes a collection of satellite-derived vegetation products generated from the Moderate Resolution Imaging Spectroradiometer (MODIS). These products, known as "eMODIS," are used by  operational land monitoring applications requiring near-real time NDVI data for comparison against historical records. Real-time and historical NDVI products are composited in 10-day intervals every 5 days on a geographic mapping grid. 
+            </p>
+            <p>
+                eMODIS 10-day maximum-value composite NDVI images at 250m spatial resolution are used to monitor vegetation condition. NDVI is a measure of the density of chlorophyll contained in vegetative cover and is defined as (NIR - RED) / (NIR + RED), where NIR is the near-infrared reflectance and RED is the visible-red reflectance. This vegetation product is calculated from MODIS L1B Terra surface reflectances, corrected for molecular scattering, ozone absorption, and aerosols using MODIS Science Team algorithms.
+            </p>
+            <p>
+                The NDVI and NDVI anomaly maps are the products of a temporally smoothed 250m NDVI dataset. A time series smoothing technique developed by Swets et al. (1999) was used to smooth NDVI composites for the years 2001 to 2010. The technique uses a weighted least squares linear regression approach to correct observations that are of poor quality due to clouds or other atmospheric contamination This smoothed time series was used to derive a 10-year mean NDVI on a pixel-by-pixel basis for each of 72 composite periods per year. As current-year composites become available, they are added to the time series and smoothed, resulting in a smoothed composite comparable to the historical mean for a given 10-day period.
+            </p>
+            <p>
+                While temporal smoothing can be effective at improving time series data, it can be problematic to implement in real time for areas of persistent cloud cover. Therefore, SERVIR has implemented a process that steps back in the time series and replaces data after six composite periods, allowing cloud-free observations to have been obtained. Prior to the final corrected data being made available, interim graphics for all products are masked with cloud flags from the original input data. More information about USGS eMODIS can be found in the USGS publication (Jenkerson et al., 2010) or at FEWS NET eMODIS product page at 
+                <a href="http://earlywarning.usgs.gov/fews/product/115#documentation" target="_blank" >http://earlywarning.usgs.gov/fews/product/115#documentation</a>
+            </p>
+            
+            
+            <div class="about_Vertical_Spacer"></div>
+            
+            
+            <!-- Climate Models (NMME) Datasets Info -->
+            <h3>
+                Seasonal Forecasts using North American Multi-Model Ensemble (NMME) 
+            </h3>
+            <p>
+                The NMME forecasts (
+                <a href="http://www.cpc.ncep.noaa.gov/products/NMME/" target="_blank" >http://www.cpc.ncep.noaa.gov/products/NMME/</a>) are archived at monthly, 1.0o (~100 km) lat x lon resolution. As with long-term climate projections, a downscaling approach must be employed to make the forecasts relevant to applied research. The approach presented here is based on the bias correction and spatial disaggregation (BCSD) as established in Wood et al. (2002). It is known that coupled general circulation models do not adequately capture the climatological cycle for atmospheric, land, and oceanic variables and hence require systematic error corrections (Becker et al. 2013).  Following Wood et al. (2002), systematic error correction of the monthly forecasts has been implemented through use of a cumulative distribution function (CDF) matching technique. The model distributions of precipitation and temperature are CDF matched to those of the Princeton meteorological forcing dataset (SGF; Sheffield et al., 2006) for 1982–2012. Gamma distributions are used for the nonzero precipitation estimates, while a Gaussian distribution is used for temperature variables.  To downscale from the 1.0 deg NMME resolution to 0.5 deg (~50 km), a local scaling approach is applied to the bias-corrected NMME forecasts. The local scaling factor is equal to the ratio of the climatological high-resolution estimate against that obtained by resampling of the coarse-resolution climatology to the locations of the finer-resolution grid. After correcting monthly mean biases and applying the local scaling factor, daily forcing is obtained by randomly drawing a year (for the appropriate forecast month) from the historical archive of the SGF dataset. The daily values are multiplicatively scaled (zero-bounded quantities) or shifted (nonzero-bounded quantities) to match the bias-corrected NMME forecast at each grid point.  If a daily rainfall value results in a value higher than that observed in the historical archive, then its total value is equally spread among its neighboring days. Because only daily average temperature is forecast by NMME, daily minimum and maximum temperatures were obtained by shifting the SGF average by the same amount, resulting in their average matching the monthly mean, as in Wood et al. (2002). Wind speed is left unadjusted, as the NMME forecasts do not typically provide this variable.  The BCSD approach is applied to every forecast lead for every verifying forecast month. 
+            </p>
+            <p>
+                Figure 1 shows the schematic of the data processing workflow. NMME real time 1o resolution forecasts are downloaded as those become available at the beginning of each month. The BCSD is applied to the raw NMME datasets. The result is daily, 0.5o downscaled forecasts for the entire globe. The SERVIR Science Coordination Office has begun porting the resulting NMME seasonal forecasts with BCSD applied to this online data analysis portal. Users can select the ensemble members and time period of choice to visualize simple statistics or to download the raw data over the geographic region of their choice.
+            </p>
+            <!--
+            <div class="about_twoCol_Container">
+                <div class="about_twoCol_Col_1">
+                    <img src="img/about_Fig1.png" />
+                </div>
+                <div class="about_twoCol_Col_2">
+                    Figure 1 shows the schematic of the data processing workflow. NMME real time 1o resolution forecasts are downloaded as those become available at the beginning of each month. The BCSD is applied to the raw NMME datasets. The result is daily, 0.5o downscaled forecasts for the entire globe. The SERVIR Science Coordination Office has begun porting the resulting NMME seasonal forecasts with BCSD applied to this online data analysis portal. Users can select the ensemble members and time period of choice to visualize simple statistics or to download the raw data over the geographic region of their choice. 
+                </div>
+                <div class="clearBoth"></div> 
+            </div>
+            -->
+            <p align="center" class="about_Figure">
+                <img width="500" src="img/about_Fig1.png" />
+                <br />
+                <span class="about_Figure_CaptionText">
+                    Figure 1. Schematic of generation of BCSD seasonal forecasts from NMME forecasts.
+                </span>
+            </p>
+            <p>
+                More information about NMME can be found on the NCEP website at 
+                <a href="http://www.cpc.ncep.noaa.gov/products/NMME/" target="_blank" >http://www.cpc.ncep.noaa.gov/products/NMME/</a>. The original BCSD approach can be found at 
+                <a href="http://onlinelibrary.wiley.com/doi/10.1029/2001JD000659/abstract" target="_blank" >http://onlinelibrary.wiley.com/doi/10.1029/2001JD000659/abstract</a>
+                .
+            </p>
+            
+            
+            <div class="about_Vertical_Spacer"></div>
+            
+            
+            <!-- References -->
+            <h3>
+                References
+            </h3>
+            <p>
+                Becker, E. J., H. van den Dool, and M. Peña, 2013: Short-term climate extremes: Prediction skill and predictability. J. Climate, 26, 512–531, doi:10.1175/JCLI-D-12-00177.1.
+            </p>
+            <p>
+                Funk C., Peterson P., Landsfeld M., Pedreros D., Verdin J., Shukla S., Husak G., Rowland J., Hoell A. and Michaelsen J. (2015) The climate hazards group infrared precipitation with stations - a new environmental record for monitoring extremes, Scientific Data, In Press.
+            </p>
+            <p>
+                Funk, C.  , Peterson P.  , Landsfeld M.  , Pedreros D.  , Verdin J.  , Rowland, J.  , Romero B.  , Husak, G.  , Michaelsen, J.  , Verdin A.   (2014) A Quasi-global Precipitation Time Series for Drought Monitoring.   USGS Data Series 832.    http://pubs.usgs.gov/ds/832/pdf/ds832.pdf
+            </p>
+            <p>
+                Jenkerson, C.B., Maiersperger, Thomas, Schmidt, Gail, 2010, eMODIS: A user-friendly data source: U.S. Geological Survey Open-File Report 2010–1055, 10 p.
+            </p>
+            <p>
+                Sikder, S. F. Hossain, J. Roberts, F. Robertson, CK Shum and J. Turk (2014). Are General Circulation Models Ready for Operational Streamflow Forecasting at Seasonal scales in South Asia? In press Journal of Hydrometeorology.
+            </p>
+            <p>
+                Sheffield, J., G. Goteti, and E. F. Wood, 2006: Development of a 50-year high-resolution global dataset of meteorological forcings for land surface modeling. J. Climate, 19, 3088–3111, doi:10.1175/JCLI3790.1.
+            </p>
+            <p>
+                Swets, D. L., Reed, B. C., Rowland, J. R., & Marko, S. E. (1999). A weighted least-squares approach to temporal smoothing of NDVI. 1999 ASPRS Annual Conference, From Image to Informa- tion, Portland, Oregon, May 17 – 21, 1999, Proceedings: Bethesda, Maryland, American Society for Photogrammetry and Remote Sensing. 
+            </p>
+            <p>
+                Wood, A. W., E. P. Maurer, A. Kumar, and D. P. Lettenmaier, 2002: Long-range experimental hydrologic forecasting for the eastern United States. J. Geophys. Res., 107, 4429, doi:10.1029/2001JD000659.
+            </p>
+            
+            <div class="about_Vertical_Spacer"></div>
+            
+            
+            <div class="about_ContentFoot_Container">
+                <div class="about_Left">
+                    <a href="https://www.servirglobal.net" target="_blank" ><img width="150" src="img/about_SERVIR.png" /></a>
+                </div>
+                <div class="about_Right">
+                    <a href="http://www.fews.net" target="_blank" ><img width="150" src="img/about_FEWS.png" /></a>
+                    
+                </div>
+            </div>
+            
+        </div>
+        
+        
+        
+    </body>
+</html>

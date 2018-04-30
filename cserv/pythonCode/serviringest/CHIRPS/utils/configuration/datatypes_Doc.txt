@@ -1,0 +1,49 @@
+
+Author: Kris Stanton	kris.stanton@nasa.gov
+Date: 9/28/2015
+
+In it's current form, this doc is definitely NOT Complete
+
+For now, this seems like a good place to put notes that are a bit more organized than my usual scribbles.
+
+Hopefully, when time permits, this doc can be updated to become a source of all info on the datatypes.
+
+
+# DataTypes, Climate Change Model Section        
+            # Updates to Documentation 
+            #
+            # Due to the large number of climate datasets and repetitive nature of their settings,
+            #      some of their definitions have been placed into 'getter' functions (see above for those definitions)
+            # Quick Reference for params
+            #    number:           (int)         // Used as a incremental unique identifier
+            #    data_category:    (string)      // Category group that this dataset belongs too.
+            #    ensemble:         (string)      // Climate Ensemble name 
+            #    variable:         (string)      // Climate Variable name
+            #    ensemble_Label:   (string)      // More readable label for Climate Ensemble Name
+            #    variable_Label:   (string)      // More readable label for Climate Variable Name
+            #    name:             (string)      // Name of the dataset
+            #    description:      (string)      // short description of the dataset
+            #    directory         (string)      // local filesystem location where indexed hdf data for the current dataset goes.
+            #    inputDataLocation (string)      // local filesystem location where the downloader places/stages datasets ready for ingest
+            #    modelOutputLocal_BaseFolder         (string)        // local filesystem location where model output scripts place datasets, this is where the downloader looks to find the datasets.
+            #    size        ([intX,intY])       // pixel size of input dataset image files (x,y)
+
+
+
+
+Some older notes written while working on the code
+
+# New Items in the object specific for climate change scenarios
+            # Adding a few new props to the datatype objects
+            # New Items are:
+                # data_category  // Meant to be a grouping of multiple datatypes which contain simillar specific properties
+                # ensemble       // For ClimateModel datatypes, this is the ensemble (identifies which model)
+                # variable       // For ClimateModel datatypes, this is the variable (identifies which weather variable output for the current model)
+                # ensemble_Label // More readable name for the ensemble property
+                # variable_Label // More readable name for the variable property
+                # numOfForecastDays // Number of forecast days for this datatype
+                # modelOutputLocal_BaseFolder  # Need to add YYYYMM and ENS Number subfolders to the base folder for the specific datatype.
+                # modelOutputLocalFolder // The model outputs reside in the same server's filesystem, so we need a local path where to look for these files as they come in.
+                    # Tokens in the inputDataLocation    $YYYYMM$ String replace function changes it to a year and month combo
+                    #     Example folder location:  /data/nmme/GEOOUT/201508/ens03    // This folder contains all the variables
+            

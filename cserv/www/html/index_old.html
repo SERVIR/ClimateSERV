@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+    <head>
+<!--        <link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/jquery-ui.css" />
+        <link rel="stylesheet" href="css/jquery.css" />
+        <link rel="stylesheet" href="css/servir.css" />
+        <link rel="stylesheet" href="css/jquery.slidepanel.css" />
+        <link rel="stylesheet" href="css/ol.css" />
+
+        <script src="js/libs/openlayers/ol.js" type="text/javascript"></script>
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        <script src="js/libs/d3/d3.min.js"></script>
+        <script src="js/libs/jquery-timer/jquery.timer.js"></script>
+        <script src="js/libs/savefig/saveSvgAsPng.js"></script>
+        <script src="js/libs/dimple/dimple.v2.1.0.js"></script>
+        <script src="js/libs/jquery-sidepanel/jquery.slidepanel.js"></script>
+        <script src="js/servirnasa.js"></script>
+
+    <title>SERVIR CHIRPS</title>
+    </head>
+    <body>
+        <div id="map" class="map"></div>
+        <script type="text/javascript">
+            var centerOfMap = [15.0, 0];
+            var zoomLevel = 4;
+            var currentStringPolygon = "";
+            //Define projections to be used
+            var proj4326 = ol.proj.get('EPSG:4326');
+            var proj3857 = ol.proj.get('EPSG:3857');
+
+            //Source Layer for the Vector being drawn by the user
+            var source = new ol.source.Vector();
+
+            //Actual OpenLayers Vector layer that is being drawn
+            var vector = new ol.layer.Vector({
+                source: source,
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255, 255, 255, 0.2)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    }),
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        fill: new ol.style.Fill({
+                            color: '#ffcc33'
+                        })
+                    })
+                })
+            });
+            //Base layer for map
+            var baseLayer = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: 'http://demo.opengeo.org/geoserver/wms',
+                    params: {
+                        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
+                    }
+                })
+            });
+
+            //Define country level map layer
+            var tileLayer0 = new ol.layer.Tile({
+                source: new ol.source.TileWMS(({
+                    url: 'http://localhost/cgi-bin/mapserv?map=/Users/jeburks/work/SERVIR/data/GIS/mapfiles/servir.map&SERVICE=WMS&VERSION=1.1.1',
+                    params: {'LAYERS': 'country', 'TILED': true},
+                    serverType: 'mapserv'
+                }))
+            });
+            //Define admin level #1 map layer
+            var tileLayer1 = new ol.layer.Tile({
+                source: new ol.source.TileWMS(({
+                    url: 'http://localhost/cgi-bin/mapserv?map=/Users/jeburks/work/SERVIR/data/GIS/mapfiles/servir.map&SERVICE=WMS&VERSION=1.1.1',
+                    params: {'LAYERS': 'admin1', 'TILED': true},
+                    serverType: 'mapserv'
+                }))
+            });
+            //Define admin Level #2 map layer
+            var tileLayer2 = new ol.layer.Tile({
+                source: new ol.source.TileWMS(({
+                    url: 'http://localhost/cgi-bin/mapserv?map=/Users/jeburks/work/SERVIR/data/GIS/mapfiles/servir.map&SERVICE=WMS&VERSION=1.1.1',
+                    params: {'LAYERS': 'admin2', 'TILED': true},
+                    serverType: 'mapserv'
+                }))
+            });
+
+
+            //Make base map and country level visible at first.
+            tileLayer1.setVisible(false);
+            tileLayer2.setVisible(false);
+            
+            //Define layers in a layer array for adding to mao
+            var layers = [tileLayer0, tileLayer1, tileLayer2];
+            
+            //Create map for the display of the data  
+            var map = new ol.Map({
+                target: 'map',
+                layers: [
+                    baseLayer, tileLayer0,
+                    vector
+                ],
+                view: new ol.View({
+                    center: centerOfMap,
+                    zoom: zoomLevel,
+                    projection: 'EPSG:4326'
+                })
+            });
+
+            //Create drawing interaction layer. This layer will contain the actual drawing of the polygon
+            var draw = new ol.interaction.Draw({
+                source: source,
+                type: "Polygon"
+            });
+
+            //Setup callback so that when polygon defined it can be processed. This function will process the polygon
+            source.on("change", function (e) {
+                geoJson = new ol.format.GeoJSON();
+                features = source.getFeatures();
+                if (features.length > 0) {
+                    geom = features[0].getGeometry();
+                    output = geoJson.writeGeometry(geom, {dataProjection: proj4326, featureProjection: proj4326});
+                    ///set polygon to got to server 
+                    currentStringPolygon = JSON.stringify(output);
+                    //need to open dialog
+                    openNewEditorDialog();
+                }
+            });
+
+            //Function to enable custom drawing of polygons.
+            function enableCustomPolygonDrawing() {
+                map.addInteraction(draw);
+                disableFeatureSelection();
+            }
+            
+            //Function to disable custom polygon drawing.
+            function disableCustomPolygonDrawing() {
+                map.removeInteraction(draw);
+            }
+            function setSelectionLayer(layer_num) {
+                selectableLayer = vectorcountry;
+                enableFeatureSelection();
+            }
+            //Enable selecting of a single feature on the map.
+            function enableFeatureSelection() {
+                map.addInteraction(selectSingleClick);
+            }
+            //Disable selecting of a single feature on the map.
+            function disableFeatureSelection() {
+                map.removeInteraction(selectSingleClick);
+            }
+            
+            //Clear the polygon from the layer.
+            function clearPolygon() {
+                source.clear();
+                currentStringPolygon = "";
+            }
+            //Function that given a geojson entry can add it to the map.
+            function setPolygonWithGeoJSON(text) {
+                geoJson = new ol.format.GeoJSON();
+                feature = geoJson.readFeatures(text, {dataProjection: proj4326, featureProjection: proj4326});
+                vector.getSource().clear();
+                vector.getSource().addFeature(feature[0]);
+                centerOfNewPoly = calculateCenterOfGeom(feature[0].getGeometry());
+                map.getView().setCenter(centerOfNewPoly);
+            }
+            //Calculate the center of a geometry in order to center the map.
+            function calculateCenterOfGeom(geom) {
+                extent = geom.getExtent();
+                xcenter = (extent[2] + extent[0]) / 2.0;
+                ycenter = (extent[1] + extent[3]) / 2.0;
+                return [xcenter, ycenter];
+            }
+
+            //If a user wants to load a GeoJSON file this handles the file selection.
+            function handleFileSelect(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+
+                var f = evt.dataTransfer.files[0]; // FileList object.
+
+                // files is a FileList of File objects. List some properties.
+
+                var reader = new FileReader();
+                // Closure to capture the file information.
+                reader.onload = (function (f) {
+                    return function (e) {
+                        setPolygonWithGeoJSON(e.target.result);
+                        $("#loadGeoJsonDialog").dialog("close");
+                    };
+                })(f);
+                reader.readAsText(f);
+            }
+
+            //Function to handle drag and drop.
+            function handleDragOver(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+            }
+
+            //Setup of initial dialogs and closes or opens them based on initial state.
+            $(function () {
+                getParameterTypes();
+                $("#progressdialog").dialog();
+                $("#progressdialog").dialog("close");
+                $("#editordialog").dialog();
+                $("#editordialog").dialog("close");
+                $("#polygondialog").dialog();
+                $("#polygondialog").dialog("close");
+                $("#chartdialog").dialog();
+                $("#chartdialog").dialog("close");
+                $("#selectAreaDialog").dialog();
+                $("#selectAreaDialog").dialog("close");
+                $("#chooseAreaMethodDialog").dialog();
+                $("#loadGeoJsonDialog").dialog();
+                $("#loadGeoJsonDialog").dialog("close");
+                $("#selectInformationDialog").dialog();
+                $("#selectInformationDialog").dialog("close");
+                $("#cancelbutton").click(function () {
+                    resetToInitial();
+                });
+                
+                $("#datepickerbegin").datepicker();
+                $("#datepickerend").datepicker();
+                $('#selectlayer').change(function () {
+                    var count = 0;
+                    $("#selectlayer option").each(function () {
+                        layers[count].setVisible(this.selected);
+                        ++count;
+                    });
+                });
+
+                $('#selectmenu').change(function () {
+                    var value;
+                    var count = 0;
+                    $("#selectmenu option").each(function () {
+                        if (this.selected) {
+                            value = count
+                        }
+                        ;
+                        ++count;
+                    });
+
+                        setSelectionLayer(value);
+                        enableFeatureSelection();
+                    
+                });
+                //Setup the drop zone for the geojson
+                var dropZone = document.getElementById('drop_zone');
+                dropZone.addEventListener('dragover', handleDragOver, false);
+                dropZone.addEventListener('drop', handleFileSelect, false);
+            });
+
+            //Setup spinner value
+            var spinner = $("#spinner").spinner();
+
+
+
+        </script>
+
+        <div id="chartdialog" title="Results">
+            <div id="chartWindow"></div>
+        </div>
+       
+            
+
+        <div id="progressdialog" title="Progress">
+            <div id="progressbar"></div>
+            <div id="progresslabel"></div>
+            <div id="requestId"></div>
+<!--            <div id="pauseRequestButton"><a href ="pause" ><img src="">Pause</a></div>
+            <div id="unpauseRequestButton"><a href ="start" ><img src="">Start</a></div>
+            <div id="cancelButton"><a href= "cancel" ><img src="">Cancel</a></div>-->
+        </div>
+
+        <div id="polygondialog" title="New Search Polygon">
+            <center>Define a new Polygon<br><br>
+                <button id="startpolygonbutton">Close</button></center>
+        </div>
+        <div id="chooseAreaMethodDialog" title="Choose method to define area"><center>
+            <button onclick="$('#chooseAreaMethodDialog').dialog('close');enableCustomPolygonDrawing();">Draw Custom Polygon</button><br><br>
+            <button onclick="$('#chooseAreaMethodDialog').dialog('close');$('#selectAreaDialog').dialog();">Choose feature on Map</button><br><br>
+            <button onclick="$('#chooseAreaMethodDialog').dialog('close');$('#loadGeoJsonDialog').dialog();">Load GeoJson file from Local System</button>
+            </center>
+        </div>
+        <div id="loadGeoJsonDialog">
+            <div id="drop_zone">Drop GeoJSON file here</div>
+        </div>
+        <div id="selectAreaDialog" title="Select Area:">
+            <table><tr><td>
+                        <div> Choose the method to select area of interest<br>
+
+                            <select name="selectmenu" id="selectmenu">
+                                <option value="1">Select by Country</option>
+                                <option value="2">Select by Admin #1</option>
+                                <option value="3">Select by Admin #2</option>
+                            </select>
+                        </div></td><td>
+                        <div >
+                            Choose layers to display</br>
+                            <select name="selectlayer" id="selectlayer" multiple>
+                                <option value="0" selected="selected">Countries</option>
+                                <option value="1">Admin #1</option>
+                                <option value="2">Admin #2</option>
+                            </select>
+                        </div>
+                    </td></tr>
+            </table>
+        </div>
+        <div id="selectInformationDialog">
+            <a href="javascript:back();" >Back</a>
+            To select using custom Polygon select so many points....
+        </div>
+        <div id="editordialog" title="New Search">
+            <label for="typeselectmenu">Select Data Type:</label>
+            <select name="typemenu" id="typemenu">
+                <option value="0">CHIRPS Precip</option>
+                <!--<option value="1">eMODIS NDVI</option>-->
+
+            </select>
+            <br>
+            <label for="typeselectmenu">Select operation Type:</label><select name="operationmenu" id="operationmenu">
+                <option value="0">Max</option>
+                <option value="1">Min</option>
+                <option value="2">Median</option>
+                <option value="3">Sum</option>
+            </select><br>
+            <label for="dateintervallabel">Date Interval:</label> 
+            <select name="dateintervalmenu" id="dateintervalmenu">
+                <option value="0">Daily</option>
+                <option value="1">Monthly</option>
+                <option value="2">Yearly</option>
+            </select><br>
+            <label for="datepickerbegin">Begin Date:</label><input type="text" id="datepickerbegin" value="01/01/2013"><br>
+            <label for="datepickerend">End Date:</label><input type="text" id="datepickerend" value="03/12/2013"><br>
+
+            <input type="button" value="Submit" name="Submit" id="submitsearchbutton">
+            <input type="button" value="Cancel" name="Cancel" id="cancelbutton">
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,44 @@
+{
+    "items": [
+        {
+            "name": "chirps", 
+            "Latest": "31 3 2018"
+        }, 
+        {
+            "name": "wafndvi", 
+            "Latest": "17 12 2017"
+        }, 
+        {
+            "name": "eafndvi", 
+            "Latest": "25 2 2017"
+        }, 
+        {
+            "name": "safndvi", 
+            "Latest": "21 12 2016"
+        }, 
+        {
+            "name": "casndvi", 
+            "Latest": "25 2 2017"
+        }, 
+        {
+            "name": "esi4week", 
+            "Latest": "9 4 2018"
+        }, 
+        {
+            "name": "esi12week", 
+            "Latest": "9 4 2018"
+        }, 
+        {
+            "name": "gefsanom", 
+            "Latest": "2 4 2018"
+        }, 
+        {
+            "name": "gefsprecip", 
+            "Latest": "2 4 2018"
+        }, 
+        {
+            "name": "chirp", 
+            "Latest": "2 4 2018"
+        }
+    ]
+}

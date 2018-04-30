@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+<!--        <link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.10.4.custom.css" />
+        <link rel="stylesheet" href="css/jquery.css" />
+        <link rel="stylesheet" href="css/ol.css" />
+        <link rel="stylesheet" href="css/red-glass/sidebar.css" />
+        <link rel="stylesheet" href="css/servir.css" />
+
+        <script src="js/libs/openlayers/ol.js" type="text/javascript"></script>
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        <script src="js/libs/d3/d3.min.js"></script>
+        <script src="js/libs/jquery-timer/jquery.timer.js"></script>
+        <script src="js/libs/savefig/saveSvgAsPng.js"></script>
+        <script src="js/libs/dimple/dimple.v2.1.0.js"></script>
+        <script src="js/libs/jquery-sidebar/jquery.sidebar.js"></script>
+        <script src="js/servirnasa.js"></script>
+        <script src="js/agriserv.js"></script>
+
+    <title>SERVIR AgriSERV Early Alpha</title>
+    </head>
+    <body>
+        <div id="map" class="map"></div>
+        <script type="text/javascript">
+            var selectedFeatures =[];
+            var selectedLayer =0;
+            var wmsbaseURL = "http://localhost/";
+            var polygonIsDefined = false;
+            var centerOfMap = [0.0, 0];
+            var zoomLevel = 3;
+            var clickEnabled = false;
+            var currentStringPolygon = "";
+            //Define projections to be used
+            var proj4326 = ol.proj.get('EPSG:4326');
+            var proj3857 = ol.proj.get('EPSG:3857');
+            //Define layers in a layer array for adding to mao
+            var tileLayers = [];
+            var hLayers = [];
+            var layerNames = [];
+            var layerIds = [];
+            var showLabel = false;
+            var hLayerURL=baseWMSurl+'&SERVICE=WMS&VERSION=1.1.1';
+            
+            //Source Layer for the Vector being drawn by the user
+            var source = new ol.source.Vector();
+            
+            //Actual OpenLayers Vector layer that is being drawn
+            var vectorLayer = new ol.layer.Vector({
+                source: source,
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(204, 251, 255, 0.6)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#00ccff',
+                        width: 5
+                    }),
+                    image: new ol.style.Circle({
+                        radius: 15,
+                        fill: new ol.style.Fill({
+                            color: '#00ccff'
+                        })
+                    })
+                })
+            });
+          var sourceBase = new ol.source.WMTS({
+        url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?",
+        layer: "BlueMarble_ShadedRelief_Bathymetry",
+        format: "image/jpeg",
+        matrixSet: "EPSG4326_500m",
+        tileGrid: new ol.tilegrid.WMTS({
+            origin: [-180, 90],
+            resolutions: [
+                0.5625,
+                0.28125,
+                0.140625,
+                0.0703125,
+                0.03515625,
+                0.017578125,
+                0.0087890625,
+                0.00439453125,
+                0.002197265625
+            ],
+            matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            tileSize: 512
+        })
+    });
+
+    var baseLayer = new ol.layer.Tile({
+        source: sourceBase
+    });
+
+            //Base layer for map
+//            var baseLayer = new ol.layer.Tile({
+//                source: new ol.source.TileWMS({
+//                    url: 'http://gmrt.marine-geo.org/cgi-bin/mapserv?map=/public/mgg/web/gmrt.marine-geo.org/htdocs/services/map/wms_merc.map',
+//                    params: {
+//                        'LAYERS': 'topo'
+//                    }
+//                })
+//            });
+            
+
+           
+            var view = new ol.View({
+                    center: centerOfMap,
+                    zoom: zoomLevel,
+                    projection: 'EPSG:4326'
+                });
+            
+            //Create map for the display of the data  
+            var map = new ol.Map({
+                target: 'map',
+                layers: [baseLayer],
+                view: view
+                
+            });
+            
+            function addLayer(layerName, layerid, visible) {
+                 var tileLayer = new ol.layer.Tile({
+                        source: new ol.source.TileWMS(({
+                            url: hLayerURL,
+                            params: {'LAYERS': layerid, 'TILED': true, },
+                            serverType: 'mapserv'
+                        }))
+                });
+                //Define country level map layer
+                var tileLayerh = new ol.layer.Tile({
+                    source: new ol.source.TileWMS(({
+                        url: hLayerURL,
+                        params: {'LAYERS': layerid+'_highlight', 'TILED': true},
+                        serverType: 'mapserv'
+                    }))
+                });
+                tileLayer.setVisible(visible);
+                tileLayerh.setVisible(false);
+                tileLayers.push(tileLayer);
+                hLayers.push(tileLayerh);
+                layerNames.push(layerName);
+                layerIds.push(layerid);
+                redoLayers();
+            }
+            
+            function redoLayers() {
+                var layers = map.getLayers();
+                layers.clear();
+                layers.push(baseLayer);
+                for (i in tileLayers) {
+                    layers.push(tileLayers[i]);
+                }
+                for (i in hLayers) {
+                    layers.push(hLayers[i]);
+                }
+                layers.push(vectorLayer);
+                
+                
+            }
+            
+            function respondToClicks(evt) {
+               var url =  tileLayers[selectedLayer].getSource().getGetFeatureInfoUrl(evt.coordinate, map.getView().getResolution(), 'EPSG:4326',{'INFO_FORMAT': 'json'});
+               if (url) {
+                    processClickPoint(url);
+               }
+            }
+
+            //Create drawing interaction layer. This layer will contain the actual drawing of the polygon
+            var draw = new ol.interaction.Draw({
+                source: source,
+                type: "Polygon"
+            });
+ 
+            //Setup callback so that when polygon defined it can be processed. This function will process the polygon
+            source.on("change", function (e) {
+                geoJson = new ol.format.GeoJSON();
+                features = source.getFeatures();
+                if (features.length > 0) {
+                    geom = features[0].getGeometry();
+                    output = geoJson.writeGeometry(geom, {dataProjection: proj4326, featureProjection: proj4326});
+                    ///set polygon to got to server 
+                    currentStringPolygon = JSON.stringify(output);
+                    setPolygonIsDefined(true);
+                    disableCustomPolygonDrawing();
+                    zoomToPolygon();
+                    
+                }
+            });
+            
+            
+            function getCurrentPolygonAsGeoJson() {
+                geoJson = new ol.format.GeoJSON();
+                feature = source.getFeatures();
+                
+                    output = geoJson.writeFeatures(feature, {dataProjection: proj4326, featureProjection: proj4326});
+                    ///set polygon to got to server 
+                    return JSON.stringify(output);
+                
+            }
+            
+            function updateSelectedHighlightedLayer() {
+                hLayers[selectedLayer].getSource().setUrl(hLayerURL+"&feat_ids="+selectedFeatures.join());
+            }
+            
+            function toggleLabel() {
+                 var appended = "";
+            
+               if (showLabel === false) {
+                   showLabel = true;
+                   appended="_label";
+               } else {
+                   showLabel = false;
+                   appended="";
+               }
+               
+                for (i = 0; i < tileLayers.length; i++) { 
+                    
+                    var param = tileLayers[i].getSource().getParams();
+                    param.LAYERS = layerIds[i]+appended;
+                    tileLayers[i].getSource().updateParams(param);
+                }
+            }
+            
+            
+            function processClickPoint(url)
+            {
+               $("#geometry_edit_button").text("Modify Location");
+               url=url+"&callback=?";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    async:'true',
+                    jsonpCallback: 'successCallback',
+                    dataType: 'jsonp',
+                    success: function (result) {
+                        value = result["data"];
+                       if (selectedFeatures.indexOf(value) != -1) {
+                           index = selectedFeatures.indexOf(value);
+                          delete selectedFeatures[index];
+                       } else {
+                           selectedFeatures.push(value);
+                        }
+                        if (selectedFeatures.length >0) {
+                            enableCreateGraphLink();
+                        }
+                       updateSelectedHighlightedLayer();
+                       
+                    },
+                    error: function (error) {
+                        console.log("Got error"+error);
+                    },
+                    successCallback:function(){
+                            
+                     },
+                    
+                });
+            
+
+                }       
+            
+            function zoomToPolygon() {
+                   var geomExtent  =  source.getExtent();
+                   var newCenter = [(geomExtent[0]+geomExtent[2])/2.0,(geomExtent[1]+geomExtent[3])/2.0];
+                   view.setCenter(newCenter);   
+            }
+
+            //Function to enable custom drawing of polygons.
+            function enableCustomPolygonDrawing() {
+                if (clickEnabled === true) {
+                    disableFeatureSelection();
+                }
+                map.addInteraction(draw);
+            }
+            
+            //Function to disable custom polygon drawing.
+            function disableCustomPolygonDrawing() {
+                map.removeInteraction(draw);
+            }
+            function setSelectionLayer(layer_num) {
+                if (layer_num != selectedLayer) {
+                    selectedFeatures = [];
+                }
+                tileLayers[selectedLayer].setVisible(false);
+                hLayers[selectedLayer].setVisible(false);
+                selectedLayer = layer_num;
+                tileLayers[selectedLayer].setVisible(true);
+                hLayers[selectedLayer].setVisible(true);
+                updateSelectedHighlightedLayer();
+            }
+            //Enable selecting of a single feature on the map.
+            function enableFeatureSelection() {
+                if (clickEnabled ===false) {
+                    map.on('singleclick',respondToClicks);
+                    selectedFeatures = [];
+                    clickEnabled = true;
+                }
+                    
+            }
+            //Disable selecting of a single feature on the map.
+            function disableFeatureSelection() {
+                map.un('singleclick',respondToClicks);
+                selectedFeatures = [];
+                hLayers[selectedLayer].setVisible(false);
+                clickEnabled = false;
+            }
+            
+            //Clear the polygon from the layer.
+            function clearPolygon() {
+                source.clear();
+                currentStringPolygon = "";
+                setPolygonIsDefined(false);
+                disableCustomPolygonDrawing();
+            }
+            //Function that given a geojson entry can add it to the map.
+            function setPolygonWithGeoJSON(text) {
+                
+                geoJson = new ol.format.GeoJSON();
+                feature = geoJson.readFeatures(text, {dataProjection: proj4326, featureProjection: proj4326});
+                vectorLayer.getSource().clear();
+                vectorLayer.getSource().addFeature(feature[0]);
+                centerOfNewPoly = calculateCenterOfGeom(feature[0].getGeometry());
+                
+            }
+            //Calculate the center of a geometry in order to center the map.
+            function calculateCenterOfGeom(geom) {
+                extent = geom.getExtent();
+                xcenter = (extent[2] + extent[0]) / 2.0;
+                ycenter = (extent[1] + extent[3]) / 2.0;
+                return [xcenter, ycenter];
+            }
+
+            //If a user wants to load a GeoJSON file this handles the file selection.
+            function handleFileSelect(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+
+                var f = evt.dataTransfer.files[0]; // FileList object.
+
+                // files is a FileList of File objects. List some properties.
+
+                var reader = new FileReader();
+                // Closure to capture the file information.
+                reader.onload = (function (f) {
+                    return function (e) {
+                        setPolygonWithGeoJSON(e.target.result);
+                        $("#loadGeoJsonDialog").dialog("close");
+                    };
+                })(f);
+                reader.readAsText(f);
+            }
+
+            //Function to handle drag and drop.
+            function handleDragOver(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+            }
+
+            //Setup of initial dialogs and closes or opens them based on initial state.
+            $(function () 
+            {
+                checkMaintenanceMode();
+                
+                getParameterTypes();
+                getFeatureLayers();
+                
+                // KS Refactor 2015 // Set up for Climate Model Infos
+                getClimateModelInfo();
+                
+                // KS Refactor for Imerg and Smap, // Get info for these datasets
+                getCapabilitiesForDataset(26);  // Imerg 1 Day
+                //getCapabilitiesForDataset(27);  // Smap
+                
+                $("#progressdialog").dialog();
+                $("#progressdialog").dialog("close");
+                $("#editordialog").dialog();
+                $("#editordialog").dialog("close");
+                $("#polygondialog").dialog();
+                $("#polygondialog").dialog("close");
+                $("#chartdialog").dialog();
+                $("#chartdialog").dialog("close");
+                $("#selectAreaDialog").dialog();
+                $("#selectAreaDialog").dialog("close");
+                $("#chooseAreaMethodDialog").dialog();
+                $("#chooseAreaMethodDialog").dialog("close");
+                $("#loadGeoJsonDialog").dialog();
+                $("#loadGeoJsonDialog").dialog("close");
+                $("#selectInformationDialog").dialog();
+                $("#selectInformationDialog").dialog("close");
+                $("#cancelbutton").click(function () {
+                    closeNewEditorDialog();
+                });
+                
+                $("#datepickerbegin").datepicker();
+                $("#datepickerend").datepicker();
+                $('#selectlayer').change(function () {
+                    var count = 0;
+                    $("#selectlayer option").each(function () {
+                        tileLayers[count].setVisible(this.selected);
+                        ++count;
+                    });
+                });
+                $('#showLabels').change(function () {
+                    toggleLabel();
+                });
+
+                $('#selectmenu').change(function () {
+                    var value;
+                    var count = 0;
+                    $("#selectmenu option").each(function () {
+                        if (this.selected) {
+                            value = count;
+                        }
+                        ;
+                        ++count;
+                    });
+
+                        setSelectionLayer(value);
+                        enableFeatureSelection();
+                    
+                });
+                //Setup the drop zone for the geojson
+                
+            });
+           $(function()
+           {
+		$("ul#top_menu").sidebar({
+                position:"top",
+                open:"click"
+                });
+	});
+
+            //Setup spinner value
+            var spinner = $("#spinner").spinner();
+            
+            function popAreaMenu() {
+                $("ul#top_menu").sidebar("close");
+                $("#chooseAreaMethodDialog").dialog();
+            }
+            function popGraphMenu() {
+                $("ul#top_menu").sidebar("close");
+                openNewEditorDialog();
+            }
+            function fixContentHeight(){
+                var viewHeight = $(window).height();
+                var header = $("div[data-role='header']:visible:visible");
+                var navbar = $("div[data-role='navbar']:visible:visible");
+                var content = $("div[data-role='content']:visible:visible");
+                var contentHeight = viewHeight - header.outerHeight() - navbar.outerHeight();
+                $('#map').height(contentHeight);
+                map.updateSize();
+            }
+            window.onload = function () { 
+                fixContentHeight();
+                setPolygonIsDefined(false);
+                var dropZone = document.getElementById('drop_zone');
+                dropZone.addEventListener('dragover', handleDragOver, false);
+                dropZone.addEventListener('drop', handleFileSelect, false);
+               
+            }
+            window.onresize = function(event) {
+                  fixContentHeight();
+            };
+            
+           function setPolygonIsDefined(value) {
+               
+               polygonIsDefined = value;
+               if (polygonIsDefined === false) {
+                   disableCreateGraphLink();
+                   closeNewEditorDialog();
+                   $("#geometry_edit_button").text("Create Location");
+               } else {
+                   enableCreateGraphLink();
+                   zoomToPolygon();
+                   $("#geometry_edit_button").text("Modify Location");
+               }
+                
+            }
+            
+            
+            
+            function disableCreateGraphLink() {
+                $('#creategraphlink').addClass('disabled');
+            }
+            function enableCreateGraphLink() {
+                $('#creategraphlink').removeClass('disabled');
+            }
+            
+            function setupBaseFeatureSelection() {
+                if (selectedLayer == 0){
+                    setSelectionLayer(selectedLayer);
+                    enableFeatureSelection();
+                }
+            }
+        </script>
+
+        <div id="AgriservUI_Dialog" title="Agriserv Early Alpha">
+            <div id="div_AgriservUI_TopHeader">
+                Agriserv Alpha.<br />
+                Compare Growing Seasons between multiple areas of interest.<br />
+            </div>
+            <br />
+            <div id="div_AgriservUI_InputSection">
+                <fieldset><legend>Inputs</legend>
+                    <!-- Input: Select Start Year -->
+                    <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                        <div class="searcharea_left">Choose a Start Year:</div>
+                        <div class="searcharea_right">
+                            <select name="input_Agriserv_Select_YearStart" id="input_Agriserv_Select_YearStart">
+                                <option value="2000">2000</option>
+                                <option value="2001">2001</option>
+                                <option value="2002">2002</option>
+                                <option value="2003">2003</option>
+                                <option value="2004">2004</option>
+                                <option value="2005" selected>2005</option>
+                                <option value="2006">2006</option>
+                                <option value="2007">2007</option>
+                                <option value="2008">2008</option>
+                                <option value="2009">2009</option>
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                                <option value="2012">2012</option>
+                                <option value="2013">2013</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Input: Select End Year -->
+                    <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                        <div class="searcharea_left">Choose an End Year:</div>
+                        <div class="searcharea_right">
+                            <select name="input_Agriserv_Select_YearEnd" id="input_Agriserv_Select_YearEnd">
+                                <option value="2000">2000</option>
+                                <option value="2001">2001</option>
+                                <option value="2002">2002</option>
+                                <option value="2003">2003</option>
+                                <option value="2004">2004</option>
+                                <option value="2005">2005</option>
+                                <option value="2006" selected>2006</option>
+                                <option value="2007">2007</option>
+                                <option value="2008">2008</option>
+                                <option value="2009">2009</option>
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                                <option value="2012">2012</option>
+                                <option value="2013">2013</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Area of Interest 1 -->
+                    <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                        <div class="searcharea_left">
+                            <br /><br />
+                            Select Area of Interest 1:</div>
+                        <div class="searcharea_right">
+                            <span id="span_Draw_AOI_1" onclick="enableCustomPolygonDrawing_AgriservOverride(1);">[Draw an Area of Interest]</span>
+                            <br />
+                            <span id="span_aoi_1"></span>
+                        </div>
+                    </div>
+                    <!-- Area of Interest 2 -->
+                    <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                        <div class="searcharea_left">
+                            <br /><br />
+                            Select Area of Interest 2:</div>
+                        <div class="searcharea_right"> 
+                            <span id="span_Draw_AOI_2" onclick="enableCustomPolygonDrawing_AgriservOverride(2);">[Draw an Area of Interest]</span>
+                            <br />
+                            <span id="span_aoi_2"></span>
+                        </div>
+                    </div>
+                    
+                    <br />
+                    
+                    <!-- Submit Job Request -->
+                    <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                        <div class="searcharea_left">&nbsp;</div>
+                        <div class="searcharea_right">
+                            <button id="input_Agriserv_Submit_UseCaseA">Submit Job Request</button> 
+                        </div>
+                    </div>
+                    
+                      
+
+                </fieldset>
+            </div>
+            <br />
+            <div id="div_AgriservUI_RequestReportingArea">
+                Once the input variables have been submitted (in the step above), data specific to the area of interest and year range must be requested, processed, and loaded prior to analysis.  
+                This process may take several minutes.<br />
+                <br />
+                <fieldset><legend>Request For Data Status</legend>
+                    <br />
+                    <span id="requestReportingStatus_Output">No Requests yet made.</span><br />
+                    <br />
+                </fieldset>
+                <br />
+            </div>
+            <br />
+            <div id="div_AgriservUI_Output">
+                Use the Slider to select an NDVI Threshold<br />
+                <div id="GrowingSeason_Threshold_Container">
+                    <div id="GrowingSeason_Threshold_Slider"></div>
+                </div>
+                <br />
+                <br /><hr /><br />
+                
+                <!-- The two buttons for CSV Output (Summary Data (The Final Product), and Raw Data (Rainfall broken out per NDVI Granule)  -->
+                <span onclick="get_GrowingSeasons_Summary_Output_As_CSV();">[Summary CSV Out]</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span onclick="get_GrowingSeasonsOutput_As_CSV();">[Raw Data CSV Out]</span>
+                <br />
+                
+                <br /><hr /><br />
+                <div id="GrowingSeasons_Output_Container">
+                    GrowingSeasons_Output_Container UNSET
+                </div>
+                
+                Calculated Growing Seasons Output:<br />
+                [Output Text Area for Growing Seasons]<br />
+                [Export Option Buttons (CSV Out)]<br />
+                [IF TIME... Graph Options]<br />
+            </div>
+            
+            
+            
+        </div>
+        
+        <div id="chartdialog" title="Results">
+            <div id="chartWindow"></div>
+            <div id="chartLogoContainer">
+                <div id="logo-servir">
+                    <img style="width:100px; height:82px;" src="img/Servir_Logo_Full_Color_Stacked2.jpg">
+                </div>
+            </div>
+        </div>
+       
+            
+
+        <div id="progressdialog" title="Progress">
+            <div id="progressbar"></div>
+            <div id="progresslabel"></div>
+            <div id="requestId"></div>
+            <div id="downloadFileURL"></div>
+<!--        <div id="pauseRequestButton"><a href ="pause" ><img src="">Pause</a></div>
+            <div id="unpauseRequestButton"><a href ="start" ><img src="">Start</a></div>
+            <div id="cancelButton"><a href= "cancel" ><img src="">Cancel</a></div>-->
+        </div>
+
+        <div id="polygondialog" title="New Search Polygon">
+            <center>Define a new Polygon<br><br>
+                <button id="startpolygonbutton">Close</button></center>
+        </div>
+        <div id="chooseAreaMethodDialog" title="Choose method to define area">
+            <div>
+            <div><div><a href="javascript:$('#chooseAreaMethodDialog').dialog('close');enableCustomPolygonDrawing();"></div><div><img style="vertical-align: middle;" src="img/draw.png">Draw Custom Polygon</a></div></div>
+            <div><div><a href="javascript:$('#chooseAreaMethodDialog').dialog('close');$('#selectAreaDialog').dialog();setupBaseFeatureSelection();"></div><div><img style="vertical-align: middle;" src="img/choose.png">Choose feature on Map</a></div></div>
+            <div><div><a href="javascript:$('#chooseAreaMethodDialog').dialog('close');$('#loadGeoJsonDialog').dialog();" ></div><div ><img style="vertical-align: middle;" src="img/upload.png">Load GeoJson file from Local System</a></div></div>
+            </div>
+        </div>
+        <div id="loadGeoJsonDialog" style="clear:both;">
+            <div class = "stitched_drop" style="width:'92%'; height:100px" id="drop_zone"><center><img style="vertical-align: middle;" src="img/browser-upload.png">   <font size="3">Drop GeoJSON file here</font></center></div>
+        </div>
+        
+        
+        <div id="selectAreaDialog" title="Select Area:">
+            <table><tr><td>
+                        <div> Choose the method to select area of interest<br>
+
+                            <select name="selectmenu" id="selectmenu">
+                                <option value="0" selected="selected">Select by Country</option>
+                                <option value="1">Select by Admin #1</option>
+                                <option value="2">Select by Admin #2</option>
+                                <option value="3">Select by FTF ZOI</option>
+                            </select>
+                            <div><input id="showLabels" type="checkbox">Show Labels</input></div>
+                        </div></td><td>
+                        <div >
+                            Choose layers to display</br>
+                            <select name="selectlayer" id="selectlayer" multiple>
+                                <option value="0" selected="selected">Countries</option>
+                                <option value="1">Admin #1</option>
+                                <option value="2">Admin #2</option>
+                                 <option value="3">FTF ZOI</option>
+                            </select>
+                        </div>
+                    </td></tr>
+            </table>
+        </div>
+        
+        
+        <div id="selectInformationDialog">
+            <a href="javascript:back();" >Back</a>
+            To select using custom Polygon select so many points....
+        </div>
+        
+        <div id="editordialog" title="New Search">
+            
+            
+            <div class="searcharea_newrow">
+                <div class="searcharea_left">
+                    <label for="typeselectmenu">Select Data Type:
+                    </label>
+                </div>
+            
+                <!-- This part was just <div>.. I think it may have been an error..-->
+            <!--
+            </div>
+            <div>
+                -->
+                <div class="searcharea_right">
+                    <select name="typemenu" id="typemenu" onchange="select_dataType_Changed(this.value)">
+                        <option value="0">CHIRPS Rainfall</option>
+                        <option value="1">eMODIS NDVI</option>
+                        <option value="ClimateModel">Seasonal_Forecast</option>
+                        <option value="IMERG1Day">IMERG 1 Day</option>
+                        <!--<option value="1">eMODIS NDVI</option>-->
+                    </select>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <!-- SubmitDataRequest UI Groups    START  -->
+            <!-- SubmitDataRequest UI Groups    Default UI  SubmitDataRequest_UI_Default -->
+            
+            <!-- Spacer -->
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                <div class="searcharea_left">
+                    <label for="typeselectmenu">Select operation Type:</label>
+                </div>
+                <div class="searcharea_right">
+                    <select name="operationmenu" id="operationmenu">
+                        <option value="0">Max</option>
+                        <option value="1">Min</option>
+                        <!-- KS Refactor 201511 clientupdates_201511 -->
+                        <!-- 
+                        <option value="2">Median</option>
+                        <option value="3">Range</option>
+                        <option value="4">Sum</option>
+                        -->
+                        <option value="5" selected="selected">Average</option>
+                        <!--<option value="6">Download Raw Data</option>-->
+                    </select>
+                </div>
+            </div>
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+               <div class="searcharea_left">
+                    <label for="dateintervallabel">Date Interval:</label> 
+               </div>
+               <div class="searcharea_right">
+                   
+                   <!-- KS Refactor 201511 clientupdates_201511 -->
+                   <span id="dateintervalmenu_Default_Dynamic">Daily</span>
+                   <!--
+                   <select name="dateintervalmenu" id="dateintervalmenu">
+                       <option value="0">Daily</option>
+                       
+                       <option value="1">Monthly</option>
+                       <option value="2">Yearly</option>
+                       
+                   </select>
+                   -->
+               </div>
+            </div>
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                <div class="searcharea_left">
+                    <label for="datepickerbegin">Begin Date:</label>
+                </div>
+                <div class="searcharea_right">
+                    <input type="text" id="datepickerbegin" value="01/01/2015">
+                </div>
+            </div>
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_Default">
+                <div class="searcharea_left">
+                    <label for="datepickerend">End Date:</label>
+                </div>
+                <div class="searcharea_right"> 
+                    <input type="text" id="datepickerend" value="01/31/2015">
+                </div>
+            </div>
+            
+            
+            
+            <!-- SubmitDataRequest UI Groups    ClimateModel UI  SubmitDataRequest_UI_ClimateModel -->
+            
+            <!-- Spacer -->
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="select_Ensemble_ClimateModel">Select a model ensemble:</label>
+                </div>
+                <div class="searcharea_right">
+                    <select name="select_Ensemble_ClimateModel" id="select_Ensemble_ClimateModel" onchange="select_Ensemble_Changed(this.value)" >
+                        <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Spacer
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            -->
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="select_Variable_ClimateModel">Select a variable:</label>
+                </div>
+                <div class="searcharea_right">
+                    <select name="select_Variable_ClimateModel" id="select_Variable_ClimateModel" onchange="select_ClimateVariable_Changed(this.value, true)" >
+                        <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Spacer
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            -->
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="span_ModelRunYYYYMM_ClimateModel">Current Model Run Year/Month:</label>
+                </div>
+                <div class="searcharea_right">
+                    <span id="span_ModelRunYYYYMM_ClimateModel">dynamic_PLACEHOLDER</span>
+                </div>
+            </div>
+            
+            <!-- Spacer -->
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            
+            <!-- Check Box, is Download Current Dataset? (Grey out the 'Select Operation Type' box if selected.) -->
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="select_OperationType_ClimateModel">Select operation Type:</label>
+                </div>
+                <div class="searcharea_right">
+                    <select name="select_OperationType_ClimateModel" id="select_OperationType_ClimateModel">
+                        <option value="0">Max</option>
+                        <option value="1">Min</option>
+                        <!-- KS Refactor 201511 clientupdates_201511 -->
+                        <!--
+                        <option value="2">Median</option>
+                        <option value="3">Range</option>
+                        <option value="4">Sum</option>
+                        -->
+                        <option value="5" selected="selected">Average</option>
+                        <option value="6">Download Raw Data</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Spacer
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            -->
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+               <div class="searcharea_left">
+                    <label for="select_dateintervalmenu_ClimateModel">Date Interval:</label> 
+               </div>
+               <div class="searcharea_right">
+                   
+                   <select name="select_dateintervalmenu_ClimateModel" id="select_dateintervalmenu_ClimateModel">
+                       <option value="0">Daily</option>
+                       <!--
+                       <option value="1">Monthly</option>
+                       <option value="2">Yearly</option>
+                       -->
+                   </select>
+               </div>
+            </div>
+            
+            <!-- Spacer -->
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div>
+            
+            
+            
+                    
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">Select Forecast Range:</div>
+                <div class="searcharea_right"><span id="span_NumOfForecastDays_ClimateModel">dynamic_PLACEHOLDER</span></div>
+            </div>
+            
+            <!-- Putting the range labels next to their boxes and arranging them horizontally -->
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="select_RangeFrom_ClimateModel">From:</label>
+                    <select name="select_RangeFrom_ClimateModel" id="select_RangeFrom_ClimateModel" onchange="select_RangeFrom_Changed(this.value, true)" >
+                        <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                    </select>
+                </div>
+                <div class="searcharea_right">
+                    <label for="select_RangeTo_ClimateModel">To:</label>
+                    <select name="select_RangeTo_ClimateModel" id="select_RangeTo_ClimateModel" onchange="select_RangeTo_Changed(this.value, true)" >
+                        <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Putting the range labels on the left and the two drop downs on the right
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="select_RangeFrom_ClimateModel">From:</label>
+                </div>
+                <div class="searcharea_right">
+                    <select name="select_RangeFrom_ClimateModel" id="select_RangeFrom_ClimateModel" onchange="select_RangeFrom_Changed(this.value)" >
+                        <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                    </select>
+                </div>
+            </div>
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">
+                    <label for="select_RangeTo_ClimateModel">To:</label>
+                </div>
+                <div class="searcharea_right">
+                    <select name="select_RangeTo_ClimateModel" id="select_RangeTo_ClimateModel" onchange="select_RangeTo_Changed(this.value)" >
+                        <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                    </select>
+                </div>
+            </div>
+            -->
+            
+            
+            <!-- Forecast boxes end -->
+            
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div class="searcharea_left">&nbsp;</div><div class="searcharea_right">&nbsp;</div>
+            </div> 
+            
+            <!-- Forecast boxes end -->
+            <!--
+            <div class="searcharea_newrow">
+                <div class="searcharea_left">&nbsp;</div>
+                <div class="searcharea_right">&nbsp;</div>
+            </div>
+            -->
+            
+            <!-- SubmitDataRequest UI Groups    END  -->
+            
+            <!-- Spacer before submit/cancel button row -->
+            <div class="searcharea_newrow">
+                <div class="searcharea_left">&nbsp;</div>
+                <div class="searcharea_right">&nbsp;</div>
+            </div>
+                <center>
+            <input type="button" value="Submit" name="Submit" id="submitsearchbutton">
+            <input type="button" value="Cancel" name="Cancel" id="cancelbutton">
+                </center>
+            
+            <!-- Spacer before submit/cancel button row -->
+            
+            <div class="searcharea_newrow">
+                <div class="searcharea_left">&nbsp;</div>
+                <div class="searcharea_right">&nbsp;</div>
+            </div>
+            
+            <div class="searcharea_newrow SubmitDataRequest_UI SubmitDataRequest_UI_ClimateModel">
+                <div style="color:#FFE73D">
+                    Disclaimer: This data represents a seasonal prediction and under no circumstances should be construed as a weather forecast product. It is developed primarily as a daily representation of NMME monthly forecasts and should be used for comparison against historical trends.
+                </div>
+                <!-- Blank -->
+                <!--
+                <div class="searcharea_left">
+                    
+                </div>
+                <div class="searcharea_right">
+                    
+                </div>
+                -->
+            </div>
+            
+            
+            
+        </div>
+        <!-- </div> -->
+        <ul id="top_menu">
+            <li><a href="javascript:clearPolygon();popAreaMenu()"><img style="vertical-align: middle;" src="img/location.png"><div id="geometry_edit_button" style="display: inline">Create Location</div></a></li>
+            <li><a id="creategraphlink" href="javascript:popGraphMenu();"><img style="vertical-align: middle;" src="img/graphs.png">Get Data</a></li>
+            <!-- KS Refactor 201511 clientupdates_201511 -->
+            <li><a href="javascript:window.open('about.html');"><img style="vertical-align: middle;" src="img/faq.png">About</a></li>
+            <li><a href="javascript:window.open('http://catalogue.servirglobal.net/Product?product_id=138');"><img style="vertical-align: middle;" src="img/pub.png">One Pager</a></li>
+            <!--
+            <li><a href="javascript:window.open('http://chg-wiki.geog.ucsb.edu/wiki/CHIRPS_FAQ');"><img style="vertical-align: middle;" src="img/faq.png">FAQ</a></li>
+            <li><a href="javascript:window.open('http://pubs.usgs.gov/ds/832/pdf/ds832.pdf');"><img style="vertical-align: middle;" src="img/pub.png">Publication List</a></li> 
+            -->
+        </ul>
+        <!--
+        <ul id="left_Side_AgriservUI">
+            <li>Item Area 1</li>
+            <li>
+                Item Area 2 Start
+                <br />
+                <br />
+                <div>Some Div in here</div>
+                <br />
+                <br />
+                Item Area 2 End
+            </li>
+            <li>Item Area 3</li>
+        </ul>
+        -->
+        <div id="logo-servir">
+            <img style="width:100px; height:82px;" src="img/Servir_Logo_Full_Color_Stacked2.jpg">
+        </div>
+        
+        
+        
+        
+        <div id="userHelper_Start" onclick="start_Helper_Clicked();">
+            Click Here to start
+        </div>
+        
+        <!-- TERRIBLE DEBUG CONTROL PANEL -->
+        <div id="agriserv_ControlPanel_Container" style="width:100%; height:500px; background-color:#99ff99">
+            
+            <br /><hr /><br />
+            Edit your Area of Interest Selections: <br />
+            <div id="radio_AOIs">
+                <input type="radio" id="static_Radio_AOI_01_ID" name="radio" checked="checked"><label for="static_Radio_AOI_01_ID">Area of Interest: 1</label>
+                <input type="radio" id="static_Radio_AOI_02_ID" name="radio"><label for="static_Radio_AOI_02_ID">Area of Interest: 2</label>
+            </div>
+            
+            <br /><hr /><br />
+            
+            <div id="NDVIBottomThreshold_Container">
+                Choose NDVI Bottom Threshold (Untested Default should be half the min + max value of filtered raw data)<br />
+                <select name="select_NDVIBottomThreshold" id="select_NDVIBottomThreshold" onchange="select_NDVIBottomThreshold_Changed(this.value)" >
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5">0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                </select>
+            </div>
+            
+            <br /><hr /><br />
+            
+            <!--
+            <div id="GrowingSeason_Threshold_Container">
+                <div id="GrowingSeason_Threshold_Slider"></div>
+            </div>
+            -->
+            
+            <br /><hr /><br />
+            
+            <!--
+            <div id="GrowingSeasons_Output_Container">
+                GrowingSeasons_Output_Container UNSET
+            </div>
+            -->
+            
+            <br /><hr /><br />
+            
+            <!-- Toggle Button -->
+            <!--<input type="checkbox" id="checkbox_PolyDrawingEnabled"><label for="check">Draw AOI</label>-->
+            
+            <!-- TEST DEBUG OUTPUT AREA -->
+            <!--<span onclick="ucc_Test_Do_FullPipelineTest__UIInputs_To_Requests_To_Outputs()">[Run Full Pipeline Test]</span><br />-->
+            <span onclick="test_UseCase_A_Handler()">[test_UseCase_A_Handler]</span><br />
+            <span>DEBUG OUTPUT:</span><br />
+            <br />
+            <span id="DEBUG_jobStatusOutput">UNSET</span><br />
+            <br />
+            <span id="TEST_DEBUG_OUTPUT_BLOCK">UNSET</span>
+            
+        </div>
+        
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-27020636-4', 'auto');
+            ga('send', 'pageview');
+        </script>
+
+    </body>
+
+</html>

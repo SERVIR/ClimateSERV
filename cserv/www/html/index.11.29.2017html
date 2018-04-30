@@ -1,0 +1,2156 @@
+<!doctype html>
+<html lang="en">
+    <head>
+<script>
+if (window.location.href.toLowerCase().indexOf("agriserv") != -1)
+{
+	window.location = 'agriservindex.html';
+}
+	
+</script>
+<!--        <link rel="stylesheet" href="https://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" type="text/css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Condensed" type="text/css" />
+        <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.10.4.custom.css" />
+        <link rel="stylesheet" href="css/jquery.css" />
+        <link rel="stylesheet" href="css/ol.css" />
+        <link rel="stylesheet" href="css/red-glass/sidebar.css" />
+        <link rel="stylesheet" href="css/servir.css" />
+
+        <script src="js/libs/openlayers/climateserv_ol.js" type="text/javascript"></script>
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        <script src="js/libs/d3/d3.min.js"></script>
+        <script src="js/libs/jquery-timer/jquery.timer.js"></script>
+        <script src="js/libs/savefig/saveSvgAsPng.js"></script>
+        <script src="js/libs/dimple/dimple.v2.1.0.js"></script>
+        <script src="js/libs/jquery-sidebar/jquery.sidebar.js"></script>
+        
+        
+        <!-- Design 2016 -->
+        <!-- <script src="js/libs/jquery/jquery.js"></script>-->
+        <link rel="stylesheet" type="text/css" href="js/libs/semantic/dist/semantic.min.css">
+        <script src="js/libs/semantic/dist/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="design/design2016/design2016.css">
+        <script src="design/design2016/design2016.js"></script>
+        <!-- ClimateSERV Specific Overrides -->
+        <link rel="stylesheet" type="text/css" href="design/design2016/climateserv.css">
+        <script src="design/design2016/climateserv.js"></script>
+        
+        <!-- FUNCTIONAL CODE FOR CLIMATESERV-->
+        <script src="js/servirnasa2017.js"></script>
+
+    <title>SERVIR ClimateSERV</title>
+        <script type="text/javascript">
+           
+            function displayMenu() {
+                if (document.getElementById("respMenu").style.display == "none")
+                    document.getElementById("respMenu").style.display = "block";
+                else
+                    document.getElementById("respMenu").style.display = "none";
+
+            }
+        </script>
+        <style>
+            .ismobile{
+                display:none;
+                height:200px;
+                width:200px;
+            }
+        .icon-content {
+            display:none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .icon-content a {
+                color: cadetblue;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+            .iconResponsive {
+            display: none;
+            color: cadetblue;
+            font-size: 20px;
+        }
+            #popup_SelectData_DataSource_ToolTip1,#popup_SelectData_Calculations_ToolTip1{
+                display:none;
+            }
+             #tt1,#tt2{
+                    display:none;
+                }
+                   #tt1_close,#tt2_close{
+              display:none;
+          }
+            @media only screen and (max-height: 600px) and (max-width: 1000px){
+               
+           
+                /*#popup_SelectData_DataSource_ToolTip1,#popup_SelectData_Calculations_ToolTip1{
+                    display:block;
+                }
+                 #popup_SelectData_DataSource_ToolTip,#popup_SelectData_Calculations_ToolTip{
+                     display:none;
+                 }
+                          #subPage_GetStarted {
+height: 100%;
+                    left: 0;
+                    position: absolute;
+                    overflow-y: scroll;
+                }*/
+            }
+            
+            @media only screen and (max-height: 880px) and (max-width: 1000px) {
+
+                #subPage_SelectData {
+                    height: 100%;
+                    left: 0;
+                   
+                    position: absolute;
+                    overflow-y: scroll;
+                }
+ 
+            }
+
+            @media only screen and (max-width: 1000px) {
+                 
+          #popup_SelectData_DataSource_ToolTip1,#popup_SelectData_Calculations_ToolTip1{
+                    display:block;
+                }
+          #tt1_close,#tt2_close{
+              display:block;
+          }
+           
+                .servir_helper_topPadding_075rem{
+                    width:160%;
+                    text-align:start;
+                }
+                .servir_helper_topPadding_075rem.servir_text_helper_fontWeight_600{
+                    width:140%;
+                    text-align:center;
+                }
+                .servir_helper_width_112rem,.ui.button.servir_design2016_button_green_color.servir_helper_roundedCornerAll_Button{
+                    width:100%;
+                }
+              #helpIcon_SelectData_DataSource_ToolTip,#helpIcon_SelectData_Calculations_ToolTip  {
+                padding-top: 5px; text-align: center; width: 100%;
+            }
+                 .iconResponsive {
+                right:35px;
+                display: inline;
+                height:10px;
+                padding-right:10px;
+            }
+                servir_helper_topPadding_075rem{
+                    width:100%;
+                    height:50px;
+                        text-align: start;
+                }
+                .ui.dropdown.servir_helper_stretchDropdown_70pct{
+                    width:100%;
+                }
+            .ui.input {
+                      width:100%;
+            }
+            
+             .five.wide.right.aligned.column{
+                 text-align:center;
+                        margin-left: 32%;
+                        width: 100%;
+                        padding: 10px;
+
+             }
+             .eleven.wide.left.aligned.column{
+                  min-width: 100%;
+                  margin:auto;
+                  
+             }
+                .servir_popup_getStarted_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+
+                }
+
+                .servir_popup_selectArea_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                    min-height:100%;
+                               overflow:scroll;
+                }
+
+                .servir_popup_selectData_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    min-height:100%;
+                    margin: 0 auto !important;
+                                        overflow:scroll;
+
+                    
+                }
+
+                #datepickerbegin, #datepickerend {
+                    width: 100%;
+                }
+
+                .servir_popup_jobProgress_fixedWidth {
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                     overflow:scroll;
+                    height:100%;
+                }
+
+                .servir_popup_chartUI_fixedWidth {
+                    /*
+	                max-width: 730px !important;
+                    min-width: 730px !important; 
+	                */
+                    max-width: 100% !important;
+                    min-width: 100% !important;
+                    margin: 0 auto !important;
+                    overflow:scroll;
+                    height:100%;
+                }
+
+                #logo-servir {
+                    display: none;
+                }
+
+                #logo_header {
+                    display: none;
+                }
+
+                .servir_helper_topMargin_01em {
+                    margin-left: 70%;
+                }
+
+                .servir_text_welcome_header {
+                    color: #AAAAAA !important;
+                    /* font-family: 'Open Sans', Arial, Helvetice Neue, sans-serif;  */ /*    font-family: Trebuchet MS;*/
+                    /* font-size: 3.2rem; */
+                    font-weight: 100;
+                    font-family: roboto;
+                    font-size: 45px;
+                    width:90%;
+                    margin-left:5%;
+                }
+
+                #for500 {
+                    display: none;
+                }
+
+                #footer_img {
+                    margin-left: 15%;
+                }
+                .reduce{
+                    display:none;
+                }
+                .servir_helper_noScroll_Vert{
+                    position:fixed;
+                }
+               #chartUI_ButtonContainer_Back,
+#chartUI_ButtonContainer_ExportToPNG,
+#chartUI_ButtonContainer_ExportToCSV,#chartUI_ButtonContainer_ExportPolygon{
+display:none;
+}
+                #get_started{
+                    width:70%;
+                }
+                #tt1{
+                    display:none;
+                    font-size:12px;
+                    background-color:black;
+                    color:white;
+                    padding:5px;
+                    top:100px;
+                    width:300px;
+                    position:fixed;
+                    z-index:10;
+                    height:350px;
+                    margin:7%;
+                }
+                #tt2{
+                    display:none;
+                    font-size:12px;
+                    background-color:black;
+                    color:white;
+                    padding:5px;
+                    top:100px;
+                    width:300px;
+                    position:fixed;
+                    z-index:10;
+                    height:300px;
+                                        margin:7%;
+
+                }
+
+            }
+        </style>
+        <script type="text/javascript">
+      
+            function test1() {
+                if ($("#popup_SelectData_Calculations_ToolTip1").css("display") == "none") {
+
+                }
+                else {
+                    if (document.getElementById("tt1").style.display == "none") {
+                        document.getElementById("tt1").style.display = "block";
+                    }
+                    else
+                        document.getElementById("tt1").style.display = "none";
+                 
+
+                    // Later in the script - Show it but only If it's not visible.  
+                 
+                }
+            }
+            function test() {
+                if ($("#popup_SelectData_DataSource_ToolTip1").css("display") == "none") {
+                }
+                else {
+                
+                    if (document.getElementById("tt2").style.display == "none") {
+                        document.getElementById("tt2").style.display = "block";
+                    }
+                    else {
+                        document.getElementById("tt2").style.display = "none";
+                    }
+
+
+                    // Later in the script - Show it but only If it's not visible.  
+                    
+                }
+
+            }
+            function tt_close() {
+                $("#tt1").hide();
+                $("#tt2").hide();
+            }
+        </script>
+        <style>
+         
+        </style>
+    </head>
+    
+    
+    
+<body class="servir_helper_noScroll_Vert" style="background-color:black;">
+        
+
+
+<!-- Full Page Framework -->
+<div class="ui grid servir_helper_topbotMargin_0">
+    <div class="one column row servir_helper_fixedHeight_60px" data-role="header" style="background-color:#221111;">
+        <div class="column">
+        
+            <!-- Header with Nav Buttons -->
+            <div class="servir_design2016_header_bg">
+                <div class="ui grid servir_helper_maxHeight_60px">
+                    <div class="two wide column"></div>
+                    <div class="two wide column servir_helper_topPadding_08rem"><img id="logo_header" src="design/design2016/images/logo_climateserv_WithGlobe.png" alt="ClimateSERV" /></div>
+                    <div class="two wide column"></div>
+                    <div class="eight wide column">
+                        <div class="ui grid servir_helper_topMargin_01em">
+                            <!-- With 4 items, this is 16/4 -->
+                            
+                            <div class="seven wide center aligned column servir_helper_topPadding_04rem"><a class="servir_text_menu_item" onclick="event_WelcomePage_GetStarted_Button_Clicked();">GET STARTED</a></div>
+                            <!-- Hiding How it works Menu  Column widths, 5,5,5,1 works well with 3 menu items.   For 2 items, trying, 7,7,2
+                            <div class="five wide center aligned column servir_helper_topPadding_04rem"><a class="servir_text_menu_item" onclick="event_WelcomePage_HowItWorks_Button_Clicked();">HOW IT WORKS</a></div>
+                            -->
+                            <div class="seven wide center aligned column servir_helper_topPadding_04rem"><a class="servir_text_menu_item" href="aboutclimateserv.html">ABOUT CLIMATESERV</a></div>
+                            <div class="two wide center aligned column servir_helper_topPadding_04rem"><!-- <a class="servir_text_menu_item" onclick="alert('TODO! CONNECT ME!')">LEARNING CENTER</a> --></div>
+                            
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+    <div class="one column row dimmable servir_helper_topbotPadding_0" data-role="content" style="background-color:#112211;"> <!-- data-role="content" -->
+        
+        <!-- Refactor: Removing the side bar and pusher parts
+        <div id='div_For_SideBarGraphContext' class='servir_helper_width_100pct'>
+        -->
+			
+            <!--           
+            <div onclick="$('#div_sidebar_GraphUIContainer').sidebar({context:$('#div_For_SideBarGraphContext')}).sidebar('setting', 'transition', 'overlay').sidebar('toggle');">
+            [Enable_Side_Bar]
+            </div>
+            -->
+			<!-- Refactor: Removing the side bar and pusher parts
+            <div id="div_sidebar_GraphUIContainer" class="ui very huge sidebar vertical menu">
+                <a class="item" onclick="$('#div_sidebar_GraphUIContainer').sidebar('toggle');">
+                    [return to map]
+                </a>
+                <a class="item">
+                    2
+                </a>
+                <a class="item">
+                    3
+                </a>
+            </div>
+			-->
+			
+        
+            <!-- Content Section -->
+			
+            <!-- Refactor: Removing the side bar and pusher parts
+			<div class="pusher" data-role="content"> 
+			-->
+
+                <!-- Statically defined HTML Dimmer.-->
+                <div class="ui dimmer">
+                    <div class="content">
+
+                        <div id="dimmer_On_Content_Placeholder"></div>
+
+
+                        <!-- SubPages: Welcome Page -->
+                        <div id="subPage_Welcome" class="servir_climateserv_subpage servir_helper_hidden">
+
+                            <div>
+                                <div class="ui grid">
+                                    <div class="one column row">
+                                        <div class="center aligned column">
+                                            <div class="servir_text_welcome_header">Welcome to ClimateSERV</div>
+                                        </div>
+                                    </div>
+                                    <div class="one column row">
+                                        <div class="center aligned column">
+                                            <div class="servir_text_welcome_subtext">
+                                                <!--  HIDING SUBTEXT (12-04-2016)
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod.<br />
+                                                bibendum laoreet. Proin gravida dolor sit amet lacus
+                                                -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="one column row">
+                                        <div class="center aligned column">
+                                            <div class="ui grid">
+                                                <div class="one column row">
+                                                    <div class="center aligned column">
+                                                        <!-- Button: Welcome Area, 'HOW IT WORKS' -->
+                                                        <!-- Hiding 'how it works' button START
+                                                        <button class="ui button servir_design2016_button_blue_color" onclick="event_WelcomePage_HowItWorks_Button_Clicked();">
+                                                            <div class="content servir_design2016_button_wide">
+                                                                <div class="center">
+                                                                    <div class="servir_text_button_main">HOW IT WORKS</div>
+                                                                    <div class="servir_text_button_sub">Learn how to use ClimateSERV</div>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                        &nbsp;
+                                                        Hiding 'how it works' button END -->
+                                                        <!-- Button: Welcome Area, 'GET STARTED' -->
+                                                        <button id="get_started" class="ui button servir_design2016_button_green_color servir_helper_roundedCornerAll_Button" onclick="event_WelcomePage_GetStarted_Button_Clicked();">
+                                                            <div  class="content servir_welcome_getStartedButton_padding_override">
+                                                                <div class="center">
+                                                                    <div class="servir_text_button_main">GET STARTED</div>
+                                                                    <div class="servir_text_button_sub">Gather data using ClimateSERV</div>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    </div>               
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- SubPages: How It Works Page -->
+                        <div id="subPage_HowItWorks" class="servir_climateserv_subpage servir_helper_hidden">
+
+                            <div class="ui grid">
+                                <div class="one column row">
+                                    <div class="four wide column"></div>
+                                    <div class="eight wide column">
+                                        <div class="ui segments servir_helper_roundedCornerAll_Override">
+                                            <div class="ui segment servir_helper_roundedCornerTop_Override">
+                                                <div class="ui grid">
+                                                    <div class="two column row">
+                                                        <div class="left aligned column">
+                                                            <div class="servir_text_fixedModal_subtleTitle">HOW IT WORKS</div>
+                                                        </div>
+                                                        <div class="right aligned column">
+                                                            <i class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="event_HowItWorks_TopRightX_Clicked();"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ui center aligned segment servir_helper_roundedCornerBottom_Override">
+                                                <div class="ui grid">
+                                                    <div class="three column row">
+                                                        <div class="one wide column"></div>
+                                                        <div class="center aligned fourteen wide column">
+                                                            <div class="servir_helper_topPadding_10rem"></div>
+                                                            <div class="servir_text_fixedModal_mainTitle servir_helper_topPadding_10rem">HOW IT WORKS</div>
+                                                            <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod.<br />
+                                                                bibendum laoreet. Proin gravida dolor sit amet lacus
+                                                            </div>
+                                                            <div class="servir_text_fixedModal_fieldLabel servir_helper_topPadding_10rem">
+                                                                A Story Map could go here, <br />
+                                                                Or an embedded video could go here, <br />
+                                                                and/or another embedded video could go here, <br />
+                                                                PLACEHOLDER for Learning Center: TODO: Find out what 'tabs' need to be moved into here.. (This is from the meeting notes doc), <br />
+                                                            </div>
+                                                            <div class="servir_helper_topPadding_10rem">
+                                                                <!-- Button: How It Works, 'LEARNING CENTER' -->
+                                                                <!--  (NO LEARNING CETNER ON CURRENT RELEASE VERSION..)
+                                                                <button class="ui button servir_design2016_button_blue_color servir_helper_width_132rem" onclick="event_HowItWorksPage_LearningCenter_Button_Clicked();">
+                                                                    <div class="content servir_design2016_button_semiNarrow">
+                                                                        <div class="center">
+                                                                            <div class="servir_text_button_main">LEARNING CENTER</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                &nbsp;
+                                                                -->
+                                                                <!-- Button: How It Works, 'GET STARTED' -->
+                                                                <button class="ui button servir_design2016_button_green_color servir_helper_width_132rem servir_helper_roundedCornerAll_Button" onclick="event_HowItWorksPage_GetStarted_Button_Clicked();">
+                                                                    <div class="content servir_design2016_button_semiWide">
+                                                                        <div class="center">
+                                                                            <div class="servir_text_button_main">GET STARTED</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="one wide column"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="four wide column"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- SubPages: Get Started Page -->
+                        <div id="subPage_GetStarted" class="servir_climateserv_subpage servir_helper_hidden">
+
+                            <div class="ui grid">
+                                <div class="one column row">  
+                                    <!--<div class="four wide column"></div>-->
+                                    <div class="sixteen wide column">
+                                        <div class="ui segments servir_helper_roundedCornerAll_Override servir_popup_getStarted_fixedWidth">
+                                            <div class="ui segment servir_helper_roundedCornerTop_Override">
+                                                <div class="ui grid">
+                                                    <div class="two column row">
+                                                        <div class="left aligned column">
+                                                            <div class="servir_text_fixedModal_subtleTitle">GET STARTED</div>
+                                                        </div>
+                                                        <div class="right aligned column">
+                                                            <i class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="event_GetStarted_TopRightX_Clicked();"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ui center aligned segment servir_helper_roundedCornerBottom_Override">
+                                                <div class="ui grid">
+                                                    <div class="three column row">
+                                                        <div class="two wide column"></div>
+                                                        <div class="center aligned twelve wide column">
+                                                            <div class="servir_helper_topPadding_10rem"></div>
+                                                            <div class="servir_text_fixedModal_mainTitle servir_helper_topPadding_10rem">GET STARTED</div>
+                                                            <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                Select an action below to begin your research
+                                                            </div>
+                                                            <div class="servir_helper_topPadding_10rem">
+                                                                <div class="ui segment servir_design2016_segment_button_grey_color" onclick="event_GetStarted_DrawCustomPoly_Button_Clicked();">
+                                                                    <div class="ui grid">
+                                                                        <div class="two column row">
+                                                                            <div class="two wide column">
+                                                                                <img class="reduce" src="design/design2016/images/icon_pencil.png" alt="Draw Custom Polygon" width="37" height="37" /> 
+                                                                            </div>
+                                                                            <div class="fourteen wide left aligned column">
+                                                                                <div class="">
+                                                                                    <span class="servir_text_fixedModal_iconButton_mainText">Draw custom polygon</span>
+                                                                                    <div style="margin-top: 6px;"></div>
+                                                                                    <span class="servir_text_fixedModal_iconButton_subtleText">Interact with the map to create a closed polygon</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ui segment servir_design2016_segment_button_grey_color" onclick="event_GetStarted_ChooseFeatureOnMap_Button_Clicked();">
+                                                                    <div class="ui grid">
+                                                                        <div class="two column row">
+                                                                            <div class="two wide column">
+                                                                                <img class="reduce" src="design/design2016/images/icon_world.png" alt="Choose feature on map" width="37" height="37" />
+                                                                            </div>
+                                                                            <div class="fourteen wide left aligned column">
+                                                                                <div class="">
+                                                                                    <span class="servir_text_fixedModal_iconButton_mainText">Choose feature on map</span>
+                                                                                    <div style="margin-top: 6px;"></div>
+                                                                                    <span class="servir_text_fixedModal_iconButton_subtleText">Select areas on the map by administrative boundaries</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ui segment servir_design2016_segment_button_grey_color" onclick="event_GetStarted_LoadGeoJSONFile_Button_Clicked();">
+                                                                    <div class="ui grid">
+                                                                        <div class="two column row">
+                                                                            <div class="two wide column">
+                                                                                <img class="reduce" src="design/design2016/images/icon_filein.png" alt="Load GeoJson file from local system" width="37" height="37" />
+                                                                            </div>
+                                                                            <div class="fourteen wide left aligned column">
+                                                                                <div class="">
+                                                                                    <span class="servir_text_fixedModal_iconButton_mainText">Load GeoJson file from local system</span>
+                                                                                    <div style="margin-top: 6px;"></div>
+                                                                                    <span class="servir_text_fixedModal_iconButton_subtleText">Import a GeoJson file from your system</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>    
+                                                            </div>
+                                                        </div>
+                                                        <div class="two wide column"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="four wide column"></div>-->
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- SubPages: Select Area Page -->
+                        <div id="subPage_SelectArea" class="servir_climateserv_subpage servir_helper_hidden">
+
+                            <div class="ui grid">
+                                <div class="one column row">  
+                                    <!--<div class="four wide column"></div>-->
+                                    <div class="sixteen wide column">
+                                        <div class="ui segments servir_helper_roundedCornerAll_Override servir_popup_selectArea_fixedWidth" id="selectArea_Movable_ID">
+                                            <div class="ui segment servir_helper_roundedCornerTop_Override">
+                                                <div class="ui grid">
+                                                    <div class="two column row">
+                                                        <div class="left aligned column">
+                                                            <div class="servir_text_fixedModal_subtleTitle">SELECT AREA</div>
+                                                        </div>
+                                                        <div class="right aligned column">
+                                                            <i class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="event_SelectArea_TopRightX_Clicked();"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ui center aligned segment servir_helper_roundedCornerBottom_Override">
+                                                <div class="ui grid">
+                                                    <div class="three column row">
+                                                        <div class="one wide column"></div>
+                                                        <div class="center aligned fourteen wide column">
+                                                            <div class="servir_helper_topPadding_10rem"></div>
+                                                            <div class="servir_text_fixedModal_mainTitle servir_helper_topPadding_10rem">SELECT AREA</div>
+                                                            <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                Modify and select area of interest on map
+                                                            </div>
+                                                            <br />
+                                                            <div  class="servir_helper_topPadding_10rem">
+                                                                <div class="ui grid servir_text_fixedModal_fieldLabel">
+                                                                    <div id="to_center" class="two column row servir_helper_topbotPadding_01">
+                                                                        <div class="five wide right aligned column">
+                                                                            <div class="servir_helper_topPadding_075rem">Select Areas By:</div>
+                                                                        </div>
+                                                                        <div class="eleven wide left aligned column">
+                                                                            <!-- [Select Area, Data Type v] -->
+                                                                            <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="selectmenu" id="selectmenu">  <!-- Funky, non straightforward logic in the existing jquery handler here.. follow the ID to see it. -->
+                                                                                <option value="0">Country</option>
+                                                                                <option value="1">Admin #1</option>
+                                                                                <option value="2">Admin #2</option>
+                                                                                <!--  <option value="3">Select by FTF ZOI</option>-->
+                                                                            </select>   
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!-- [Select Area, Display Layers v] -->
+                                                                    <!--
+                                                                    <div class="two column row servir_helper_topbotPadding_01">
+                                                                        <div class="five wide right aligned column">
+                                                                            <div class="servir_helper_topPadding_075rem">Show Boundaries:</div>
+                                                                        </div>
+                                                                        <div class="eleven wide left aligned column">
+                                                                            
+                                                                            <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="selectlayer" id="selectlayer">
+                                                                                <option value="0">Select by Country</option>
+                                                                                <option value="1">Select by Admin #1</option>
+                                                                                <option value="2">Select by Admin #2</option>
+                                                                                <option value="3">Select by FTF ZOI</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    -->
+                                                                    <div class="two column row servir_helper_topbotPadding_01">
+                                                                        <div class="five wide right aligned column">
+                                                                            <div class="servir_helper_topPadding_075rem" id="SelectArea_ShowLabels_Label_Part">Show Labels:</div>
+                                                                        </div>
+                                                                        <div class="eleven wide left aligned column">
+                                                                            <!-- [Select Area, [x] Countries-->
+                                                                            <div class="servir_helper_topPadding_075rem" id="SelectArea_ShowLabels_Checkbox_Part">
+                                                                                <div class="ui checkbox">
+                                                                                    <input type="checkbox" id='checkbox_SelectArea_ShowLabels_Countries' name="checkbox_SelectArea_ShowLabels_Countries" onchange="event_Checkbox_SelectArea_ShowLabels_Countries_Changed();">
+                                                                                    <label class="servir_text_fixedModal_fieldLabel"></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- (TODO!! INSERT A '<span onclick='event_SelectArea_StartSelectingFromMap();'>[START SELECTING FROM MAP]</span>' BUTTON HERE) -->
+                                                                </div>
+                                                            </div>
+                                                            <br />
+                                                            <div class="servir_helper_topPadding_10rem">
+                                                                <!-- Button: Select Area, 'START SELECTING' -->
+                                                                <button class="ui button servir_design2016_button_green_color servir_helper_roundedCornerAll_Button" onclick="event_SelectArea_StartSelectingFromMap();">
+                                                                    <div class="content servir_design2016_button_wide">
+                                                                        <div class="center">
+                                                                            <div class="servir_text_button_main">START SELECTING</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                <!-- ANY BUTTONS HERE? (Maybe a button to toggle selecting/drawing (interaction) on the map, and then a done button on that popup?) -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="one wide column"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="four wide column"></div>-->
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- SubPages: Select Data Page (Previously called, 'Get Data') -->
+                        <div id="subPage_SelectData" class="servir_climateserv_subpage servir_helper_hidden">
+
+                            <div class="ui grid">
+                                <div class="one column row">  
+                                    <!--<div class="four wide column"></div>-->
+                                    <div class="sixteen wide column">
+                                        <div class="ui segments servir_helper_roundedCornerAll_Override servir_popup_selectData_fixedWidth">
+                                            <div class="ui segment servir_helper_roundedCornerTop_Override">
+                                                <div class="ui grid">
+                                                    <div class="two column row">
+                                                        <div class="left aligned column">
+                                                            <p id='tt1'><i id="tt1_close" style="float:right" class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="tt_close();"></i><br/><b>Min</b><br />The minimum value found for all data in a given geographical selected area for each time interval in the date range.  Sometimes for large area selections, a value of 0 will be returned for every date.  If this happens, try selecting a smaller area.<br /><b>Max</b><br />The maximum value found for all data in a given geographical selected area for each time interval in the selected date range.<br /><b>Average</b><br />The average value for the entire geographical selected area for each time interval in the selected date range.<br /><b>Download</b><br />Some datasets support the option to download a zip file of clipped raw data.  The format of data download is a single zip file which contains a set of geotif files for each time interval in the date selected range.</p>
+                                                            <p id='tt2'><i id="tt2_close" style="float:right"  class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="tt_close();"></i><br /><b>CHIRPS Rainfall</b><br />Climate Hazards group IR Precipitation with Stations (CHIRPS).<br /><b>eMODIS NDVI</b><br />MODIS-derived Normalized Difference Vegetation Index (eMODIS NDVI).  NDVI datasets for the following regions are available: West Africa, East Africa, Southern Africa, and Central Asia <br /><b>Seasonal Forecast</b><br />North American Multi-Model Ensemble (NMME).  Up to 180 day forecast models available.  This dataset supports download capabilities. <br /><b>IMERG 1 Day</b><br />1 Day rainfall accumulations product from the Integrated Multi-satellitE Retrievals (IMERG) for Global Precipitation Mission (GPM).</p>
+                                                            <div id="for_drop" class="servir_text_fixedModal_subtleTitle">SELECT DATA</div>
+                                                        </div>
+                                                        <div class="right aligned column">
+                                                            <i class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="event_SelectData_TopRightX_Clicked();"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ui center aligned segment servir_helper_roundedCornerBottom_Override">
+                                                <div class="ui grid">
+                                                    <div class="three column row">
+                                                        <div class="one wide column"></div>
+                                                        <div class="center aligned fourteen wide column">
+                                                            <div class="servir_helper_topPadding_10rem">
+															<span style="color: deeppink;">Disclaimer: Our NDVI data provider has stopped producing a 5 day product.  We are working to remedy the situation.</span>
+															</div>
+
+                                                            <div class="servir_text_fixedModal_mainTitle servir_helper_topPadding_10rem">SELECT DATA</div>
+                                                            <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                Define parameters
+                                                            </div>
+                                                            <br />
+                                                            <div class="servir_helper_topPadding_10rem">
+
+
+                                                                <!-- New Top Level Elements Type of Request -->
+                                                                <div class="SelectData_TypeOfRequest_FormContainer" style="padding-bottom: 30px;">
+                                                                    <div class="ui grid servir_text_fixedModal_fieldLabel">
+
+                                                                        <div class="two column row servir_helper_topbotPadding_01">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem servir_text_helper_fontWeight_600">Type of Request:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Data Type Dropdown] (?)--> <!-- Legacy Name: name="typemenu" id="typemenu" -->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="selectData_typeOfRequest" id="selectData_typeOfRequest" onchange="selectData_typeOfRequest_Changed(this.value)/*select_dataType_Changed(this.value)*/">
+                                                                                    <option value="datasets">Datasets</option>
+                                                                                  <option value="monthly_analysis">Monthly Rainfall Analysis</option>
+                                                                                </select>
+                                                                                <!--<i id="helpIcon_SelectData_DataSource_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <!-- The rest of the dropdown UI's visibility is controlled based on what was selected in the 'Type of Request' box -->
+                                                                <div class="SelectData_Monthly_Analysis_FormContainer">
+                                                                    <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                        No other options are necessary.  Choose 'Submit Job' below to proceed.
+                                                                    </div>
+                                                                    <div class="servir_text_fixedModal_subtleTitle">
+                                                                        Monthly Rainfall Analysis is derived from a combination of CHIRPS historical data and current NMME Seasonal Forecast data.
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- Type of Request View State Container _ORIGINAL_ START -->
+                                                                <div class="SelectData_Datasets_FormContainer">
+
+                                                                    <div class="ui grid servir_text_fixedModal_fieldLabel">
+
+                                                                        <!-- Original Form with Default types and Seasonal Forecast Model types-->
+                                                                        <div class="two column row servir_helper_topbotPadding_01">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem servir_text_helper_fontWeight_600">Data Source:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Data Type Dropdown] (?)--> <!-- Legacy Name: name="typemenu" id="typemenu" -->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="typemenu" id="typemenu" onchange="select_dataType_Changed(this.value)">
+                                                                                    <option value="0">CHIRPS Rainfall</option>
+                                                                                    <option value="1">West Africa eMODIS NDVI</option>
+                                                                                    <option value="2">East Africa eMODIS NDVI</option>
+                                                                                    <option value="5">Southern Africa eMODIS NDVI</option>
+                                                                                    <option value="28">Central Asia eMODIS NDVI</option>
+                                                                                    <option value="ClimateModel">Seasonal_Forecast</option>
+                                                                                    <option value="IMERG1Day">IMERG 1 Day</option>
+                                                                                    <option value="29">Evaporative Stress Index (ESI)</option>
+                                                                                  <!--<option value="30">SMAP</option>-->
+
+                                                                                </select>
+                                                                                <i id="helpIcon_SelectData_DataSource_ToolTip" class="help circle icon" onclick="test();"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- DEFAULT SelectData UI    START -->
+                                                                        <!-- DEFAULT: Calculations -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_Default">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem servir_text_helper_fontWeight_600">Calculations:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Operation Type Dropdown v] (?)--> <!-- Legacy Name: name="operationmenu" id="operationmenu" -->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="operationmenu" id="operationmenu">
+                                                                                    <option value="0">Max</option>
+                                                                                    <option value="1">Min</option>
+                                                                                    <option value="5" selected="selected">Average</option>
+                                                                                    <!--<option value="6">Download Raw Data</option>-->
+                                                                                    <!--  OLD OPTIONS FROM ORIGINAL INDEX
+                                                                                       <option value="0">Max</option>
+                                                                                        <option value="1">Min</option>
+                                                                                        !-- KS Refactor 201511 clientupdates_201511 --
+                                                                                        !--
+                                                                                        <option value="2">Median</option>
+                                                                                        <option value="3">Range</option>
+                                                                                        <option value="4">Sum</option>
+                                                                                        --
+                                                                                        <option value="5" selected="selected">Average</option>
+                                                                                        !--<option value="6">Download Raw Data</option>--
+                                                                                    -->
+                                                                                </select>
+                                                                                <i id="helpIcon_SelectData_Calculations_ToolTip" class="help circle icon" onclick="test1();"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- DEFAULT: Start Date -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_Default">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem servir_text_helper_fontWeight_600">Start Date:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- Start Date [01/01/2016 v] -->
+                                                                                <div class="ui input"><input type="text" id="datepickerbegin" value="01/01/2016"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- DEFAULT: End Date -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_Default">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem servir_text_helper_fontWeight_600">End Date:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- End Date [02/01/2016 v]-->
+                                                                                <div class="ui input"><input type="text" id="datepickerend" value="02/01/2016"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- DEFAULT SelectData UI    END -->
+
+
+                                                                        <!-- SeasonalForecast (Dynamic) SelectData UI   START -->
+                                                                        <!-- SeasonalForecast: [Model Ensemble Dropdown v] (?)-->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">Select a model ensemble:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Model Ensemble Dropdown v] (?)-->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_Ensemble_ClimateModel" id="select_Ensemble_ClimateModel" onchange="select_Ensemble_Changed(this.value)" >
+                                                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                                                </select>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_SelectEnsemble_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- [Variable Dropdown v] (?)-->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">Select a variable:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Variable Dropdown v] (?)-->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_Variable_ClimateModel" id="select_Variable_ClimateModel" onchange="select_ClimateVariable_Changed(this.value, true)" >
+                                                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                                                </select>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_SelectVariable_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: Model Run Year/Month Label (?)-->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">Current Model Run Year/Month:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- Model Run Year/Month Label (?)-->
+                                                                                <div class="servir_helper_topPadding_075rem">
+                                                                                    <span id="span_ModelRunYYYYMM_ClimateModel">dynamic_PLACEHOLDER</span>
+                                                                                </div>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_ModelRunYYYYMM_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: Calculations -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">Calculations:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Calculations Dropdown v] (?)-->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_OperationType_ClimateModel" id="select_OperationType_ClimateModel">
+                                                                                    <option value="0">Max</option>
+                                                                                    <option value="1">Min</option>
+                                                                                    <option value="5" selected="selected">Average</option>
+                                                                                    <option value="6">Download Raw Data</option>
+                                                                                </select>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_Calculations_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: Date Interval Dropdown -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">Date Interval:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- [Date Interval Dropdown v] (?)-->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_dateintervalmenu_ClimateModel" id="select_dateintervalmenu_ClimateModel">
+                                                                                    <option value="0">Daily</option>
+                                                                                    <!--
+                                                                                    <option value="1">Monthly</option>
+                                                                                    <option value="2">Yearly</option>
+                                                                                    -->
+                                                                                </select>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_Calculations_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: Select Forecast Range: Max Days: 180 Label-->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">Select Forecast Range:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- Model Run Year/Month Label (?)-->
+                                                                                <div class="servir_helper_topPadding_075rem">
+                                                                                    <span id="span_MaxDays_Label">Max Days: 180</span>
+                                                                                </div>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_ModelRunYYYYMM_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: Start Date -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">From:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- From  Date [01/01/2016 F001 v] -->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_RangeFrom_ClimateModel" id="select_RangeFrom_ClimateModel" onchange="select_RangeFrom_Changed(this.value, true)" >
+                                                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                                                </select>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_FromDate_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: End Date -->
+                                                                        <div class="two column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="five wide right aligned column">
+                                                                                <div class="servir_helper_topPadding_075rem">To:</div>
+                                                                            </div>
+                                                                            <div class="eleven wide left aligned column">
+                                                                                <!-- From  Date [01/01/2016 F001 v] -->
+                                                                                <select class="ui dropdown servir_helper_stretchDropdown_70pct" name="select_RangeTo_ClimateModel" id="select_RangeTo_ClimateModel" onchange="select_RangeTo_Changed(this.value, true)" >
+                                                                                    <option value="dynamic_PLACEHOLDER">dynamic_PLACEHOLDER</option>
+                                                                                </select>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_ToDate_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast: Disclaimer -->
+                                                                        <div class="three column row servir_helper_topbotPadding_01 controlClass_selectData_Form_SeasonalForecast">
+                                                                            <div class="one wide right aligned column"></div>
+                                                                            <div class="fourteen wide left aligned column">
+                                                                                <div>
+                                                                                    Disclaimer: This data represents a seasonal prediction and under no circumstances should be construed as a weather forecast product. It is developed primarily as a daily representation of NMME monthly forecasts and should be used for comparison against historical trends.
+                                                                                </div>
+                                                                                <!-- <i id="helpIcon_SelectData_Seasonal_Disclaimer_ToolTip" class="help circle icon"></i>-->
+                                                                            </div>
+                                                                            <div class="one wide right aligned column"></div>
+                                                                        </div>
+                                                                        <!-- SeasonalForecast (Dynamic) SelectData UI   END -->
+
+                                                                    </div>
+
+                                                                </div> <!-- Type of Request View State Container _ORIGINAL_ END -->
+
+                                                            </div>
+                                                            <br />
+                                                            <div class="servir_helper_topPadding_10rem">
+                                                                <!-- Button: Get Data, 'CANCEL' -->
+                                                                <button class="ui button servir_design2016_button_grey_color servir_helper_width_112rem servir_helper_roundedCornerAll_Button" onclick="event_SelectData_ReDraw_Button_Clicked();">
+                                                                    <div class="content servir_design2016_button_narrow">
+                                                                        <div class="center">
+                                                                            <div class="servir_text_button_main">REDRAW</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                &nbsp;
+                                                                <!-- Button: Get Data, 'GET DATA' servir_helper_width_112rem -->
+                                                                <button class="ui button servir_design2016_button_green_color servir_helper_roundedCornerAll_Button" onclick="event_SelectData_SubmitJob_Button_Clicked();">
+                                                                    <div class="content servir_design2016_button_narrow">
+                                                                        <div class="center">
+                                                                            <div class="servir_text_button_main">SUBMIT JOB</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="one wide column"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="four wide column"></div>-->
+                                </div>
+                            </div>
+
+
+                        </div> 
+
+
+                        <!-- SubPages: Progress Page (Aka "JobProgress") -->
+                        <div id="subPage_JobProgress" class="servir_climateserv_subpage servir_helper_hidden">
+                            <div class="ui grid" >
+                                <div class="one column row">  
+
+                                    <!--<div class="four wide column"></div>-->
+
+                                    <div class="sixteen wide column">
+                                        <div class="ui segments servir_helper_roundedCornerAll_Override servir_popup_jobProgress_fixedWidth">
+                                            <div class="ui segment servir_helper_roundedCornerTop_Override">
+                                                <div class="ui grid">
+                                                    <div class="two column row">
+                                                        <div class="left aligned column">
+                                                            <div class="servir_text_fixedModal_subtleTitle">PROGRESS</div>
+                                                        </div>
+                                                        <div class="right aligned column">
+                                                            <i class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="event_Progress_TopRightX_Clicked();"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ui center aligned segment servir_helper_roundedCornerBottom_Override">
+                                                <div class="ui grid">
+                                                    <div class="three column row">
+                                                        <div class="one wide column"></div>
+                                                        <div class="center aligned fourteen wide column">
+                                                            <div class="servir_helper_topPadding_10rem"></div>
+                                                            <div class="servir_text_fixedModal_mainTitle servir_helper_topPadding_10rem">PROGRESS</div>
+                                                            <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                <!-- Sub Text here, Maybe a message about what happens when the progress is complete..-->
+                                                            </div>
+                                                            <br />
+                                                            <div class="servir_helper_topPadding_10rem">
+                                                                <div class="ui indicating progress" data-value="-1" data-total="100" id="div_UI_Progress_Bar">
+                                                                    <div class="bar"><div class="progress"></div></div>
+                                                                </div>
+                                                                <br />
+                                                                <div id="progresslabel" class="servir_text_fixedModal_fieldLabel">Waiting...</div> <!-- Legacy ID: progresslabel -->
+                                                                <br />
+                                                                <div id="requestId" class="servir_text_fixedModal_subtext">Job ID: (Waiting...)</div> <!-- Legacy ID: requestId -->
+                                                                <br />
+                                                                <div id="downloadFileURL" class="servir_text_fixedModal_fieldLabel"></div> <!-- Legacy ID: downloadFileURL -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="one wide column"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!--<div class="four wide column"></div>-->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- SubPages: Chart UI (Aka "ChartUI") -->
+                        <div id="subPage_ChartUI" class="servir_climateserv_subpage servir_helper_hidden">
+                            <div class="ui grid">
+                                <div class="one column row">  
+
+                                    <!--<div class="one wide column"></div>-->
+
+                                    <div class="sixteen wide column"> <!-- fourteen -->
+                                        <div class="ui segments servir_helper_roundedCornerAll_Override servir_popup_chartUI_fixedWidth">
+                                            <div class="ui segment servir_helper_roundedCornerTop_Override">
+                                                <div class="ui grid">
+                                                    <div class="two column row">
+                                                        <div class="left aligned column">
+                                                            <div class="servir_text_fixedModal_subtleTitle">CHART</div>
+                                                        </div>
+                                                        <div class="right aligned column">
+
+                                                            <a href="javascript:void(0);" class="iconResponsive" onclick="displayMenu()">&#9776;</a>
+                                                            <div id="respMenu" style="z-index:40;margin-top:4vw;margin-left:30vw;position:absolute;right:0;" class="icon-content">
+                                                                 <a class="chart_menu"  href="#" onclick="event_ChartUI_Button_StartOver_Clicked();"><b>Start Over</b> </a>
+                                                                <a class="chart_menu" href="#" onclick="event_ChartUI_Button_Back_Clicked();"><b>Change Parameters</b></a>
+                                                                <a class="chart_menu" href="#" onclick="event_ChartUI_Button_ExportToPolygon_Clicked();"><b>Export Polygon</b></a>
+
+                                                                <a class="chart_menu" href="#" onclick="event_ChartUI_Button_ExportToPNG_Clicked();"><b>Export To PNG</b></a>
+
+                                                                <a class="chart_menu" href="#" onclick="event_ChartUI_Button_ExportToCSV_Clicked();"><b>Export To CSV</b></a>
+                                                            </div>
+
+                                                            <i class="close icon servir_text_fixedModal_subtleTitle servir_helper_cursor_Pointer" onclick="event_ChartUI_TopRightX_Clicked();"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ui center aligned segment servir_helper_roundedCornerBottom_Override">
+                                                <div class="ui grid">
+                                                    <div class="three column row servir_helper_topPadding_0">
+                                                        <div class="one wide column"></div>
+                                                        <div class="center aligned fourteen wide column">
+                                                            <div class="servir_helper_topPadding_0"></div> <!-- servir_helper_topPadding_10rem -->
+                                                            <!--
+                                                            <div id="chartUI_Title" class="servir_text_fixedModal_mainTitle servir_helper_topPadding_10rem">CHART</div>
+                                                            -->
+                                                            <div class="servir_text_fixedModal_subtext servir_helper_topPadding_10rem">
+                                                                <!-- Sub Text here, Maybe a message about what happens when the progress is complete..-->
+                                                            </div>
+
+                                                            <!-- <br /> -->
+
+
+                                                            <div id="chartUI_AdjustableMinHeightDiv" class="" > <!-- servir_helper_topPadding_10rem  style="min-height:560px;" -->
+                                                                <!-- Floating notification telling user the chart is being drawn. -->
+                                                                <div id="chartUI_Loading_Popup" class="servir_helper_hidden" style="position:absolute; color:black; background-color: #dddddd; padding: 2rem; border-radius: 15px; opacity: 0.9; top: 50px; left: 25%; width: 50%;">
+                                                                    <div id="chartUI_Loading_Title">LOADING CHART</div>
+                                                                    <br />
+                                                                    <div class="ui active progress" id="chartUI_ChartLoading_ProgressBar">
+                                                                        <div class="bar">
+                                                                        <div class="progress" style="display:none;"></div>
+                                                                      </div>
+                                                                    </div>
+                                                                    <div id="chartUI_Loading_Message">Plotting: 12345 data points.</div>
+                                                                        <br />
+                                                                    (Note: There may be a delay for rendering and resizing charts with a large number of data points.<br />
+                                                                </div>
+
+                                                                <!-- Legacy Chart -->
+                                                                <div id="chartWindow" style="margin-bottom: -5rem; display:none;"></div>
+                                                                <!-- 
+                                                                <div id="chartIncubator" style="display:none;">
+                                                                    <div id="chartWindow" style="margin-bottom: -5rem;"></div>
+                                                                </div>
+                                                                -->
+                                                                
+                                                                <div class="ui grid">
+                                                                    <div class="one column row one column row servir_helper_topbotMargin_0 servir_helper_topbotPadding_01">
+                                                                        <div class="center aligned sixteen wide column">
+                                                                            <span id="chartUI_ChartCreatedDate_Label" class="servir_text_fixedModal_subtext">Chart created on: </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="one column row">
+                                                                        <div class="center aligned sixteen wide column">
+                                                                            <!-- [Start Over] Button Classes: servir_buttonHelper_customPadding servir_helper_width_112rem -->
+                                                                            <button id='chartUI_ButtonContainer_Back' class="ui button servir_buttonHelper_customShape_chart1 servir_design2016_button_grey_color servir_helper_roundedCornerAll_Button" onclick="event_ChartUI_Button_StartOver_Clicked();">
+                                                                                <div class="content servir_design2016_button_narrow">
+                                                                                    <div class="center">
+                                                                                        <div class="servir_text_button_main servir_helper_fontSize_Override_14px">Start Over</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </button>
+                                                                            &nbsp;
+                                                                            <!-- [Back] servir_buttonHelper_customPadding servir_helper_width_142rem -->
+                                                                            <button id='chartUI_ButtonContainer_Back' class="ui button servir_buttonHelper_customShape_chart2 servir_design2016_button_grey_color servir_helper_roundedCornerAll_Button" onclick="event_ChartUI_Button_Back_Clicked();">
+                                                                                <div class="content servir_design2016_button_narrow">
+                                                                                    <div class="center">
+                                                                                        <div class="servir_text_button_main servir_helper_fontSize_Override_14px">Change Parameters</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </button>
+                                                                            &nbsp;
+                                                                            <!-- [Export Polygon] servir_design2016_button_grey_color,   newer:: servir_buttonHelper_customPadding  servir_helper_width_112rem -->
+                                                                            <button id='chartUI_ButtonContainer_ExportPolygon' class="ui button servir_buttonHelper_customShape_chart3 servir_design2016_button_chartgreen_color servir_helper_roundedCornerAll_Button" onclick="event_ChartUI_Button_ExportToPolygon_Clicked();">
+                                                                                <div class="content servir_design2016_button_narrow">
+                                                                                    <div class="center">
+                                                                                        <div class="servir_text_button_main_09Text servir_helper_fontSize_Override_14px">Export Polygon</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </button>
+                                                                            &nbsp;
+                                                                            <!-- [Export to PNG] servir_design2016_button_grey_color,    newer: servir_buttonHelper_customPadding servir_helper_width_112rem -->
+                                                                            <button id='chartUI_ButtonContainer_ExportToPNG' class="ui button servir_buttonHelper_customShape_chart4 servir_design2016_button_chartgreen_color servir_helper_roundedCornerAll_Button" onclick="event_ChartUI_Button_ExportToPNG_Clicked();">
+                                                                                <div class="content servir_design2016_button_narrow">
+                                                                                    <div class="center">
+                                                                                        <div class="servir_text_button_main servir_helper_fontSize_Override_14px">Export To PNG</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </button>
+                                                                            &nbsp;
+                                                                            <!-- [Export to CSV] servir_design2016_button_grey_color,   newer: servir_buttonHelper_customPadding servir_helper_width_112rem -->
+                                                                            <button id='chartUI_ButtonContainer_ExportToCSV' class="ui button servir_buttonHelper_customShape_chart5 servir_design2016_button_chartgreen_color servir_helper_roundedCornerAll_Button" onclick="event_ChartUI_Button_ExportToCSV_Clicked();">
+                                                                                <div class="content servir_design2016_button_narrow">
+                                                                                    <div class="center">
+                                                                                        <div class="servir_text_button_main servir_helper_fontSize_Override_14px">Export To CSV</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </button>
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            <!-- Alternative layout (no screenshot), logo to the right -->
+                                                                            &nbsp;
+                                                                            <!-- Logo(s) container -->
+                                                                            <div id="logo-servir" style='position:absolute; right:-2em; bottom:-2em;'>
+                                                                                <img style="width:100px; height:82px;" src="img/Servir_Logo_Full_Color_Stacked2.jpg">
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--
+                                                                    <div class="two column row">
+                                                                        <div class="center aligned twelve wide column">
+                                                                            !-- Screenshot container --
+                                                                            <div id='chartUI_ScreenshotContainer'>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="center aligned four wide column">
+                                                                            !-- Logo(s) container --
+                                                                            <div id="logo-servir">
+                                                                                <img style="width:100px; height:82px;" src="img/Servir_Logo_Full_Color_Stacked2.jpg">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    -->
+                                                                    
+                                                                </div>
+                                                                <!--
+                                                                <div id="chartLogoContainer">
+                                                                    <div id="logo-servir">
+                                                                        <img style="width:100px; height:82px;" src="img/Servir_Logo_Full_Color_Stacked2.jpg">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="servir_text_fixedModal_fieldLabel">[CHART]</div>
+                                                                <div class="servir_text_fixedModal_fieldLabel">[Logos]</div>
+                                                                <div class="servir_text_fixedModal_fieldLabel">[Screenshot]</div>
+                                                                -->
+                                                                
+                                                            </div>
+
+                                                            <!--                                
+                                                            <br />
+                                                            <div class="servir_helper_topPadding_10rem">
+                                                                ANY BUTTONS NEEDED IN HERE? (Maybe a button to toggle selecting/drawing (interaction) on the map, and then a done button on that popup?)
+                                                            </div>
+                                                            -->
+
+
+                                                        </div>
+                                                        <div class="one wide column"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!--<div class="one wide column"></div>-->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Another Sub Page Container could go at this level. -->
+
+
+                    </div>
+                </div>
+
+                <div class="column">
+                    
+                    
+
+                    <!-- Map (Container and Map) -->
+                    <div id="map" class="map" style="opacity:0;"> <!-- style='padding-left:14px;' -->
+                        
+                        <div class='servir_topMap_Message_Container servir_helper_hidden' id='div_MapMessageContainer'>
+                            <div class="ui yellow message servir_helper_hidden" id='div_MapMessage_AnotherMessage'>
+                                <div class="header">
+                                    Show Another Message Here. Click done when finished.&nbsp;&nbsp;&nbsp; <button class="ui blue button" onclick=''>CUSTOM HTML</button>
+                                </div>    
+                            </div>
+                            <div class="ui yellow message servir_helper_hidden" id='div_MapMessage_DrawPolygon'>
+                                <div class="header">
+                                    Draw a closed polygon on the map.
+                                    <!-- Hide the Done Drawing button ( 'end_UserPolygonDrawing()' is now chained to the event of a closed polygon being defined.
+                                    Click done when finished.&nbsp;&nbsp;&nbsp; 
+                                    <button class="ui blue button" onclick='end_UserPolygonDrawing();'>DONE DRAWING</button>
+                                    -->
+                                </div>    
+                            </div>
+                            <div class="ui yellow message servir_helper_hidden" id='div_MapMessage_SelectFeatures'>
+                                <div class="header">
+                                    Select features on the map. Click done when finished.&nbsp;&nbsp;&nbsp; <button class="ui blue button" onclick='end_UserFeatureSelection();'>DONE SELECTING</button>
+                                </div>    
+                            </div>
+                            <div class="ui yellow message servir_helper_hidden" id='div_MapMessage_GeoJSONUpload'>
+                                <div class="header">
+                                    Upload GeoJSON file. Click done when finished.&nbsp;&nbsp;&nbsp; 
+                                    <br />
+                                    <br />
+                                    <div class = "stitched_drop" style="height:150px" id="drop_zone">
+                                        <center>
+                                            <img style="vertical-align: middle;" src="img/browser-upload.png">  
+                                            <font size="3">Drop GeoJSON file here</font>
+                                        </center>
+                                    </div>
+                                    <div id="GeoJSON_File_Upload_Indicator">No data loaded.</div>
+                                    <br />
+                                    <br />
+                                    <button class="ui blue button" onclick='end_UserGeoJSONUpload();'>DONE UPLOADING</button>
+                                </div>    
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                </div>
+            
+			<!-- Refactor: Removing the side bar and pusher parts
+			</div> --><!-- End of pusher div -->
+        
+		<!-- Refactor: Removing the side bar and pusher parts
+		</div> --> <!-- End of content section sidebar container -->
+        
+    </div>
+
+    
+    <div class="one column row servir_helper_fixedHeight_36px" data-role="footer" style="background-color:#111122;">
+        <div class="column">
+
+            <!-- Footer -->
+            <div class="servir_design2016_footer_bg">
+                <div class="ui grid">
+                    <div class="two wide column"></div>
+                    <div id="for500" class="two wide right aligned column servir_text_footer_credit servir_helper_topPadding_07rem">POWERED BY </div>
+                    <div id="footer_img" class="two wide column servir_helper_topPadding_05rem"><img src="design/design2016/images/logo_servir_global_better.png" alt="SERVIR GLOBAL" /></div>
+                    <div class="one wide column"></div>
+                    <div id="for500" class="seven wide column servir_text_footer_credit servir_helper_topPadding_07rem"><b>CLIMATESERV</b> &copy; 2016 SERVIR GLOBAL | CREDIT FEWS NET, NMME OPENLAYERS V3.15.0</div>
+                    <div class="two wide column"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- GetData_DataType_ToolTip -->
+<div id="popup_SelectData_DataSource_ToolTip" class="ui inverted popup servir_helper_width_215rem">    
+  <div class="servir_tooltip_header">CHIRPS Rainfall</div>
+  <div class="servir_tooltip_body">Climate Hazards group IR Precipitation with Stations (CHIRPS).</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+  <br />
+  <div class="servir_tooltip_header">eMODIS NDVI</div>
+  <div class="servir_tooltip_body">MODIS-derived Normalized Difference Vegetation Index (eMODIS NDVI).  NDVI datasets for the following regions are available: West Africa, East Africa, Southern Africa, and Central Asia</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+  <br />
+  <div class="servir_tooltip_header">Seasonal Forecast</div>
+  <div class="servir_tooltip_body">North American Multi-Model Ensemble (NMME).  Up to 180 day forecast models available.  This dataset supports download capabilities.</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+  <br />
+  <div class="servir_tooltip_header">IMERG 1 Day</div>
+  <div class="servir_tooltip_body">1 Day rainfall accumulations product from the Integrated Multi-satellitE Retrievals (IMERG) for Global Precipitation Mission (GPM).</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+</div>
+
+<!-- GetData_OperationType_ToolTip -->
+<div id="popup_SelectData_Calculations_ToolTip" class="ui inverted popup servir_helper_width_215rem">    
+  <div class="servir_tooltip_header">Min</div>
+  <div class="servir_tooltip_body">The minimum value found for all data in a given geographical selected area for each time interval in the date range.  Sometimes for large area selections, a value of 0 will be returned for every date.  If this happens, try selecting a smaller area.</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+  <br />
+  <div class="servir_tooltip_header">Max</div>
+  <div class="servir_tooltip_body">The maximum value found for all data in a given geographical selected area for each time interval in the selected date range.</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+  <br />
+  <div class="servir_tooltip_header">Average</div>
+  <div class="servir_tooltip_body">The average value for the entire geographical selected area for each time interval in the selected date range.</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+  <br />
+  <div class="servir_tooltip_header">Download</div>
+  <div class="servir_tooltip_body">Some datasets support the option to download a zip file of clipped raw data.  The format of data download is a single zip file which contains a set of geotif files for each time interval in the date selected range.</div>
+  <!--<div class="servir_tooltip_link" onclick="alert('hook me up to something!!');">Learn more</div>-->
+</div>
+
+    <!-- GetData_DataType_ToolTip for mobile -->
+    <div id="popup_SelectData_DataSource_ToolTip1"> </div>
+    <!-- GetData_OperationType_ToolTip -->
+    <div id="popup_SelectData_Calculations_ToolTip1"> </div>
+
+<!-- EXISTING HTML CODE START --> 
+
+<!-- EXISTING HTML CODE END --> 
+
+
+<script type="text/javascript">
+// index.html loose javascript (mostly map and map interaction items in here)
+
+var show_CHIRPS_Custom_GIS_Labels = false;  // KS Refactor Design 2016 Override // Setting this to false hides the functionality which grabs the custom CHIRPS server's Labels (some base maps have their own labels which is why we may need this)
+var selectedFeatures =[];
+var selectedLayer =0;
+var wmsbaseURL = "http://localhost/";
+var polygonIsDefined = false;
+var centerOfMap = [0.0, 0];
+var zoomLevel = 3;
+var clickEnabled = false;
+var currentStringPolygon = "";
+
+//Define projections to be used
+var proj4326 = ol.proj.get('EPSG:4326');
+var proj3857 = ol.proj.get('EPSG:3857');
+var proj102100 = ol.proj.get('EPSG:102100');
+
+//Define layers in a layer array for adding to mao
+var tileLayers = [];
+var hLayers = [];
+var layerNames = [];
+var layerIds = [];
+var showLabel = false;
+var hLayerURL=baseWMSurl+'&SERVICE=WMS&VERSION=1.1.1';
+
+//Source Layer for the Vector being drawn by the user
+var source = new ol.source.Vector();
+
+//Actual OpenLayers Vector layer that is being drawn
+var vectorLayer = new ol.layer.Vector(
+{
+    source: source,
+    style: new ol.style.Style(
+    {
+        fill: new ol.style.Fill(
+        {
+            // color: 'rgba(204, 251, 255, 0.6)'
+            // KS Refactor Design 2016 Override // New Color for Polygon on Map
+            color: 'rgba(0, 176, 255, 0.8)' // '#00b0ff90' 
+            
+        }),
+        stroke: new ol.style.Stroke(
+        {
+            // color: '#00ccff',
+            // KS Refactor Design 2016 Override // New Color for Polygon on Map
+            color: '#224466', //'#00b0ff', //'#00ccff',
+            width: 2 // 5
+        }),
+        image: new ol.style.Circle(
+        {
+            radius: 15,
+            fill: new ol.style.Fill(
+            {
+                color: 'rgba(0, 176, 255, 0.8)' //'#00ccff'
+            })
+        })
+    })
+});
+
+// Info for New Layers
+// var wmsBaseUrl = "http://climateserv.servirglobal.net/cgi-bin/servirmap_102100?";
+// 
+// Change 'proj4326' to 'proj3857'
+
+// Source for Base Layer (OPENLAYERS.source.WMTS)
+
+// // KS Refactor Design 2016 Override // Attempting to Change the base map layer
+// var sourceBase = new ol.source.TileWMS( { url: 'https://ahocevar.com/geoserver/wms', params: {'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'} } );
+
+// variable, 'sourceBase' is the openlayers base map reference used in other parts of the code.
+// https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/WMTS/1.0.0/WMTSCapabilities.xml
+
+// sourceBase_ESRI_TOPO
+var sourceBase = new ol.source.WMTS(
+{
+    //crossOrigin: 'anonymous',         // // KS Refactor Design 2016 Override // This should enable screenshot export around the CORS issue with Canvas.
+    url: "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/WMTS/",
+    layer: "World_Topo_Map",
+    format: "image/jpeg",
+    matrixSet: "EPSG:3857", //"EPSG3857",
+    tileGrid: new ol.tilegrid.WMTS(
+    {
+        origin: [-20037508.3428, 20037508.3428], // [ -2.0037508342787E7, 2.0037508342787E7 ]  //[-180, 90],
+        resolutions: [
+            156543.03392800014, // 0 // 0.5625,
+            78271.51696399994,  // 1 // 0.28125,
+            39135.75848200009,  // 2 // 0.140625,
+            19567.87924099992,  // 3 // 0.0703125,
+            9783.93962049996,   // 4 // 0.03515625,
+            4891.96981024998,   // 5 // 0.017578125,
+            2445.98490512499,   // 6 // 0.0087890625,
+            1222.992452562495,  // 7 // 0.00439453125,
+            611.4962262813797,  // 8 // 0.002197265625
+            305.74811314055756, // 9 //
+            152.87405657041106, // 10
+            76.43702828507324,  // 11
+            38.21851414253662,  // 12
+            19.10925707126831,  // 13
+            9.554628535634155,  // 14
+            4.77731426794937,   // 15
+            2.388657133974685,  // 16
+            1.1943285668550503, // 17
+            0.5971642835598172, // 18
+            0.29858214164761665, // 19
+            0.14929107082380833, // 20
+            0.07464553541190416, // 21
+            0.03732276770595208, // 22
+            0.01866138385297604, // 23
+        ],
+        matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+        tileSize: 256
+    })
+});
+        
+// Original Base Map
+//var sourceBase = new ol.source.WMTS(
+var sourceBase_Original = new ol.source.WMTS(
+{
+    //crossOrigin: 'anonymous',         // // KS Refactor Design 2016 Override // This should enable screenshot export around the CORS issue with Canvas.
+    url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?",
+    layer: "BlueMarble_ShadedRelief_Bathymetry",
+    format: "image/jpeg",
+    matrixSet: "EPSG4326_500m",
+    tileGrid: new ol.tilegrid.WMTS(
+    {
+        origin: [-180, 90],
+        resolutions: [
+            0.5625,
+            0.28125,
+            0.140625,
+            0.0703125,
+            0.03515625,
+            0.017578125,
+            0.0087890625,
+            0.00439453125,
+            0.002197265625
+        ],
+        matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        tileSize: 512
+    })
+});
+
+// Base Layer (OPENLAYERS.layer.Tile
+var baseLayer = new ol.layer.Tile(
+{
+    source: sourceBase
+});
+
+//Base layer for map
+//            var baseLayer = new ol.layer.Tile({
+//                source: new ol.source.TileWMS({
+//                    url: 'http://gmrt.marine-geo.org/cgi-bin/mapserv?map=/public/mgg/web/gmrt.marine-geo.org/htdocs/services/map/wms_merc.map',
+//                    params: {
+//                        'LAYERS': 'topo'
+//                    }
+//                })
+//            });
+
+
+
+// Openlayers View
+var view = new ol.View(
+{
+    center: centerOfMap,
+    zoom: zoomLevel,
+    projection: 'EPSG:102100' //'EPSG:3857' //EPSG:4326'  // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
+});
+
+//Create map for the display of the data  
+var map = new ol.Map(
+{
+    target: 'map',
+    layers: [baseLayer],
+    controls: ol.control.defaults().extend([new ol.control.ScaleLine()]),
+    view: view
+
+});
+
+// Add a new layer to the map
+function addLayer(layerName, layerid, visible) 
+{
+    // Create a new 'OPENLAYERS.layer.Tile
+    var tileLayer = new ol.layer.Tile(
+    {
+        source: new ol.source.TileWMS((
+        {
+            //crossOrigin: 'anonymous',         // // KS Refactor Design 2016 Override // This should enable screenshot export around the CORS issue with Canvas.
+            url: hLayerURL,
+            params: {'LAYERS': layerid, 'TILED': true, },
+            serverType: 'mapserv'
+        }))
+    });
+    
+    //Define country level map layer
+    var tileLayerh = new ol.layer.Tile(
+    {
+        source: new ol.source.TileWMS((
+        {
+            //crossOrigin: 'anonymous',         // // KS Refactor Design 2016 Override // This should enable screenshot export around the CORS issue with Canvas.
+            url: hLayerURL,
+            params: {'LAYERS': layerid+'_highlight', 'TILED': true},
+            serverType: 'mapserv'
+        }))
+    });
+    
+    tileLayer.setVisible(visible);
+    tileLayerh.setVisible(false);
+    tileLayers.push(tileLayer);
+    hLayers.push(tileLayerh);
+    layerNames.push(layerName);
+    layerIds.push(layerid);
+    redoLayers();
+}
+
+// Forces openlayers to Redraw all the layers??  (maybe required on an update of somekind?) 
+// Right now this is only used by 'addLayer', so perhaps at the end of adding a layer this needs to be done to update something related to openlayers.. 
+function redoLayers() 
+{
+    var layers = map.getLayers();
+    layers.clear();
+    layers.push(baseLayer);
+    for (i in tileLayers) 
+    {
+        layers.push(tileLayers[i]);
+    }
+    for (i in hLayers) 
+    {
+        layers.push(hLayers[i]);
+    }
+    layers.push(vectorLayer);
+}
+
+
+
+// Respond to user clicking on the page.. Gets the coordinate of where the user clicked and passes that on to 
+function respondToClicks(evt) 
+{
+   // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857 
+   //var url =  tileLayers[selectedLayer].getSource().getGetFeatureInfoUrl(evt.coordinate, map.getView().getResolution(), 'EPSG:4326',{'INFO_FORMAT': 'json'});
+   var url =  tileLayers[selectedLayer].getSource().getGetFeatureInfoUrl(evt.coordinate, map.getView().getResolution(), 'EPSG:102100',{'INFO_FORMAT': 'json'});
+   if (url) 
+   {
+       //console.log(url);
+        processClickPoint(url);
+   }
+}
+
+// Create drawing interaction layer. This layer will contain the actual drawing of the polygon
+var draw = new ol.interaction.Draw(
+{
+    source: source,
+    type: "Polygon"
+});
+    
+
+// NOTE: THIS FUNCTION FIRES WHEN A POLYGON IS DRAWN OR A GEOJSON WAS UPLOADED... (both of those processes push through the vector feature infrastructure located here.
+//Setup callback so that when polygon defined it can be processed. This function will process the polygon
+source.on("change", function (e) 
+{
+    geoJson = new ol.format.GeoJSON();
+    features = source.getFeatures();
+    if (features.length > 0) 
+    {
+        geom = features[0].getGeometry();
+        // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
+        //output = geoJson.writeGeometry(geom, {dataProjection: proj4326, featureProjection: proj4326});
+        //output = geoJson.writeGeometry(geom, {dataProjection: proj3857, featureProjection: proj3857});
+        output = geoJson.writeGeometry(geom, {dataProjection: proj102100, featureProjection: proj102100});
+        
+        
+        ///set polygon to got to server 
+        //console.log('source.on("change", function (e), WAS CALLLED ');
+        currentStringPolygon = JSON.stringify(output);
+        setPolygonIsDefined(true);
+        disableCustomPolygonDrawing();
+        //zoomToPolygon();     // This zooms into the center of the polygon.
+        
+        // KS Refactor Design 2016, we ONLY want this to fire if the user was just drawing a polygon, not when a geoJSON was uploaded..
+        if(stateSwitchManagement_PolyDraw_or_GeoJSONUpload__IsPolyDraw == true)
+        {
+            end_UserPolygonDrawing(); // KS Refactor Design 2016 // This used to be the hook from the 'Done Drawing' button.  Now it is chained to this event. (the event of the polygon being closed.
+        }
+            
+    }
+});
+
+// Get GeoJSON from a polygon
+function getCurrentPolygonAsGeoJson() 
+{
+    geoJson = new ol.format.GeoJSON();
+    feature = source.getFeatures();
+    // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
+    //output = geoJson.writeFeatures(feature, {dataProjection: proj4326, featureProjection: proj4326});
+    //output = geoJson.writeFeatures(feature, {dataProjection: proj3857, featureProjection: proj3857});
+    output = geoJson.writeFeatures(feature, {dataProjection: proj102100, featureProjection: proj102100});
+    
+    ///set polygon to got to server 
+    return JSON.stringify(output);
+
+}
+
+function updateSelectedHighlightedLayer() 
+{
+    hLayers[selectedLayer].getSource().setUrl(hLayerURL+"&feat_ids="+selectedFeatures.join());
+}
+
+
+
+// Show label?? (not sure what label we are toggling here?)
+function toggleLabel() 
+{
+    var appended = "";
+
+    if (showLabel === false) 
+    {
+        showLabel = true;
+        // KS Refactor Design 2016 // Shortcut to turnning on and off the country layer functionality.
+        //tileLayers[0].setVisible(false); // Turn the layer on (without breaking the feature selection functionality)
+        
+        if(show_CHIRPS_Custom_GIS_Labels==true)
+        {
+            appended="_label";
+        }
+        else
+        {
+            appended="";
+        }
+    } 
+    else 
+    {
+        showLabel = false;
+        
+        // KS Refactor Design 2016 // Shortcut to turnning on and off the country layer functionality.
+        //tileLayers[0].setVisible(true); // Turn the layer on (without breaking the feature selection functionality)
+        
+        appended="";
+    }
+
+    for (i = 0; i < tileLayers.length; i++) 
+    { 
+        var param = tileLayers[i].getSource().getParams();
+        param.LAYERS = layerIds[i]+appended;
+        tileLayers[i].getSource().updateParams(param);
+    }
+}
+
+
+// Process Click Point 
+function processClickPoint(url)
+{
+   $("#geometry_edit_button").text("Modify Location");
+   url=url+"&callback=?";
+    $.ajax(
+    {
+        type: "GET",
+        url: url,
+        async:'true',
+        jsonpCallback: 'successCallback',
+        dataType: 'jsonp',
+        success: function (result) 
+        {
+            value = result["data"];
+            if (selectedFeatures.indexOf(value) != -1) 
+            {
+               index = selectedFeatures.indexOf(value);
+                delete selectedFeatures[index];
+            } 
+            else 
+            {
+               selectedFeatures.push(value);
+            }
+            if (selectedFeatures.length >0) 
+            {
+                enableCreateGraphLink();
+            }
+            updateSelectedHighlightedLayer();
+        },
+        error: function (error) 
+        {
+            console.log("Got error"+error);
+        },
+        successCallback:function()
+        {
+
+        },
+    });
+}       
+
+// Zoom the map to the polygon
+function zoomToPolygon() 
+{
+    var geomExtent  =  source.getExtent();
+    var newCenter = [(geomExtent[0]+geomExtent[2])/2.0,(geomExtent[1]+geomExtent[3])/2.0];
+    view.setCenter(newCenter);   
+}
+
+//Function to enable custom drawing of polygons.
+function enableCustomPolygonDrawing() 
+{
+    if (clickEnabled === true) 
+    {
+        disableFeatureSelection();
+    }
+    map.addInteraction(draw);
+}
+
+//Function to disable custom polygon drawing.
+function disableCustomPolygonDrawing() 
+{
+    map.removeInteraction(draw);
+}
+
+// Set Selection Layer
+function setSelectionLayer(layer_num) 
+{
+    if (layer_num != selectedLayer) 
+    {
+        selectedFeatures = [];
+    }
+    tileLayers[selectedLayer].setVisible(false);
+    hLayers[selectedLayer].setVisible(false);
+    selectedLayer = layer_num;
+    tileLayers[selectedLayer].setVisible(true);
+    hLayers[selectedLayer].setVisible(true);
+    updateSelectedHighlightedLayer();
+}
+
+//Enable selecting of a single feature on the map.
+function enableFeatureSelection() 
+{
+    if (clickEnabled ===false) 
+    {
+        map.on('singleclick',respondToClicks);
+        selectedFeatures = [];
+        clickEnabled = true;
+    }
+}
+
+//Disable selecting of a single feature on the map.
+function disableFeatureSelection() 
+{
+    map.un('singleclick',respondToClicks);
+    selectedFeatures = [];
+    hLayers[selectedLayer].setVisible(false);
+    clickEnabled = false;
+}
+
+//Clear the polygon from the layer.
+function clearPolygon() 
+{
+    source.clear();
+    currentStringPolygon = "";
+    setPolygonIsDefined(false);
+    disableCustomPolygonDrawing();
+}
+
+//Function that given a geojson entry can add it to the map.
+function setPolygonWithGeoJSON(text) 
+{
+    //alert(text);
+    // KS Refactor Design 2016 // Adding a filter to convert the GeoJSON from 4326 to 102100 (the google projection) // GeoJSONs are to be in LatLngs..
+    // GeoJSON Example (Example of the 'text' variable) 
+    // {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[13.710937500000009,14.008696370634652],[76.99218749999999,14.51978004632609],[78.22265624999999,-5.17848208852287],[14.238281249999995,-4.828259746866976],[13.710937500000009,14.008696370634652]]]}}]}
+    text = convert_PolygonString_To_102100_ForSystemInput(text);
+    //alert(text);
+        
+    geoJson = new ol.format.GeoJSON();
+    // KS Refactor Design 2016 // Changing Map Layers from 4326 to 3857
+    //feature = geoJson.readFeatures(text, {dataProjection: proj4326, featureProjection: proj4326});
+    //feature = geoJson.readFeatures(text, {dataProjection: proj3857, featureProjection: proj3857});
+    feature = geoJson.readFeatures(text, {dataProjection: proj102100, featureProjection: proj102100});
+    
+    vectorLayer.getSource().clear();
+    vectorLayer.getSource().addFeature(feature[0]);
+    centerOfNewPoly = calculateCenterOfGeom(feature[0].getGeometry());
+}
+
+//Calculate the center of a geometry in order to center the map.
+function calculateCenterOfGeom(geom) 
+{
+    extent = geom.getExtent();
+    xcenter = (extent[2] + extent[0]) / 2.0;
+    ycenter = (extent[1] + extent[3]) / 2.0;
+    return [xcenter, ycenter];
+}
+
+//If a user wants to load a GeoJSON file this handles the file selection.
+function handleFileSelect(evt) 
+{
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var f = evt.dataTransfer.files[0]; // FileList object.
+
+    // files is a FileList of File objects. List some properties.
+
+    var reader = new FileReader();
+    // Closure to capture the file information.
+    reader.onload = (function (f) 
+    {
+        return function (e) 
+        {
+            setPolygonWithGeoJSON(e.target.result);
+            //$("#loadGeoJsonDialog").dialog("close");  // KS Refactor Design 2016 Override // Dialog is no longer part of the page.
+            set_GeoJSON_File_Upload_Indicator("GeoJSON Loaded.  Please visually verify the area on the map.");
+        };
+    })(f);
+    reader.readAsText(f);
+}
+
+//Function to handle drag and drop.
+function handleDragOver(evt) 
+{
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+    //set_GeoJSON_File_Upload_Indicator("File is being dragged over... now drop!");  // KS Refactor Design 2016 Override // If we want to put a message that the file is being dragged over but not yet dropped?
+}
+
+
+
+
+
+
+// REMEMBER, THIS CODE HERE EXECUTES AS SOON AS THE BROWSER REACHES IT.... NOT GOOD TIMES.
+//
+//Setup of initial dialogs and closes or opens them based on initial state.
+$(function () 
+{
+    // Moving some code to the Design2016 js file to account for async unpredictability. (The code moved will execute on doc ready instead of at this point in the interpreting)
+//    checkMaintenanceMode();
+//    getParameterTypes();
+//    getFeatureLayers();
+//    // KS Refactor 2015 // Set up for Climate Model Infos
+//    getClimateModelInfo();
+//    // KS Refactor for Imerg and Smap, // Get info for these datasets
+//    getCapabilitiesForDataset(26);  // Imerg 1 Day
+//    //getCapabilitiesForDataset(27);  // Smap
+
+    $("#progressdialog").dialog();
+    $("#progressdialog").dialog("close");
+    $("#editordialog").dialog();
+    $("#editordialog").dialog("close");
+    $("#polygondialog").dialog();
+    $("#polygondialog").dialog("close");
+    $("#chartdialog").dialog();
+    $("#chartdialog").dialog("close");
+    $("#selectAreaDialog").dialog();
+    $("#selectAreaDialog").dialog("close");
+    $("#chooseAreaMethodDialog").dialog();
+    $("#chooseAreaMethodDialog").dialog("close");
+    $("#loadGeoJsonDialog").dialog();
+    $("#loadGeoJsonDialog").dialog("close");
+    $("#selectInformationDialog").dialog();
+    $("#selectInformationDialog").dialog("close");
+    $("#cancelbutton").click(function () {
+        closeNewEditorDialog();
+    });
+
+    $("#datepickerbegin").datepicker();
+    $("#datepickerend").datepicker();
+    $('#selectlayer').change(function () {
+        var count = 0;
+        $("#selectlayer option").each(function () {
+            tileLayers[count].setVisible(this.selected);
+            ++count;
+        });
+    });
+    $('#showLabels').change(function () {
+        toggleLabel();
+    });
+
+    $('#selectmenu').change(function () 
+    {
+        // KS Refactor Design 2016 Override // Handler for dropdown change.. changes the Select Area UI and Map State based on the choice.
+        selectArea_SelectAreasBy_Dropdown_Changed_Event();
+        
+        var value;
+        var count = 0;
+        $("#selectmenu option").each(function () {
+            if (this.selected) {
+                value = count;
+            }
+            ;
+            ++count;
+        });
+
+            setSelectionLayer(value);
+            enableFeatureSelection();
+
+    });
+    //Setup the drop zone for the geojson
+
+});
+
+// REMEMBER, THIS CODE HERE EXECUTES AS SOON AS THE BROWSER REACHES IT.... NOT GOOD TIMES.
+//
+$(function()
+{
+     $("ul#top_menu").sidebar({
+     position:"top",
+     open:"click"
+     });
+});
+
+// REMEMBER, THIS CODE HERE EXECUTES AS SOON AS THE BROWSER REACHES IT.... NOT GOOD TIMES.
+// 
+//Setup spinner value
+var spinner = $("#spinner").spinner();
+
+
+function popAreaMenu() 
+{
+    $("ul#top_menu").sidebar("close");
+    $("#chooseAreaMethodDialog").dialog();
+}
+function popGraphMenu() 
+{
+    $("ul#top_menu").sidebar("close");
+    openNewEditorDialog();
+}
+
+// This is the function that resizes the map's height based on the viewport state.
+function fixContentHeight()
+{
+    var viewHeight = $(window).height();                                           // console.log("viewHeight: " + viewHeight);
+    var header = $("div[data-role='header']:visible:visible");                     // console.log("header.outerHeight() " + header.outerHeight());
+    var footer = $("div[data-role='footer']:visible:visible");                     // console.log("footer.outerHeight() " + footer.outerHeight());
+    //var navbar = $("div[data-role='navbar']:visible:visible");                      console.log("navbar.outerHeight() " + navbar.outerHeight());
+    //var content = $("div[data-role='content']:visible:visible");                    console.log("content.outerHeight() " + content.outerHeight());
+    //var contentHeight = viewHeight - header.outerHeight() - navbar.outerHeight();   console.log("contentHeight " + contentHeight);
+    var contentHeight = viewHeight - header.outerHeight() - footer.outerHeight();  // console.log("contentHeight " + contentHeight);
+    $('#map').height(contentHeight);                            
+    map.updateSize();
+}
+    
+// Event Handler for window.onload
+window.onload = function () 
+{ 
+    fixContentHeight();
+    setPolygonIsDefined(false);
+    var dropZone = document.getElementById('drop_zone');
+    //alert("PUT THE DROPZONE BACK IN THE PAGE!! THIS IS RELATED TO GEOJSON ADDING..");
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', handleFileSelect, false);
+}
+
+// Event Handler for window.onresize
+// KS Design 2016 Refactor // NOTE, THIS METHOD IS DUPLICATED INSIDE design2016
+window.onresize = function(event) 
+{
+    fixContentHeight();
+};
+
+function setPolygonIsDefined(value) 
+{
+    polygonIsDefined = value;
+    if (polygonIsDefined === false) 
+    {
+        disableCreateGraphLink();
+        closeNewEditorDialog();
+        $("#geometry_edit_button").text("Create Location");
+    } 
+    else 
+    {
+        enableCreateGraphLink();
+        //zoomToPolygon();  // This zooms and Centers on the polygon.. we don't want that any longer...
+        $("#geometry_edit_button").text("Modify Location");
+    }
+ }
+
+function disableCreateGraphLink() 
+{
+    $('#creategraphlink').addClass('disabled');
+}
+function enableCreateGraphLink() 
+{
+    $('#creategraphlink').removeClass('disabled');
+}
+
+function setupBaseFeatureSelection() 
+{
+    if (selectedLayer == 0)
+    {
+        setSelectionLayer(selectedLayer);
+        enableFeatureSelection();
+    }
+}
+</script>
+        
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-27020636-4', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+
+</html>

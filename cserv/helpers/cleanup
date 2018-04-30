@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /data/data/cserv/pythonCode/serviringest/sh/operational
+./runCleanup.sh

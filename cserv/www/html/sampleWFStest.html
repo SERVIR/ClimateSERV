@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/ol.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+    <link rel="stylesheet" href="css/jquery.css" />
+    <link rel="stylesheet" href="css/servir.css" />
+    <script src="js/libs/jquery/jquery.js" type="text/javascript"></script>
+    <script src="js/libs/jqueryui/jquery-ui.js"></script>
+    <!--<script src="js/libs/openlayers/ol.js" type="text/javascript"></script>-->
+    <script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>
+    <title>TEST WFS</title> 
+    
+  </head>
+  <body>
+
+    
+
+
+        <div id="map" class="map" ></div>
+
+     <script type="text/javascript">
+        
+        
+        var vectorSource = new ol.source.ServerVector({
+  format: new ol.format.GeoJSON(),
+  loader: function(extent, resolution, projection) {
+     
+    var url = 'http://localhost/cgi-bin/mapserv?map=/Users/jeburks/work/SERVIR/data/GIS/mapfiles/servir.map&SERVICE=WFS&' +
+                            'version=1.1.0&request=GetFeature&typename=country&' +
+                            'outputFormat=text/javascript&format_options=callback:loadFeatures' +
+                            '&srsname=EPSG:4326&bbox=' + extent.join(',') + ',EPSG:4326';
+    $.ajax({
+      url: url,
+      dataType: 'jsonp'
+    }).done(function() {
+        console.log("Done"); 
+}   );
+  },
+  strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
+    maxZoom: 19
+  })),
+  projection: 'EPSG:4326'
+});
+
+var loadFeatures = function(response) {
+    console.log(response);
+  //vectorSource.addFeatures(vectorSource.readFeatures(response));
+};
+
+var vector = new ol.layer.Vector({
+  source: vectorSource,
+  style: new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'rgba(0, 0, 255, 1.0)',
+      width: 2
+    })
+  })
+});
+
+var baseLayer = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: 'http://demo.opengeo.org/geoserver/wms',
+                    params: {
+                        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
+                    }
+                })
+            });
+
+var map = new ol.Map({
+                target: 'map',
+                layers: [
+                    baseLayer,vector
+                ],
+                view: new ol.View({
+                    center: [15.0, 0],
+                    zoom: 4,
+                    projection: 'EPSG:4326'
+                })
+            });
+</script>
+
+    
+    
+
+  </body>
+</html>

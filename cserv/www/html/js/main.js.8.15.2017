@@ -1,0 +1,222 @@
+﻿var mapIsFull = false;
+function toggleMap() {
+    if (mapIsFull == true) {
+        shrinkMap();
+    }
+    else {
+        fullScreenMap();
+    }
+}
+function shrinkMap() {
+    mapIsFull = false;
+    $('.fullhide').show();
+    if ($(window).width() < 370) {
+        $('#templatemo-top').hide();
+    }
+    $('body').css('overflow', 'auto');
+    $('.map').height('100%');
+    $('#formWizard').css('max-height', $(window).height() - 20);
+    $('#fPage4 .fPage').css('max-height', $(window).height() - 150);
+    $('#fPage4 .fPage').css('overflow-y', 'auto');
+    $('.templatemo-top-menu').css('min-height', '0px');
+    $('.navbar').css('min-height', '50px');
+    //$('#logoimage').height('auto');
+    $('#logoimage').css('margin-top', '4px');
+    $('.navbar-brand').css('margin-top', '15px');
+    $('.navbar-right').css('margin-top', '40px');
+    $('.navbar-toggle').css('margin-top', '8px');
+    $('.templatemo-top-menu .navbar-toggle').css('margin-top', '38px');
+    $('#templatemo-carousel').height(caroholdHeight);
+    $('.carousel').css('max-height', caroholdmaxheight);
+    $('#btnfullMap').text('Fullscreen map');
+    $("#btnmaxtoggle").removeClass('btnminimize');
+    $("#btnmaxtoggle").addClass('btnmaximize');
+    fixMaxHeight(true);
+    map.updateSize();
+}
+var wasfixed;
+var viewHeight;
+var mapHeight;
+var fixMaxHeightTimeout;
+var firsttop;
+var change;
+function fixMaxHeight(change) {
+    firsttop = top_menu_height;
+    viewHeight = $(window).height() - top_menu_height;
+    mapHeight = $('#map').height();
+    if (top_menu_height > 0) {
+        if (change != false) {
+            if ((viewHeight * 0.7) < mapHeight) {
+                $('#templatemo-carousel').height(viewHeight * 0.7);
+                wasfixed = 0;
+            }
+            else if (mapHeight < 500 && (viewHeight * 0.7) < 500) {
+                $('#templatemo-carousel').height(viewHeight * 0.7);
+                wasfixed = 1;
+            }
+        }
+    }
+    else {
+        fixMaxHeightTimeout = setTimeout('fixMaxHeight(change)', 250);
+    }
+}
+function fullScreenMap() {
+    mapIsFull = true;
+    $('.fullhide').hide();
+    $('body').css('overflow', 'hidden');
+    // $('.map').height($(window).height() - top_menu_height);
+    $('.map').height($(window).height() - 38);
+    $('#formWizard').css('max-height', $(window).height() - 20);
+    $('#fPage4 .fPage').css('max-height', $(window).height() - 119);
+    $('#fPage4 .fPage').css('overflow-y', 'auto');
+    $(".templatemo-top-menu").css('position', '');
+    $('.templatemo-top-menu').css('min-height', '0px');
+    $('.navbar').css('min-height', '0px');
+    // $('#logoimage').height('38px');
+    $('#logoimage').css('margin-top', '4px');
+    $('.navbar-brand').css('margin-top', '0px');
+    $('.navbar-right').css('margin-top', '0px');
+    //.templatemo-top-menu .navbar-brand
+    // .templatemo-top-menu min-height: 0px;
+    //.navbar  min-height: 0px;
+    // #logoimage height = 38px
+    $('.templatemo-top-menu .navbar-toggle').css('margin-top', '0px');
+    $('.navbar-toggle').css('margin-top', '0px');
+    caroholdHeight = $('#templatemo-carousel').height();
+    caroholdmaxheight = $('.carousel').css('max-height');
+    $('.carousel').css('max-height', '100%');
+    $('#templatemo-carousel').height($(window).height() - 38);
+    $('#btnfullMap').text('Small Map');
+    var maximizebtn = document.getElementsByClassName("btmmaximize");
+    $("#btnmaxtoggle").removeClass('btnmaximize');
+    $("#btnmaxtoggle").addClass('btnminimize');
+    map.updateSize();
+}
+$(window).scroll(function () {
+    if ($(window).scrollTop() < 78) {
+        $('#templatemo-top').css('position', 'initial');
+    }
+})
+function toggleForm() {
+    if ($('#AgriservUI_Dialog').is(':visible')) {
+        $("#AgriservUI_Dialog").hide();
+    }
+    else {
+        $("#AgriservUI_Dialog").show();
+    }
+}
+function openWizard(page) {
+    if (!mapIsFull) {
+        fullScreenMap();
+    }
+    if (global_CurrentUseCaseObject) {
+        $('#btnShowPrevious').show();
+        $('#btnShowPrevious2').show();
+        $('#btnShowPrevious3').show();
+    } else {
+        $('#btnShowPrevious').hide();
+        $('#btnShowPrevious2').hide();
+        $('#btnShowPrevious3').hide();
+    }
+    if (global_Input_AOI_1 == 0) {
+        $('#btnKeepAOI1').hide();
+    }
+    else {
+        $('#btnKeepAOI1').show();
+    }
+    if (global_Input_AOI_2 == 0) {
+        $('#btnKeepAOI2').hide();
+    }
+    else {
+        $('#btnKeepAOI2').show();
+    }
+    if (page) {
+        if (page == "fPage4") {
+            // fullScreenWizard();
+        }
+        else {
+            normalWizard();
+        }
+        $("#" + page).show();
+    }
+    else {
+        normalWizard();
+    }
+    $("#formWizard").show();
+}
+function fullScreenWizard() {
+    $("#centerpoint").css({ 'top': '0px', 'left': '0px', 'height': '100%', 'width': '100%' });
+    $("#formWizard").css({ 'margin-left': '0px', 'margin-top': '0px', 'border-radius': 'initial', 'box-shadow': 'none', 'height': '100%', 'width': '100%', 'top': '18px', 'left': '0px' });
+    $("#formWizard h2.title").css({ 'border-top-right-radius': 'initial', 'border-top-left-radius': 'initial', 'box-shadow': 'none' });
+    $("#fPage4").css({ 'height': '100%', 'width': '100%' });
+    $("#fPage4 .fPage").css({ 'height': '100%' });
+    $("#chartdialogNot").css({ 'height': '80%', 'width': '100%', 'max-width': '100%', 'max-height': '80%'});
+    $("#chartdialogNot").show();
+    $("#plot").css({ 'height': '100%', 'width': '100%', 'max-height': '100%', 'max-width': '100%' });
+    $("#plot").highcharts().reflow();
+    $("#plot-years").css({ 'height': '100%', 'width': '100%', 'max-height': '100%', 'max-width': '100%' });
+    $("#plot-years").highcharts().reflow();
+    $("#formWizard").draggable("destroy");
+    
+}
+function normalWizard() {
+    $("#centerpoint").css({ 'top': '50%', 'left': '50%', 'height': '10px', 'width': '10px' });
+    $("#formWizard").css({ 'margin-left': '-300px', 'margin-top': '-300px', 'border-radius': '20px', 'box-shadow': '7px 6px 0 rgba(192, 192, 192, 0.66)', 'height': 'auto', 'width': '600px' });
+    $("#formWizard h2.title").css({ 'border-top-right-radius': '8px', 'border-top-left-radius': '8px', 'box-shadow': '3px 0px 0 silver' });
+    $("#fPage4 .fPage").css({ 'height': 'auto' });
+    $("#chartdialogNot").css({ 'height': 'auto' });
+    $("#formWizard").draggable();
+    
+}
+function closeWizard(page) {
+    if (page) {
+        $("#" + page).hide();
+    }
+    else {
+        hideAllPages();
+        $("#fPage1").show();
+    }
+    $("#formWizard").hide();
+    $("#chartdialogNot").hide();
+    $("#myProgress").show();
+    updateProgressBar(0);
+}
+
+function showChart() {
+    $("#chartdialogNot").show();
+    $("#myProgress").hide();
+    fullScreenWizard();
+}
+
+function hideAllPages() {
+    $("#fPage1").hide();
+    $("#fPage2").hide();
+    $("#fPage3").hide();
+    $("#fPage4").hide();
+}
+
+
+$(function () {
+    $("#formWizard").draggable();
+});
+function appendmaxtoggle() {
+    var zoomControl = document.getElementsByClassName("ol-zoom");
+    if (zoomControl.length < 1) {
+        setTimeout(function () { appendmaxtoggle(); }, 300);
+    }
+    else {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "btnmaximize";
+        button.id = "btnmaxtoggle";
+        button.onclick = function () { toggleMap(); };
+        // zoomControl[0].appendChild(button);
+        zoomControl[0].insertBefore(button, zoomControl[0].childNodes[0]);
+    }
+}
+
+function updateProgressBar(howMuch) {
+    var elem = document.getElementById("myBar");
+    elem.style.width = howMuch + '%';
+    document.getElementById("label").innerHTML = howMuch * 1 + '%';
+}
