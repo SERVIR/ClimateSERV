@@ -15,7 +15,7 @@ Base API URL
 The API allows access to the ClimateSERV processing engine and resulting data so that developers can implement their own UI or extract needed data directly from the back-end.
 
 The base URL for all API access is:
-http://climateserv.servirglobal.net/chirps/
+``http://climateserv.servirglobal.net/chirps/``
 
 Call-back Support
 ~~~~~~~~~~~~~~~~~~~~~
