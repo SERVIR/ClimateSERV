@@ -20,7 +20,7 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = u'ClimateSERV'
-copyright = u'2018, Sarva Pulla'
+copyright = u'2018, SERVIR'
 author = u'Sarva Pulla'
 
 # The short X.Y version

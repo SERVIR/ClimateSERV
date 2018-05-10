@@ -2,12 +2,11 @@ Getting Started!
 ======================================
 
 
-**Access ClimateSERV at this url** |http://climateserv.servirglobal.net/|
+**Access ClimateSERV at this url** |https://climateserv.servirglobal.net|
 
-.. |http://climateserv.servirglobal.net/| raw:: html
+.. |https://climateserv.servirglobal.net| raw:: html
 
-
-    <a href="http://climateserv.servirglobal.net/" target="_blank">http://climateserv.servirglobal.net/ </a>
+    <a href="http://climateserv.servirglobal.net" target="_blank">https://climateserv.servirglobal.net</a>
 
 
 ClimateSERV allows development practitioners, scientists/researchers, and government decision-makers to visualize and download historical rainfall data, vegetation condition data, and 180-day forecasts of rainfall and temperature to improve understanding of, and make improved decisions for, issues related to agriculture and water availability.
