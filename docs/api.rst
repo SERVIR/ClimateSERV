@@ -1,7 +1,7 @@
 Developers API
 ========================
 
-*A Developers API is provided for those who wish to incorporate the GRACE Tethys APP data into their own separate application or script.*
+*A Developers API is provided for those who wish to incorporate the ClimateSERV data into their own separate application or script.*
 
 API Methods
 -------------------
