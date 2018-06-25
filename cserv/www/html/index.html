@@ -6,6 +6,11 @@ if (window.location.href.toLowerCase().indexOf("agriserv") != -1)
 {
 	window.location = 'agriservindex.html';
 }
+
+function event_GetStarted_programatically_Button_Clicked()
+{
+	window.location = 'https://climateserv.readthedocs.io/en/latest/';
+}
 	
 </script>
 <!--        <link rel="stylesheet" href="https://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">-->
@@ -636,7 +641,23 @@ display:none;
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>    
+                                                                </div>  
+																<div class="ui segment servir_design2016_segment_button_grey_color" onclick="event_GetStarted_programatically_Button_Clicked();">
+                                                                    <div class="ui grid">
+                                                                        <div class="two column row">
+                                                                            <div class="two wide column">
+                                                                                <img class="reduce" src="design/design2016/images/icon_fileprogram.png" alt="Perform operations programatically" width="37" height="37" />
+                                                                            </div>
+                                                                            <div class="fourteen wide left aligned column">
+                                                                                <div class="">
+                                                                                    <span class="servir_text_fixedModal_iconButton_mainText">Perform operations programatically</span>
+                                                                                    <div style="margin-top: 6px;"></div>
+                                                                                    <span class="servir_text_fixedModal_iconButton_subtleText">Use our application programming interface (API) to send requests through your code</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> 																
                                                             </div>
                                                         </div>
                                                         <div class="two wide column"></div>
@@ -856,8 +877,8 @@ display:none;
                                                                                     <option value="29">Evaporative Stress Index (ESI-4WEEK)</option>
                                                                                     <option value="33">Evaporative Stress Index (ESI-12WEEK)</option>
 
-										                                            <option value="31">CHIRPS GEFS Anamolies</option>
-										                                            <option value="32">CHIRPS GEFS Precip</option>
+										                                            <option value="31">CHIRPS-GEFS Anamolies</option>
+										                                            <option value="32">CHIRPS-GEFS Precip</option>
                                                                                   <!--<option value="30">SMAP</option>-->
 
                                                                                 </select>
