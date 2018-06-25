@@ -173,13 +173,21 @@ Returns(output):
 Output Details:
     Submit the new datarequest and get the job ID as a response.  The returned job ID can then be used to retrieve results (see getDataFromRequest/).
 
-**Example request**:
+.. warning::
+
+    Be sure that the polygon and geojson coordinates are in the EPSG:4326 projection
+
+**Example request with a polygon**:
 
 If you are interested in retrieving the CHIRPS data for a certain polygon and a time period period. You will make the following request:
 
 ::
 
 	https://climateserv.servirglobal.net/chirps/submitDataRequest/?datatype=0&begintime=04/01/2018&endtime=04/30/2018&intervaltype=0&operationtype=5&callback=successCallback&dateType_Category=default&isZip_CurrentDataType=false&geometry={"type":"Polygon","coordinates":[[[21.533203124999996,-3.1624555302378496],[21.533203124999996,-6.489983332670647],[26.279296874999986,-5.441022303717986],[26.10351562499999,-2.635788574166625],[21.533203124999996,-3.1624555302378496]]]}
+
+.. tip::
+
+    The above request can be modified to include a geojson with multi-polygon. Simply replace the geometry parameter with the respective geojson geometry.
 
 **Example Output**:
 ::
