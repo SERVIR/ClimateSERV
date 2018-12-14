@@ -1,6 +1,6 @@
 #!/bin/sh
 #####################################################################
-#This script download new data
+#This script download new data 
 #####################################################################
 
 python=$(python -c "import os; print(os.environ['_'])")
@@ -19,12 +19,12 @@ rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonC
 #fi
 #START_YEAR=$1
 #END_YEAR=$2
-#$(date +'%Y')
-autoDate='2017'
+autoDate=$(date +'%Y')
+#autoDate='2011'
 cd ${rootdir}
 export PYTHONPATH=${PYTHONPATH}:${rootdir}
 echo "Running West Africa NDVI Download from ${autoDate} to ${autoDate}"
-#python CHIRPS/utils/ftp/eMODISWestAfricaDownloader.py ${autoDate} ${autoDate}
+python CHIRPS/utils/ftp/eMODISWestAfricaDownloader.py ${autoDate} ${autoDate}
 echo "Done running Chirps eMODISWestAfricaDownloader"
 python CHIRPS/utils/ingest/HDFIngestMODISNDVIData.py ${autoDate} ${autoDate}
 echo "Done running eMODIS NDVI West Africa Ingest"

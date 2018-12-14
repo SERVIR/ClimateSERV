@@ -1,4 +1,4 @@
-"""
+""" 
 WSGI config for servirchirpsdjango project.
 
 This module contains the WSGI application used by Django's development server
@@ -12,10 +12,10 @@ that later delegates to the Django one. For example, you could introduce WSGI
 middleware here, or combine a Django application with an application of another
 framework. 
 
-"""
+""" 
 import os
 from servirchirpsdjango import settings
-#from django.core.management import setup_environ
+#from django.core.management import setup_environ 
 import sys
 
 #settings.checkDev()

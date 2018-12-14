@@ -20,7 +20,9 @@ from __builtin__ import True
 # Just the first iteration on some very low level security on making a request for log data.
 # TODO!  Come up with a better mechanism for restricting these requests (perhaps IP range filtering AND a token?)
 global_CONST_LogToken = "SomeRandomStringThatGoesHere"
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(levelname)-8s [%(process)d] %(message)s', )
 logger = logging.getLogger(__name__)
+
 
 
 def intTryParse(value):
@@ -85,7 +87,7 @@ def processCallBack(request, output, contenttype):
 
     # All requests get pumped through this function, so using it as the entry point of the logging all requests
     # Log the Request
-    dataThatWasLogged = set_LogRequest(request, get_client_ip(request))
+    #dataThatWasLogged = set_LogRequest(request, get_client_ip(request))
 
     if request.method == 'POST':
 		try:
@@ -157,9 +159,10 @@ def getParameterTypes(request):
     Get a list of all of the parameter types. 
     :param request: in coming request, but don't need anything from the request.
     '''
+    print "Getting Parameter Types"
     logger.info("Getting Parameter Types")
-    ip = get_client_ip(request)
-    return processCallBack(request, json.dumps(params.parameters), "application/json")
+    #ip = get_client_ip(request)
+    return processCallBack(request, json.dumps(params.parameters), "application/javascript")
 
 
 @csrf_exempt
@@ -174,7 +177,7 @@ def getFeatureLayers(request):
     output = []
     for value in params.shapefileName:
         output.append({'id': value['id'], 'displayName': value['displayName'], 'visible': value['visible']})
-    return processCallBack(request, json.dumps(output), "application/json")
+    return processCallBack(request, json.dumps(output), "application/javascript")
 
 @csrf_exempt
 def submitMonthlyRainfallAnalysisRequest(request):
@@ -364,7 +367,197 @@ def submitMonthlyRainfallAnalysisRequest(request):
 			return processCallBack(request, json.dumps([uniqueid]), "application/json")
 		else:
 			return processCallBack(request, json.dumps(error), "application/json")
-		
+
+@csrf_exempt
+def submitMonthlyGEFSRainfallAnalysisRequest(request):
+    '''
+    In short, this is very simillar to submitDataRequest, but it is for a new type of server job.
+    The plan is to use the same machinery that submitDataRequest uses.
+    [requested Submitted via ZMQ] - [Job is processed by new code, but still updates a flat DB] - [request for data still returns data but in the shape that the client side needs for this feature.]
+    :param request:   layerid, featureids, geometry,
+    :return:
+    '''
+
+    # COMPLETELY ISOLATED SETUP FOR MONTHLY ANALYSIS TYPES - ALL REQUESTS ARE MONTHLY ANALYSIS UNTIL I GET IT ALL FIXED AND WORKING RIGHT..
+    #print("RIGHT NOW, ALL JOBS ARE: MonthlyRainfallAnalysis TYPES.  NEED TO FIX THIS WHEN I WRITE THE JAVASCRIPT/AJAX code on the client AND THE API RECEIVER CODE HERE ")
+
+    # if(custom_job_type == "MonthlyRainfallAnalysis"):
+    #     uniqueid = uutools.getUUID()
+    #
+    # # END, ISOLATED MONTHLY ANALYSIS CODE
+    #
+    #
+    # # ORGINAL, EXISTING, WORKING CODE BELOW.. (pre MonthlyAnalysisFeature)
+
+    custom_job_type = "MonthlyGEFSRainfallAnalysis"  # String used as a key in the head processor to identify this type of job.
+    logger.info("Submitting Data Request for Monthly Rainfall Analysis")
+    error = []
+
+    # Seasonal Forecast Start/End Dates (Pulled in from client) (allows greater request flexibility
+    # &seasonal_start_date=2017_05_01&seasonal_end_date=2017_10_28
+    seasonal_start_date = ""
+    seasonal_end_date = ""
+    if request.method == 'POST':
+        try:
+			seasonal_start_date = str(request.POST["seasonal_start_date"])
+			seasonal_end_date = str(request.POST["seasonal_end_date"])
+			# Force to only accept 10 character string // validation/sec
+			seasonal_start_date = seasonal_start_date[0:10]
+			seasonal_end_date = seasonal_end_date[0:10]
+        except KeyError:
+			logger.warn("issue with getting start and end dates for seasonal forecast.  Expecting something like this: &seasonal_start_date=2017_05_01&seasonal_end_date=2017_10_28")
+			error.append("Error with getting start and end dates for seasonal forecast.  Expecting something like this: &seasonal_start_date=2017_05_01&seasonal_end_date=2017_10_28")
+
+
+		# Get geometry from parameter
+		# Or extract from shapefile
+        geometry = None
+        featureList = False
+        if "layerid" in request.POST:
+            try:
+                layerid = str(request.POST["layerid"])
+                fids = str(request.POST["featureids"]).split(',')
+                featureids = []
+                for fid in fids:
+                    value, isInt = intTryParse(fid)
+                    if (isInt == True):
+                        featureids.append(value)
+
+                featureList = True
+				##Go get geometry
+
+                logger.debug("getMonthlyRainfallAnalysis: Loaded feature ids, featureids: " + str(featureids))
+
+            except KeyError:
+                logger.warn("issue with finding geometry")
+                error.append("Error with finding geometry: layerid:" + str(layerid) + " featureid: " + str(featureids))
+
+        else:
+            try:
+                polygonstring = request.POST["geometry"]
+                geometry = decodeGeoJSON(polygonstring);
+				# create geometry
+            except KeyError:
+                logger.warn("Problem with geometry")
+                try:
+                    error.append("problem decoding geometry " + polygonstring)
+                except:
+					# Example Geometry param: {"type":"Polygon","coordinates":[[[24.521484374999996,19.642587534013032],[32.25585937500001,19.311143355064658],[32.25585937500001,14.944784875088374],[23.994140624999996,15.284185114076436],[24.521484374999996,19.642587534013032]]]}
+                    example_geometry_param = '{"type":"Polygon","coordinates":[[[24.521484374999996,19.642587534013032],[32.25585937500001,19.311143355064658],[32.25585937500001,14.944784875088374],[23.994140624999996,15.284185114076436],[24.521484374999996,19.642587534013032]]]}'
+                    error.append("problem decoding geometry.  Maybe missing param: 'geometry'.  Example of geometry param: " + example_geometry_param)
+
+            if geometry is None:
+                logger.warn("Problem in that the geometry is a problem")
+            else:
+                logger.warn(geometry)
+
+        uniqueid = uutools.getUUID()
+        logger.info("Submitting (getMonthlyRainfallAnalysis) " + uniqueid)
+
+		# Submit requests to the ipcluster service to get data
+        if (len(error) == 0):
+            dictionary = {'uniqueid': uniqueid,
+						  'custom_job_type': custom_job_type,
+						  'seasonal_start_date': seasonal_start_date,
+						  'seasonal_end_date': seasonal_end_date
+						  }
+            if (featureList == True):
+                dictionary['layerid'] = layerid
+                dictionary['featureids'] = featureids
+            else:
+                dictionary['geometry'] = polygonstring
+
+			##logger.info("submitting ",dictionary)
+            context = zmq.Context()
+            sender = context.socket(zmq.PUSH)
+            sender.connect("ipc:///tmp/servir/Q1/input")
+            sender.send_string(json.dumps(dictionary))
+
+            return processCallBack(request, json.dumps([uniqueid]), "application/json")
+        else:
+            return processCallBack(request, json.dumps(error), "application/json")
+			
+    if request.method == 'GET':
+		try:
+			seasonal_start_date = str(request.GET["seasonal_start_date"])
+			seasonal_end_date = str(request.GET["seasonal_end_date"])
+			# Force to only accept 10 character string // validation/sec
+			seasonal_start_date = seasonal_start_date[0:10]
+			seasonal_end_date = seasonal_end_date[0:10]
+		except KeyError:
+			logger.warn("issue with getting start and end dates for seasonal forecast.  Expecting something like this: &seasonal_start_date=2017_05_01&seasonal_end_date=2017_10_28")
+			error.append("Error with getting start and end dates for seasonal forecast.  Expecting something like this: &seasonal_start_date=2017_05_01&seasonal_end_date=2017_10_28")
+
+
+		# Get geometry from parameter
+		# Or extract from shapefile
+		geometry = None
+		featureList = False
+		if "layerid" in request.GET:
+			try:
+				layerid = str(request.GET["layerid"])
+				fids = str(request.GET["featureids"]).split(',')
+				featureids = []
+				for fid in fids:
+					value, isInt = intTryParse(fid)
+					if (isInt == True):
+						featureids.append(value)
+
+				featureList = True
+				##Go get geometry
+
+				logger.debug("getMonthlyRainfallAnalysis: Loaded feature ids, featureids: " + str(featureids))
+
+			except KeyError:
+				logger.warn("issue with finding geometry")
+				error.append("Error with finding geometry: layerid:" + str(layerid) + " featureid: " + str(featureids))
+
+		else:
+			try:
+				polygonstring = request.GET["geometry"]
+				geometry = decodeGeoJSON(polygonstring);
+				# create geometry
+			except KeyError:
+				logger.warn("Problem with geometry")
+				try:
+					error.append("problem decoding geometry " + polygonstring)
+				except:
+					# Example Geometry param: {"type":"Polygon","coordinates":[[[24.521484374999996,19.642587534013032],[32.25585937500001,19.311143355064658],[32.25585937500001,14.944784875088374],[23.994140624999996,15.284185114076436],[24.521484374999996,19.642587534013032]]]}
+					example_geometry_param = '{"type":"Polygon","coordinates":[[[24.521484374999996,19.642587534013032],[32.25585937500001,19.311143355064658],[32.25585937500001,14.944784875088374],[23.994140624999996,15.284185114076436],[24.521484374999996,19.642587534013032]]]}'
+					error.append("problem decoding geometry.  Maybe missing param: 'geometry'.  Example of geometry param: " + example_geometry_param)
+
+			if geometry is None:
+				logger.warn("Problem in that the geometry is a problem")
+			else:
+				logger.warn(geometry)
+
+		uniqueid = uutools.getUUID()
+		logger.info("Submitting (getMonthlyRainfallAnalysis) " + uniqueid)
+
+		# Submit requests to the ipcluster service to get data
+		if (len(error) == 0):
+			dictionary = {'uniqueid': uniqueid,
+						  'custom_job_type': custom_job_type,
+						  'seasonal_start_date': seasonal_start_date,
+						  'seasonal_end_date': seasonal_end_date
+						  }
+			if (featureList == True):
+				dictionary['layerid'] = layerid
+				dictionary['featureids'] = featureids
+			else:
+				dictionary['geometry'] = polygonstring
+
+			##logger.info("submitting ",dictionary)
+			context = zmq.Context()
+			sender = context.socket(zmq.PUSH)
+			sender.connect("ipc:///tmp/servir/Q1/input")
+			sender.send_string(json.dumps(dictionary))
+
+			return processCallBack(request, json.dumps([uniqueid]), "application/json")
+		else:
+			return processCallBack(request, json.dumps(error), "application/json")
+
+			
 @csrf_exempt
 def submitDataRequest(request):
     '''
@@ -647,7 +840,7 @@ def getCapabilitiesForDataset(request):
         "isError": isError
     }
 
-    return processCallBack(request, json.dumps(api_ReturnObject), "application/json")
+    return processCallBack(request, json.dumps(api_ReturnObject), "application/javascript")
 
 
 # ks refactor 2015 // New API Hook getClimateScenarioInfo
@@ -672,7 +865,7 @@ def getClimateScenarioInfo(request):
     # Get list of datatype numbers that have the category of 'ClimateModel'
     climateModel_DataTypeNumbers = params.get_DataTypeNumber_List_By_Property("data_category", "climatemodel")
 
-    # Get all info from the Capabilities Data for each 'ClimateModel' datatype number
+    # Get all info from the Capabilities Data for each 'ClimateModel' datatype number 
     climateModel_DataType_Capabilities_List = read_DataType_Capabilities_For(climateModel_DataTypeNumbers)
 
     # 'data_category':'ClimateModel'
@@ -687,7 +880,7 @@ def getClimateScenarioInfo(request):
 
     # ip = get_client_ip(request)
     # return processCallBack(request,json.dumps(params.ClientSide_ClimateChangeScenario_Specs),"application/json")
-    return processCallBack(request, json.dumps(api_ReturnObject), "application/json")
+    return processCallBack(request, json.dumps(api_ReturnObject), "application/javascript")
     # TODO!! Change the above return statement to return the proper object that the client can use to determine which options are available specifically for climate change scenario types.
 
 
@@ -737,7 +930,7 @@ def getFileForJobID(request):
                     expectedFileName)  # filename=myfile.zip'
 
                 # Log the data
-                dataThatWasLogged = set_LogRequest(request, get_client_ip(request))
+                #dataThatWasLogged = set_LogRequest(request, get_client_ip(request))
 
                 return response
 

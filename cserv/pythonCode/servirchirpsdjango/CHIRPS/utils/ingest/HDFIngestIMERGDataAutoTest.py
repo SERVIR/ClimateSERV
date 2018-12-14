@@ -19,7 +19,7 @@ import CHIRPS.dataclasses.IMERG_Data as IDC
 def ingest_IMERG(startYYYYMMDD, endYYYYMMDD):
 
     # Set the Datatype number
-    current_DataTypeNumber = 26  # Hardcoded until there are more IMERG types in here..
+    current_DataTypeNumber = 34  # Hardcoded until there are more IMERG types in here..
     
     # Instance of Imerg Data Classes
     IMERG_DataClass =  IDC.IMERG_Data()
@@ -108,8 +108,7 @@ def ingest_IMERG(startYYYYMMDD, endYYYYMMDD):
                 
             # Index it.
             img =  georead.readBandFromFile(ds, 1)
-            #imgScaled = img / 10
-			print img
+            print img
             ds = None
             index = indexer.getIndexBasedOnDate(theDay, theMonth, theYear)
             #print "Index:",index
@@ -203,37 +202,22 @@ def check_And_BreakYearsApart(startYYYYMMDD, endYYYYMMDD):
 # - startDate (YYYYMMDD)
 # - endDate (YYYYMMDD)
 if __name__ == '__main__':
-    print "Starting Ingest IMERG Data"
-    args = len(sys.argv)
-    if (args < 3):
-        try:
-        	conn = bdp.BDDbConnector_Capabilities()
-        	currentValue = conn.get_Capabilities(26)
-        	capabilities_Unwrapped = json.loads(currentValue)
-        	theDateSplit = capabilities_Unwrapped["endDateTime"].split("_")
-        	startDate = theDateSplit[0] + theDateSplit[1] + theDateSplit[2]
-        	endDate= datetime.datetime.today().strftime('%Y%m%d')
-        	print "IMERG_Ingest Procedures: Working on Date Range: ", startDate, " - ", endDate
-        	check_And_BreakYearsApart(startDate, endDate)
-        	print "IMERG_Ingest Procedures: Done"
-        except Exception, e:
-        	print "it failed: " + str(e)
-        sys.exit()
-    else :
-        # Time Metric tracking
-        startDateTime = datetime.datetime.utcnow()
-        
-        print "IMERG_Ingest Procedures: Working on Date Range: ", sys.argv[1], " - ", sys.argv[2]
-        #ingest_IMERG(sys.argv[1], sys.argv[2])
-        # This line below actually runs the ingest, but based on the range of years, either makes a single call or multiple calls to the ingest controller routine.
-        check_And_BreakYearsApart(sys.argv[1], sys.argv[2])
-        
-        # output time elapsed and number of datatypes processed
-        endDateTime = datetime.datetime.utcnow()
-        elapsedTimedelta = endDateTime - startDateTime
-        elapsedSeconds = elapsedTimedelta.total_seconds()
-        
-        # Final Output
-        print("IMERG_Ingest Procedures: Done  -  Total Seconds elapsed: " + str(elapsedSeconds))
+	print "Starting Ingest IMERG Data"
+
+	# Time Metric tracking
+	startDateTime = datetime.datetime.utcnow()
+
+	print "IMERG_Ingest Procedures: Working on Date Range: ", sys.argv[1], " - ", sys.argv[2]
+	#ingest_IMERG(sys.argv[1], sys.argv[2])
+	# This line below actually runs the ingest, but based on the range of years, either makes a single call or multiple calls to the ingest controller routine.
+	check_And_BreakYearsApart(sys.argv[1], sys.argv[2])
+
+	# output time elapsed and number of datatypes processed
+	endDateTime = datetime.datetime.utcnow()
+	elapsedTimedelta = endDateTime - startDateTime
+	elapsedSeconds = elapsedTimedelta.total_seconds()
+
+	# Final Output
+	print("IMERG_Ingest Procedures: Done  -  Total Seconds elapsed: " + str(elapsedSeconds))
 
 

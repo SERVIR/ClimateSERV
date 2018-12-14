@@ -15,14 +15,18 @@ def setupBSDDB():
     logger = llog.getNamedLogger("request_processor")
     logger.info("Creating db")
     bddb = BDDbConnector()
-    
-    os.chmod(params.newdbfilepath, 0777)
-    
+    try:
+		os.chmod(params.newdbfilepath, 0777)
+    except:
+		pass   
     # KS Refactor 2015 - Adding a second BDDB for storing API capabilities JSON Strings // key vals are, datatypeNumber:JSONString
     #logger = llog.getNamedLogger("")
     logger.info("Creating capabilities db")
     bddb_Capabilities = BDDbConnector_Capabilities()
-    os.chmod(params.capabilities_db_filepath, 0777)
+    try:
+		os.chmod(params.capabilities_db_filepath, 0777)
+    except:
+		pass
     
 
 class BDDbConnector:
@@ -114,34 +118,35 @@ class BDDbConnector_RequestLog:
     
     # Set the current DateTime and open a local DB for writing (so that the DB is locked in when an instance of this class is created) 
     def __init__(self):
-        
-        # Set the earliest possible datetime (This date is around the time this class was first created.)
-        # This is an optimization that should cut down on the processing in case someone passes in a datetime search that starts at a much earlier date than this one.
-        earliest_Possible_DateTime_String = "2015_09_30"
-        self.earliest_Possible_DateTime = datetime.datetime.strptime(earliest_Possible_DateTime_String, self.db_BaseFileName_DateFormat)
-        #datetime.datetime.strptime("2015_09_30", "%Y_%m_%d")
-        
-        
-        # Set the current DateTime
-        self.current_DateTime = self._get_CurrentDateTime()
-        
-        # Get the expected filename (based on the current Date Time (UTC)
-        expectedFileName = self._get_DB_FileName(self.current_DateTime)
-        
-        # Get the DB (if it does not exist, it gets created)
-        self.db_ForWriting_NewRequests = self._openHash_(expectedFileName)
-        
-        
-        # Clean up all these old notes!!
-        #self.db_BasePath = params.requestLog_db_basepath
-        
-        # If DB does not exist, create it.
-        #  or creates (if not found) the most current DB for today.
-        
-        #expected_FullPath = self._get_DB_FullPath_ForFilename(expectedFileName)
-        
-        #self.db = self.__openHash__()
-        
+        try:
+			# Set the earliest possible datetime (This date is around the time this class was first created.)
+			# This is an optimization that should cut down on the processing in case someone passes in a datetime search that starts at a much earlier date than this one.
+			earliest_Possible_DateTime_String = "2015_09_30"
+			self.earliest_Possible_DateTime = datetime.datetime.strptime(earliest_Possible_DateTime_String, self.db_BaseFileName_DateFormat)
+			#datetime.datetime.strptime("2015_09_30", "%Y_%m_%d")
+			
+			
+			# Set the current DateTime
+			self.current_DateTime = self._get_CurrentDateTime()
+			
+			# Get the expected filename (based on the current Date Time (UTC)
+			expectedFileName = self._get_DB_FileName(self.current_DateTime)
+			
+			# Get the DB (if it does not exist, it gets created)
+			self.db_ForWriting_NewRequests = self._openHash_(expectedFileName)
+			
+			
+			# Clean up all these old notes!!
+			#self.db_BasePath = params.requestLog_db_basepath
+			
+			# If DB does not exist, create it.
+			#  or creates (if not found) the most current DB for today.
+			
+			#expected_FullPath = self._get_DB_FullPath_ForFilename(expectedFileName)
+			
+			#self.db = self.__openHash__()
+        except:
+			pass
     
     # Open a given db by filename (if it does not exist, create it)
     #def __openHash__(self, theFileName):

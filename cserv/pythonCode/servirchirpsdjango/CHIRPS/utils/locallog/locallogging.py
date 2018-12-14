@@ -7,6 +7,7 @@ import sys
 import logging
 import CHIRPS.utils.configuration.parameters as params
 from logging.handlers import RotatingFileHandler
+import time
 
 class StreamToLogger(object):
    """
@@ -27,13 +28,13 @@ class StreamToLogger(object):
  
 
 def getNamedLogger(nameofLogger):
-    logfilepath = params.logfilepath+nameofLogger+".log"
+    logfilepath = params.logfilepath+nameofLogger+time.strftime("%Y%m%d")+".log"
     
     logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
                     filename=logfilepath,
-                    filemode='w')
+                    filemode='a')
     
     logger=logging.getLogger(nameofLogger)
     if (params.logToConsole == True):

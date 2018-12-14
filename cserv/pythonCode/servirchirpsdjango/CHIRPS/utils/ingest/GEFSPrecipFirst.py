@@ -12,8 +12,9 @@ import sys
 import CHIRPS.utils.file.h5datastorage as dataS
 import json
 import datetime
+import numpy as np
 
-def processYearByDirectory(dataType,year, inputdir, nlastdate):
+def processYearByDirectory(dataType,year, inputdir, ldate):
     '''
     
     :param dataType:
@@ -31,7 +32,7 @@ def processYearByDirectory(dataType,year, inputdir, nlastdate):
         fday = filesplit[2][2:]
         fdatestring = fday + " " + fmonth + " " + fyear
         fdate = datetime.datetime.strptime(fdatestring, "%d %m %Y")
-        if fdate > nlastdate:
+        if fdate > ldate:
 			if filename.endswith(".tif") and os.stat(inputdir+"/"+filename).st_size > 0:
 				dataupdated = True
 				fileToProcess = inputdir+"/"+filename
@@ -54,33 +55,17 @@ def processYearByDirectory(dataType,year, inputdir, nlastdate):
 				ds = None
 				index = indexer.getIndexBasedOnDate(day,month,year)
 				print "Index:",index
-				try:
-					changed = False
-					with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
-						data = json.load(f)
-						for item in data['items']:
-							print(item['name'])
-							if(item['name'] == 'gefsprecip'):
-								ldatestring = item['Latest']
-								ldate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
-								print("in here")
-								print("ldate: " + str(ldate))
-								if ldate < filedate:
-									print("file date is later")
-									item['Latest'] = sdate
-									changed = True
-						if changed:
-							f.seek(0)        # <--- should reset file  position to the beginning.
-							json.dump(data, f, indent=4)
-							f.truncate()     # remove remaining part
-				except Exception as e:
-					print(e)
-					pass
-				dataStore.putData(index, img)
-
+				c = np.array(dataStore.getData(index))
+				if(c==-9999).all() == True:
+					dataStore.putData(index, img)
+				else:
+					print fdate.strftime('%Y.%m.%d') + " data already in hdf"
+        else:
+			print "file date b4 late date"
     dataStore.close()
     if dataupdated:
 		dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
+
 def getLastGEFSPrecipDate():
 	try:
 		changed = False
@@ -93,13 +78,14 @@ def getLastGEFSPrecipDate():
 	except Exception as e:
 		print(e)
 		pass
-
+		
 if __name__ == '__main__':
+    print "Starting Ingesting FIRST GEFS CHIRPS Data"
     theDate = getLastGEFSPrecipDate()
     day,month,year=theDate.split(' ')
     ldatestring = day + " " + month + " " + year
     lastdate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
     print "-------------------------------------------------------------Processing ",year,"-----------------------------------------------------"
 
-    processYearByDirectory(32,int(year),params.dataTypes[32]['inputDataLocation']+str(year), lastdate)
+    processYearByDirectory(32,int(year),params.dataTypes[32]['inputDataLocation']+"_first/"+str(year), lastdate)
     print "-------------------------------------------------------------Done Processing ",year,"-----------------------------------------------------"

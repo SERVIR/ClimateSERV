@@ -77,18 +77,20 @@ def getFileForYearAndMonth(yearToGet,monthToGet):
     enddirectory =  rootoutputdir+str(yearToGet)+"/"
     endfilename = enddirectory+"south"+filenum+'.zip'
     print endfilename
-    urllib.urlretrieve (url, endfilename)
-    list_of_filenames_inside_zipfile = []
-    isRenameFiles = False
-    with zipfile.ZipFile(endfilename, "r") as z:
-        list_of_filenames_inside_zipfile = z.namelist()
-        isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
-        z.extractall(enddirectory)
-    if isRenameFiles == True:
-        rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
-    removeTFWfiles(enddirectory)
-    print "EndFile ",endfilename
-
+    try:
+        urllib.urlretrieve (url, endfilename)
+        list_of_filenames_inside_zipfile = []
+        isRenameFiles = False
+        with zipfile.ZipFile(endfilename, "r") as z:
+            list_of_filenames_inside_zipfile = z.namelist()
+            isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
+            z.extractall(enddirectory)
+        if isRenameFiles == True:
+            rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
+        removeTFWfiles(enddirectory)
+        print "EndFile ",endfilename
+    except:
+        os.remove(endfilename)
     print "-----------------------------Done working on ",monthToGet,"/",yearToGet,"---------------------------------"
 
 

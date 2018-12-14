@@ -4,7 +4,7 @@ Created on March 2016
 @author: Kris Stanton
 
 '''
-
+import urllib2
 import ftplib
 import CHIRPS.utils.configuration.parameters as params
 
@@ -16,15 +16,10 @@ class IMERG_Data:
     
     EarlyLateType = IMERG_EarlyLate_EnumType.late
     Earliest_IMERG1Day_YYYYMMDD = "20160101"
-    
-    FTP_RootFilePath = "ftp://jsimpson.pps.eosdis.nasa.gov/data/imerg/gis"
+    Data_Directory = "https://proxy.servirglobal.net/ProxyFTP.aspx?url=ftp://jsimpson.pps.eosdis.nasa.gov/data/imerg/gis/" 
     FTP_RootHostPath = "ftp://jsimpson.pps.eosdis.nasa.gov/"    # Used in cleaning paths for direct downloading (downloading without changing directory on the server)
-    
-    FTP_Host = "jsimpson.pps.eosdis.nasa.gov" #"trmmopen.gsfc.nasa.gov" #"198.118.195.58" #trmmopen.gsfc.nasa.gov"  #"ftp://trmmopen.gsfc.nasa.gov"
-    FTP_UserName = "billy.ashmall@nasa.gov" 
-    FTP_UserPass = "billy.ashmall@nasa.gov" 
-    FTP_SubFolderPath = "data/imerg/gis" #"pub/gis"
-    
+    needsYear = True
+
     
     # 2015 Specific (Legacy Dataset)
     FTP_2015_SubFolder_Path = "2015"
@@ -44,6 +39,7 @@ class IMERG_Data:
             return "L"
     
     def get_Expected_Tif_FileName(self, theYear, theMonth, theDay):
+        print '**********running file at servirchirpsdjango\CHIRPS\dataclasses\ ' 
         theMonthSTR = str("%02d" % theMonth)    # Convert to two character string
         theDaySTR = str("%02d" % theDay)
         
@@ -54,18 +50,49 @@ class IMERG_Data:
         retFileName += str(theYear)
         retFileName += theMonthSTR
         retFileName += theDaySTR
+        holdnome = retFileName
         print '**********pre' + retFileName 
-        if self.if_File_Exists(theMonthSTR,  retFileName + "-S233000-E235959.1410.V05B.1day.tif"):
+        if self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S233000-E235959.1410.V05B.1day.tif"):
         	retFileName += "-S233000-E235959.1410.V05B.1day.tif"
-        elif self.if_File_Exists(theMonthSTR,  retFileName + "-S143000-E145959.0870.V05B.1day.tif"):
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S203000-E205959.1230.V05B.1day.tif"):
+        	retFileName += "-S203000-E205959.1230.V05B.1day.tif"
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S173000-E175959.1050.V05B.1day.tif"):
+        	retFileName += "-S173000-E175959.1050.V05B.1day.tif"
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S143000-E145959.0870.V05B.1day.tif"):
         	retFileName += "-S143000-E145959.0870.V05B.1day.tif"
-
-        elif self.if_File_Exists(theMonthSTR,  retFileName + "-S053000-E055959.0330.V05B.1day.tif"):
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S113000-E115959.0690.V05B.1day.tif"):
+        	retFileName += "-S113000-E115959.0690.V05B.1day.tif"
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S083000-E085959.0510.V05B.1day.tif"):
+        	retFileName += "-S083000-E085959.0510.V05B.1day.tif"
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S053000-E055959.0330.V05B.1day.tif"):
         	retFileName += "-S053000-E055959.0330.V05B.1day.tif"
-        elif self.if_File_Exists(theMonthSTR,  retFileName + "-S023000-E025959.0150.V05B.1day.tif"):
+        elif self.if_File_Exists_Year(str(theYear), theMonthSTR,  retFileName + "-S023000-E025959.0150.V05B.1day.tif"):
         	retFileName += "-S023000-E025959.0150.V05B.1day.tif"
         else:
         	retFileName = ""
+        print 'SSSSSSSSSSSSSSSS' + retFileName
+        if retFileName == "":
+			retFileName = holdnome
+			self.needsYear = False
+			print 'in if '
+			if self.if_File_Exists(theMonthSTR,  retFileName + "-S233000-E235959.1410.V05B.1day.tif"):
+				retFileName += "-S233000-E235959.1410.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S203000-E205959.1230.V05B.1day.tif"):
+				retFileName += "-S203000-E205959.1230.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S173000-E175959.1050.V05B.1day.tif"):
+				retFileName += "-S173000-E175959.1050.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S143000-E145959.0870.V05B.1day.tif"):
+				retFileName += "-S143000-E145959.0870.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S113000-E115959.0690.V05B.1day.tif"):
+				retFileName += "-S113000-E115959.0690.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S083000-E085959.0510.V05B.1day.tif"):
+				retFileName += "-S083000-E085959.0510.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S053000-E055959.0330.V05B.1day.tif"):
+				retFileName += "-S053000-E055959.0330.V05B.1day.tif"
+			elif self.if_File_Exists(theMonthSTR,  retFileName + "-S023000-E025959.0150.V05B.1day.tif"):
+				retFileName += "-S023000-E025959.0150.V05B.1day.tif"
+			else:
+				retFileName = ""		
         print '**********post' + retFileName 
         return retFileName
         
@@ -75,44 +102,41 @@ class IMERG_Data:
         theDaySTR = str("%02d" % theDay)
         
         retString = ""
-        retString += self.FTP_RootFilePath
+        retString += self.Data_Directory
         retString += "/"
+        if self.needsYear:
+			retString += str(theYear)
+			retString += "/"
         retString += theMonthSTR
         retString += "/"
         
         retString += self.get_Expected_Tif_FileName(theYear, theMonth, theDay)
-        #retString += "3B-HHR-"
-        #retString += self._get_EarlyLate_StringPart()
-        #retString += ".MS.MRG.3IMERG."
-        #retString += str(theYear)
-        #retString += theMonthSTR
-        #retString += theDaySTR
-        #retString += "-S000000-E002959.0000.V03E.1day.tif"
-        
+        self.needsYear = True
         return retString
     def if_File_Exists(self, month, filename):
         hasFile = False
-        server = self.FTP_Host 
-        
-
+        datapath = self.Data_Directory.replace('url', 'file') + month + "/" + filename
+        print 'if_File_Exists: ' + datapath
         try:
-            ftp = ftplib.FTP(server)    
-            ftp.login(self.FTP_UserName,self.FTP_UserPass)
+            req = urllib2.Request(datapath)
+            response = urllib2.urlopen(req)
+            if response.read().strip() == "True":
+				hasFile = True
         except Exception,e:
             print e, " ftp issue"
-        else:    
-            ftp.cwd('/data/imerg/gis/' + month)
-            filelist = [] #to store all files
-            ftp.retrlines('LIST',filelist.append)    # append to list  
-            f=0
-            for f in filelist:
-                if filename in f:
-                    hasFile = True
-                    f=1
-            if f==0:
-                print "FTP has no file named " + filename
-                hasFile = False
-
+        return hasFile
+		
+    def if_File_Exists_Year(self, year, month, filename):
+        hasFile = False
+        datapath = self.Data_Directory.replace('url', 'file') + year + "/" + month + "/" + filename
+        print 'if_File_Exists_Year: ' + datapath		
+        try:
+            req = urllib2.Request(datapath)
+            response = urllib2.urlopen(req)
+            if response.read().strip() == "True":
+				hasFile = True
+        except Exception,e:
+            print e, " ftp issue"
         return hasFile
 
     # Legacy 2015 Dataset
@@ -121,7 +145,7 @@ class IMERG_Data:
         theDaySTR = str("%02d" % theDay)
         
         retString = ""
-        retString += self.FTP_RootFilePath
+        retString += self.Data_Directory
         retString += "/"
         retString += self.FTP_2015_SubFolder_Path
         retString += "/"
@@ -162,12 +186,12 @@ class IMERG_Data:
         
     def get_DefaultGeoTransform_Obj(self):
         # For IMERG 1Day from jsimpson FTP, GIS TIFF outputs
-        gt0_TopLeft_X = -179.9499969 #0
-        gt1_WE_PixelResolution = 0.10 #0.05
+        gt0_TopLeft_X = -180.0 #0
+        gt1_WE_PixelResolution = 0.10000000149011612 #0.05
         gt2_0a = 0 # Not sure what this is
-        gt3_TopLeft_Y = 89.9499969 # 90
+        gt3_TopLeft_Y = 90.0 # 90
         gt4_0b = 0  # Not sure what this is
-        gt5_NS_PixelResolution_Negative = -0.10 #-0.05
+        gt5_NS_PixelResolution_Negative = -0.10000000149011612 #-0.05
         ret_GeoTransform = (gt0_TopLeft_X, gt1_WE_PixelResolution, gt2_0a, gt3_TopLeft_Y, gt4_0b, gt5_NS_PixelResolution_Negative)
         return ret_GeoTransform
         #outFullGeoTransform = (outTransform_xPos, fullDatset_GeoTransform[1], fullDatset_GeoTransform[2], outTransform_yPos, fullDatset_GeoTransform[4], fullDatset_GeoTransform[5])

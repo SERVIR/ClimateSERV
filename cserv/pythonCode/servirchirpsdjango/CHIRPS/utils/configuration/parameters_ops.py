@@ -7,7 +7,7 @@ Modified starting from Sept 2015
 '''
 import CHIRPS.utils.processtools.dateIndexTools as dit
 
-DEBUG_LIVE = True
+DEBUG_LIVE = False
 
 logToConsole = True 
 serviringestroot = '''/data/data/cserv/pythonCode/serviringest/'''
@@ -62,7 +62,7 @@ dataTypes = [
               'size':[19272, 7875],
               'directory':'/data/data/image/processed/eMODIS/ndvi-westafrica/',
               'fillValue':-9999.,
-              'indexer': dit.EveryFiveDaysIndex(), #DecadalIndex(),
+              'indexer': dit.DecadalIndex(),
               'inputDataLocation':'/data/data/image/input/emodis/westafrica/',
               'data_category':'NDVI'
               },
@@ -73,7 +73,7 @@ dataTypes = [
               'size':[12847,14713],
               'directory':'/data/data2/image/processed/eMODIS/ndvi-eastafrica/np/',
               'fillValue':-9999.,
-              'indexer': dit.EveryFiveDaysIndex(),
+              'indexer': dit.DecadalIndex(),
               'inputDataLocation': '/data/data2/image/input/emodis/eastafrica/',
               'data_category':'NDVI'
               },
@@ -104,7 +104,7 @@ dataTypes = [
               'size':[19839,17001],
               'directory':'/data/data2/image/processed/eMODIS/ndvi-southafrica/np/',
               'fillValue':-9999.,
-              'indexer': dit.EveryFiveDaysIndex(),
+              'indexer': dit.DecadalIndex(),
               'inputDataLocation':'/data/data2/image/input/emodis/southafrica/',
               'data_category':'NDVI'
               },
@@ -394,7 +394,7 @@ dataTypes = [
               'size':[17407,13676],
               'directory':'/data/data2/image/processed/eMODIS/ndvi-asia/np/',
               'fillValue':-9999.,
-              'indexer': dit.EveryFiveDaysIndex(),
+              'indexer': dit.DecadalIndex(),
               'inputDataLocation':'/data/data2/image/input/emodis/asia/',
               'data_category':'NDVI'
               },
@@ -421,7 +421,7 @@ dataTypes = [
               'size':[7200,2000],
               'directory':'/data/data3/image/processed/gefs_anom/',
               'fillValue':-9999.,
-              'indexer': dit.DailyIndex(), #dit.DecadalIndex(),
+              'indexer': dit.DecadalIndex(),
               'inputDataLocation':'/data/data3/image/input/gefs_anom/',
               'data_category':'CHIRPS'
               },
@@ -444,6 +444,16 @@ dataTypes = [
               'inputDataLocation':'/data/data/image/input/esi/12WK/',
               'data_category':'ESI'
               },
+            { 'number':34,
+              'name':'IMERG Test',
+              'description':'GPM IMERG Daily Accumulation Precip',
+              'size':[3600,1800],
+              'directory':'/data/data2/image/processed/IMERGTest/',
+              'fillValue':9999.,
+              'indexer': dit.DynamicIndex("P1D"),
+              'inputDataLocation':'/data/data2/image/input/IMERGTest/',
+              'data_category':'IMERG'
+            },
 
              
              # There will be more added here in time.

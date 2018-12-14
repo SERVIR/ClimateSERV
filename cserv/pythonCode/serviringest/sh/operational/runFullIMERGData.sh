@@ -28,7 +28,7 @@ autoDate=$(date +'%Y')
 cd ${rootdir}
 export PYTHONPATH=${PYTHONPATH}:${rootdir}
 echo "Running IMERG download for Range, ${START_YYYYMMDD}, To, ${END_YYYYMMDD}"
-#python CHIRPS/utils/ftp/ftpIMERGDownloader.py ${START_YYYYMMDD} ${END_YYYYMMDD}
+python CHIRPS/utils/ftp/ftpIMERGDownloader.py ${START_YYYYMMDD} ${END_YYYYMMDD}
 echo "Done running IMERG ftpIMERGDownloader"
 
 echo "Running IMERG Ingest for Range, ${START_YYYYMMDD}, To, ${END_YYYYMMDD}"

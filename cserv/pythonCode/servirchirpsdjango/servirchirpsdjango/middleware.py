@@ -1,4 +1,4 @@
-import logging
+import logging 
 from urlparse import urlparse
 class MetricsTracking():
     def process_response(self, request, response):
@@ -16,7 +16,7 @@ class MetricsTracking():
 	datatype = "None"
 	operationtype = "None"
         if request.GET.get('datatype'):
-	    datatype = request.GET['datatype']
+	    datatype = request.GET['datatype'] 
 	if request.GET.get('operationtype'):
 	    operationtype = request.GET['operationtype']
         tethys_log.info('%s,%s,%s,%s,%s,%s,%s' % (request_method, url, username, clientip, response_status,datatype,operationtype))

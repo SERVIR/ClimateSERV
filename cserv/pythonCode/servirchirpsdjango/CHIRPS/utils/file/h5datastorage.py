@@ -41,6 +41,14 @@ def writeSpatialInformation(outputdir, prjwkt, grid, year):
     f2 = open(outputFileDef, 'w')
     f2.write(', '.join(str(x) for x in grid))
     f2.close()
+    try:
+		os.chmod(outputFilePrj,0o777)
+    except:
+		pass
+    try:
+		os.chmod(outputFileDef,0o777)
+    except:
+		pass		
     
 class datastorage(object):
     dset = None
@@ -56,14 +64,17 @@ class datastorage(object):
     def __openFileForWriting__(self,dataType, year):
         self.forWriting = True
         outputfile = params.getHDFFilename(dataType, year)
+  
         size = params.getGridDimension(dataType)
         if not os.path.exists(params.dataTypes[self.dataType]['directory']):
-            fileutils.makePath(params.dataTypes[self.dataType]['directory'])
+            fileutils.makePath(params.dataTypes[self.dataType]['directory'])  
         if (os.path.isfile(outputfile) !=  True) :
             indexLastDay = dit.convertEpochToJulianDay(dit.convertDayMonthYearToEpoch(31, 12, year))
             self.f = h5py.File(outputfile,'a')
             return self.f.create_dataset("data", (indexLastDay,size[1],size[0]), dtype='float32', compression="lzf", fillvalue=params.getFillValue(dataType))
         else:
+            print 'file exists'
+     
             indexLastDay = dit.convertEpochToJulianDay(dit.convertDayMonthYearToEpoch(31, 12, year))
             self.f = h5py.File(outputfile,'a')
             return self.f["data"]

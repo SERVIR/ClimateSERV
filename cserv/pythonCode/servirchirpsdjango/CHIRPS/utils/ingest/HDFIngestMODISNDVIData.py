@@ -93,32 +93,45 @@ def processYearByDirectory(dataType,year, inputdir):
             except Exception as e:
 				print(e)
 				pass
-            indexList.insert(index, img)
+            #indexList.insert(index, img)
             
             #if index > highestIndex:
             #	highestIndex = index
-            if index == 0:
-				print img 
+            #if index == 0:
+			#	print img 
+            #print "len(img): " + str(len(img))
+            #print "img[0]: " + str(len(img[0]))
             dataStore.putData(index, img)
-    
+            #if index == 0:
+			#	np.savetxt('/data/data/index0.txt', img)
+            #if index == 2:
+			#	np.savetxt('/data/data/index2.txt', img)			
+            #roller = np.roll(img, 1000, axis=0)
+            #dataStore.putData(index + 1,np.roll(roller, 8000, axis=1))
+            #dataStore.putData(index + 1,np.roll(img, 150, axis=0))
     #print sortedIndexList
-    print dataStore.getData(0)            
+    #print dataStore.getData(0)            
     dataStore.close() 
     dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
 
-    averageDecadalData(dataType, year, indexList)
+    #averageDecadalData(dataType, year, indexList)
 	
 def averageDecadalData(dataType, year, indexList):
     print "Averaging Decadal Data"
     dataStore = dataS.datastorage(dataType, year, forWriting=True)
     i = 0
-    while i < range(len(indexList) - 1):
-		first = indexList[i]
-		second = indexList[i + 2]
-		averaged = (first + second) / 2
-		print "adding averaged data to index: " + str(i + 1)
-		dataStore.putData(i + 1, averaged)
-		i = i + 2
+    try:
+		while i < len(indexList) - 1:
+			if np.issubdtype(type(indexList[i]), np.integer) != True and np.issubdtype(type(indexList[i + 2]), np.integer) != True:
+				first = np.array(indexList[i])
+				second = np.array(indexList[i + 2])
+				#averaged = np.nanmean( np.array([ first , second ]) )
+				#averaged = (first + second) / 2
+				print "adding averaged data to index: " + str(i + 1)
+				dataStore.putData(i + 1, averaged)
+			i = i + 2
+    except Exception as e:
+		print("there was an exception: " + str(e))
     dataStore.close()
 
 if __name__ == '__main__':

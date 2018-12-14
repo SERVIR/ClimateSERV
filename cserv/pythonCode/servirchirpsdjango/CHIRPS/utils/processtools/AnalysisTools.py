@@ -134,6 +134,86 @@ def _MonthlyRainfallAnalysis__make_CHIRPS_workList(uniqueid, request, datatype_u
         worklist.extend([workdict])  # Basically adds the entire workdict object to the worklist (could also be written as, worklist.append(workdict)
 
     return worklist
+	
+def _MonthlyRainfallAnalysis__make_CHIRPS_GEFS_workList(uniqueid, request, datatype_uuid_for_CHIRPS, datatype_uuid_for_SeasonalForecast):
+    worklist = []
+    sub_type_name = 'SEASONAL_FORECAST'  # Choices for now are: 'CHIRPS_REQUEST' and 'SEASONAL_FORECAST'
+
+    datatype = 32  # Much of the copy/paste code already references this as 'datatype'
+    begintime = chirps_dateRange_earlyMonth + "/" + chirps_dateRange_earlyDay + "/" + chirps_dateRange_earlyYear
+    endtime = chirps_dateRange_lateMonth + "/" + chirps_dateRange_lateDay + "/" + chirps_dateRange_lateYear
+    intervaltype = 0    # Daily
+    operationtype = 5   # 5 == average, 0 == max, 1 == min
+
+    size = params.getGridDimension(int(datatype))
+    dates = dproc.getListOfTimes(begintime, endtime, intervaltype)
+
+    if (intervaltype == 0):
+        dates = params.dataTypes[datatype]['indexer'].cullDateList(dates)
+
+    # PROCESS GEOMETRY STUFF NOW
+    geotransform, wkt = rp.getSpatialReference(int(datatype))
+    # User Drawn Polygon
+    #bounds = None
+    #mask = None
+    polygon_Str_ToPass = None
+    if ('geometry' in request):
+        # Get the polygon string
+        polygonstring = request['geometry']
+        # Process input polygon string
+        geometry = geoutils.decodeGeoJSON(polygonstring)
+        # # this is not a download type or a climate model type  --START
+        polygon_Str_ToPass = polygonstring
+        bounds, mask = mg.rasterizePolygon(geotransform, size[0], size[1], geometry)
+    # # this is not a download type or a climate model type  --END
+    # User Selected a Feature
+    elif ('layerid' in request):
+        layerid = request['layerid']
+        featureids = request['featureids']
+        geometries = sf.getPolygons(layerid, featureids)
+
+        # If we MUST have a polygon_Str_ToPass, uncomment the next two lines.
+        #polygonstring = extractTif.get_ClimateDataFiltered_PolygonString_FromMultipleGeometries(geometries)
+        #polygon_Str_ToPass = polygonstring
+
+        # # this is not a download type or a climate model type --START
+        bounds, mask = mg.rasterizePolygons(geotransform, size[0], size[1], geometries)
+        # # this is not a download type or a climate model type --END
+    # if no cached polygon exists rasterize polygon
+    clippedmask = mask[bounds[2]:bounds[3], bounds[0]:bounds[1]]
+
+    # TODO, Create System of multiple masks for the Monthly Analysis process.
+    # self.__writeMask__(uniqueid, clippedmask, bounds)  # mst.writeHMaskToTempStorage(uid,array,bounds)
+    #mst.writeHMaskToTempStorage(uniqueid,clippedmask,bounds)        # NEED TO FIND OUT HOW AND WHERE THIS IS USED IN THE DEEPER PROCESSING CODE, AND MAKE A SYSTEM THAT WILL ALLOW MORE THAN JUST ONE MASK..
+    mst.writeHMaskToTempStorage(datatype_uuid_for_CHIRPS, clippedmask, bounds)
+    del mask
+    del clippedmask
+
+
+    # Build the worklist for each date in the dates
+    for date in dates:
+        workid = uu.getUUID()
+        workdict = {'uid': uniqueid,
+                    'workid': workid,
+                    'datatype': datatype,
+                    'operationtype': operationtype,
+                    'intervaltype': intervaltype,
+                    'bounds': bounds,
+                    'polygon_Str_ToPass': polygon_Str_ToPass,
+                    'datatype_uuid_for_CHIRPS': datatype_uuid_for_CHIRPS,
+                    'datatype_uuid_for_SeasonalForecast': datatype_uuid_for_SeasonalForecast,
+                    'current_mask_and_storage_uuid': datatype_uuid_for_CHIRPS,                  # Only one chirps type request needed so using same uuid
+                    'sub_type_name': sub_type_name, 'derived_product': True, 'special_type': 'MonthlyRainfallAnalysis' }
+        # Daily dates processing # if (intervaltype == 0):  # It is in this case, daily.
+        workdict['year'] = date[2]
+        workdict['month'] = date[1]
+        workdict['day'] = date[0]
+        dateObject = dateutils.createDateFromYearMonthDay(date[2], date[1], date[0])
+        workdict['isodate'] = dateObject.strftime(params.intervals[0]['pattern'])
+        workdict['epochTime'] = dateObject.strftime("%s")
+        worklist.extend([workdict])  # Basically adds the entire workdict object to the worklist (could also be written as, worklist.append(workdict)
+
+    return worklist
 
 
 # Need to make a request for all 10 ensembles of precipitation.
@@ -242,7 +322,52 @@ def _MonthlyRainfallAnalysis__make_SeasonalForecast_workList(uniqueid, request, 
 
     return worklist
 
+def get_workList_for_headProcessor_for_MonthlyGEFSRainfallAnalysis_types(uniqueid, request):
+    worklist = []
+    datatype_uuid_for_CHIRPS = uu.getUUID()
+    datatype_uuid_for_SeasonalForecast = uu.getUUID()
 
+    # (A) Process incoming params
+    worklist_CHIRPS             = _MonthlyRainfallAnalysis__make_CHIRPS_workList(uniqueid, request, datatype_uuid_for_CHIRPS, datatype_uuid_for_SeasonalForecast)
+    worklist_SeasonalForecast   = _MonthlyRainfallAnalysis__make_CHIRPS_GEFS_workList(uniqueid, request, datatype_uuid_for_CHIRPS, datatype_uuid_for_SeasonalForecast)
+    worklist = worklist + worklist_CHIRPS
+    worklist = worklist + worklist_SeasonalForecast
+
+
+    # (B) Get the CHIRPS and Monthly Seasonal Forecast Worklists
+
+    # (C) Do any additional stuff needed at the pre-processing level right here?
+
+
+    # Procedural process
+    # Focus on making the tasks for all the workers for (1), and (2).
+
+    # CHIRPS
+    # # Needs to be all historical Chirps dates.  We need the following items from each chirps date
+    # # # FOR JUST THIS FIRST PART (we only need the CHIRPS AVERAGE dataset)
+    # # # FOR ALL THE REST OF THE PARTS (POST PROCESSING)
+    # # # # We need to create a collection of all the monthly averages, and then get the 25, 50, 75 percentile
+
+    # SEASONAL FORECAST
+    # # FOR JUST THIS FIRST PART
+    # # # Need the 10 ensembles, Average
+    # # FOR ALL THE REST OF THE PARTS (POST PROCESSING)
+    # # # For Each Month
+    # # # # Combine the 10 into a min
+    # # # # Combine the 10 into an Average
+    # # # # Combine the 10 into a max
+
+
+    # OLD NOTES - MAYBE IGNORE?
+    # # # Get The averages of all chirps, then create a collection of all the monthly averages
+    # # # LongTerm Average (Average over entire date range?
+
+
+    #worklist.append("WHASSUP..")
+    #worklist.append("TODO.. FINISH THIS SECTION!")
+
+    return worklist
+	
 # Alternate version of '__preProcessIncomingRequest__' code that gets the worklist for the Monthly Analysis
 # The MonthlyRainfallAnalysis types require a set of primary (normal type of) reuqests that generate data.
 # The data is then used to make the derrived product dataset which is what is returned to the client and then placed on a graph.

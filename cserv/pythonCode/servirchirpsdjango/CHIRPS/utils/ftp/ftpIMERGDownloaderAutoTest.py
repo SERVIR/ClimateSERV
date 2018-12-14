@@ -32,7 +32,7 @@ def download_IMERG(startYYYYMMDD, endYYYYMMDD):
     #endDay = endYYYYMMDD[6:8]
     
     # Set the Datatype number
-    current_DataTypeNumber = 26  # Hardcoded until there are more IMERG types in here..
+    current_DataTypeNumber = 34  # Hardcoded until there are more IMERG types in here..
     
     # Instance of Imerg Data Classes
     IMERG_DataClass =  IDC.IMERG_Data()
@@ -100,7 +100,7 @@ def download_IMERG(startYYYYMMDD, endYYYYMMDD):
         ftp_PathTo_TWF= ftpFullFilePaths['ftpPathTo_tfw']# IMERG_DataClass._get_FTP_FolderPath_From_FullFilePath(ftpFullFilePaths['ftpPathTo_tfw'])
 
         # Download the Tif
-
+        print "**************************creating file: " + local_FullFilePath_ToSave_Tif
         fx= open(local_FullFilePath_ToSave_Tif, "wb")
         fx.close()
         os.chmod(local_FullFilePath_ToSave_Tif,0777)	
@@ -135,23 +135,7 @@ def download_IMERG(startYYYYMMDD, endYYYYMMDD):
 # - endDate (YYYYMMDD)
 if __name__ == '__main__':
     print "Starting Downloading IMERG Data"
-    args = len(sys.argv)
-    if (args < 3):
-        try:
-        	conn = bdp.BDDbConnector_Capabilities()
-        	currentValue = conn.get_Capabilities(26)
-        	capabilities_Unwrapped = json.loads(currentValue)
-        	theDateSplit = capabilities_Unwrapped["endDateTime"].split("_")
-        	startDate = theDateSplit[0] + theDateSplit[1] + theDateSplit[2]
-        	endDate= datetime.datetime.today().strftime('%Y%m%d')
-        	print "IMERG_Downloader: Working on Date Range: ", startDate, " - ", endDate
-        	download_IMERG(startDate, endDate)
-        	print "IMERG_Downloader: Done"
-        except Exception, e:
-        	print "it failed: " + str(e)
-        sys.exit()
-    else :
-        print "IMERG_Downloader: Working on Date Range: ", sys.argv[1], " - ", sys.argv[2]
-        download_IMERG(sys.argv[1], sys.argv[2])
-        print "IMERG_Downloader: Done"
+    print "IMERG_Downloader: Working on Date Range: Not auto", sys.argv[1], " - ", sys.argv[2]
+    download_IMERG(sys.argv[1], sys.argv[2])
+    print "IMERG_Downloader: Done"
         

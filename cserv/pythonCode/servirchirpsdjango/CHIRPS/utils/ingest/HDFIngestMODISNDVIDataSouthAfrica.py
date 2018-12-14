@@ -11,6 +11,8 @@ import sys
 import CHIRPS.utils.file.h5datastorage as dataS
 import numpy as np
 import gc
+import json
+import datetime
 
 def processYearByDirectory(dataType,year, inputdir):
     '''
@@ -36,6 +38,8 @@ def processYearByDirectory(dataType,year, inputdir):
             month = dictionary['month']
 
             day = dictionary['day']
+            sdate = "{0} {1} {2}".format(day, month, year)
+            filedate = datetime.datetime.strptime(sdate, "%d %m %Y")
             ds = georead.openGeoTiff(fileToProcess)
             prj=ds.GetProjection()
             grid = ds.GetGeoTransform()
@@ -70,6 +74,26 @@ def processYearByDirectory(dataType,year, inputdir):
             ds = None
             index = indexer.getIndexBasedOnDate(day,month,year)
             print month,"/",day,"/",year,"--Index->",index
+            #print "Index:",index
+            try:
+            	changed = False
+            	with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
+					data = json.load(f)
+					for item in data['items']:
+						if(item['name'] == 'safndvi'):
+							ldatestring = item['Latest']
+							ldate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
+							if ldate < filedate:
+								print("file date is later")
+								item['Latest'] = sdate
+								changed = True
+					if changed:
+						f.seek(0)        # <--- should reset file position to the beginning.
+						json.dump(data, f, indent=4)
+						f.truncate()     # remove remaining part
+            except Exception as e:
+				print(e)
+				pass			
             #print "Index:",index
             dataStore.putData(index, img)
             

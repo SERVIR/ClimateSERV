@@ -3,8 +3,9 @@
 #This script ingests new data
 #####################################################################
 
-python=$(python -c "import os; print(os.environ['_'])")
-rootdir=/data/data/cserv/pythonCode/serviringest
+python="/usr/bin/python" #$(python -c "import os; print(os.environ['_'])")
+rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonCode/serviringest
+
 if [ -z "$1" ]
   then
     echo "No start Year provided"
@@ -23,7 +24,7 @@ END_YEAR=$2
 cd ${rootdir}
 export PYTHONPATH=${PYTHONPATH}:${rootdir}
 echo "Running ESI Ingest from ${START_YEAR} to ${END_YEAR}"
-$python CHIRPS/utils/ingest/HDFIngestESIData.py ${START_YEAR} ${END_YEAR}
+python CHIRPS/utils/ingest/HDFIngestESIData4wk.py ${START_YEAR} ${END_YEAR}
 echo "Done running ESI Ingest"
 
 

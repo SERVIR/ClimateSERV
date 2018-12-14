@@ -14,7 +14,7 @@ def checkDev():
     else :
         return False
 isDev = checkDev()    
- 
+print isDev
 if (isDev == True):
 
     # ks refactor 2015 // Alternative development configuration

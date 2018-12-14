@@ -95,23 +95,23 @@ def getFileForYearAndMonth(yearToGet,monthToGet):
     print endfilename
     print str(os.path.exists(endfilename) or filenum == '0103')
     if os.path.exists(endfilename):
-       print "File already here " 
+		print "File already here " 
     else:
-           urllib.urlretrieve (url, endfilename)
-    list_of_filenames_inside_zipfile = []
-    isRenameFiles = False
-    with zipfile.ZipFile(endfilename, "r") as z:
-        list_of_filenames_inside_zipfile = z.namelist()
-        isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
-        z.extractall(enddirectory)
-    if isRenameFiles == True:
-        rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
-    #removeTFWfiles(enddirectory)
-    removeTFWfilesForName(enddirectory,"cta"+filenum) 
-    print "EndFile ",endfilename
-
+		try:
+			urllib.urlretrieve (url, endfilename)
+			list_of_filenames_inside_zipfile = []
+			isRenameFiles = False
+			with zipfile.ZipFile(endfilename, "r") as z:
+				list_of_filenames_inside_zipfile = z.namelist()
+				isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
+				z.extractall(enddirectory)
+			if isRenameFiles == True:
+				rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
+			removeTFWfiles(enddirectory)
+			print "EndFile ",endfilename
+		except:
+			os.remove(endfilename)
     print "-----------------------------Done working on ",monthToGet,"/",yearToGet,"---------------------------------"
-
 
 def createEndDirectory(year):
     '''

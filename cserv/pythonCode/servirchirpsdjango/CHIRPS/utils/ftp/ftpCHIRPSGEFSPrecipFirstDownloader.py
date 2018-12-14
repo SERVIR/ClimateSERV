@@ -19,7 +19,7 @@ gzFilePattern = re.compile(r"\.tif\.gz$")
 patternWithoutgz = re.compile(r"(.*)\.gz$")
 rootftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_last/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
 rootfirstftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_first/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
-rootoutputdir =  params.dataTypes[32]['inputDataLocation']
+rootoutputdir =  params.dataTypes[32]['inputDataLocation']+"_first/"
 
 
 def gunzipFile(fileInput):
@@ -58,7 +58,9 @@ def getFilesForYearAndMonth(ftp,yearToGet, monthToGet, day):
     ldate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
     print "Getting files after Year:",yearToGet," Month: ",monthToGet, " Date: ",day
 
-    ftp.cwd(rootftpdir + str(yearToGet) + '/')
+    print "using first"
+    ftp.cwd(rootfirstftpdir + str(yearToGet) + '/')
+
     print "Get List of files for ",yearToGet," ",monthToGet
     files = ftp.nlst()
     filteredfiles = [f for f in files if 'data.'+str(yearToGet) in f]
@@ -73,18 +75,20 @@ def getFilesForYearAndMonth(ftp,yearToGet, monthToGet, day):
                 fdate = datetime.datetime.strptime(fdatestring, "%d %m %Y")
                 if fdate > ldate:
 					file_path = rootoutputdir+str(yearToGet)+"/"+fileToProcess
-
-					print "Downloading ",fileToProcess
-					fileToWriteTo = open(rootoutputdir+str(yearToGet)+"/"+fileToProcess, 'wb')
-					ftp.retrbinary('RETR '+fileToProcess, fileToWriteTo.write)
-					fileToWriteTo.close()
-					time.sleep(1)
-					if (gzFilePattern.search(fileToProcess)):
-						try :
-							print "Gunzipping the file: ",fileToProcess
-							gunzipFile(rootoutputdir+str(yearToGet)+"/"+fileToProcess)
-						except IOError:
-							print "************error processing "+fileToProcess
+					if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+						print "file exists, no download needed"
+					else:
+						print "Downloading ",fileToProcess
+						fileToWriteTo = open(rootoutputdir+str(yearToGet)+"/"+fileToProcess, 'wb')
+						ftp.retrbinary('RETR '+fileToProcess, fileToWriteTo.write)
+						fileToWriteTo.close()
+						time.sleep(1)
+						if (gzFilePattern.search(fileToProcess)):
+							try :
+								print "Gunzipping the file: ",fileToProcess
+								gunzipFile(rootoutputdir+str(yearToGet)+"/"+fileToProcess)
+							except IOError:
+								print "************error processing "+fileToProcess
 
                 else:
 					print "Have later data, no need to download: " +  fdatestring

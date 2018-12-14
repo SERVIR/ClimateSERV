@@ -87,10 +87,10 @@ class ZMQCHIRPSDataWorker():
         # Existing
         try:
 
-            #bounds, clippedmask = self.__readMask__(self.operatingData['uid'])
+            #bounds, clippedmask = self.__readMask__(self.operatingData['uid'])   
             #bounds, clippedmask = self.__readMask__(uuid_to_use_for_mask)
             bounds, clippedmask = self.__readMask__(self.operatingData['current_mask_and_storage_uuid'])
-
+            #self.logger.debug("Working on datatype: "+self.operatingData['datatype'])
             #self.logger.debug("Worker: " +str(self.name)+ " : Value of bounds: " + str(bounds))  # ks refactor
             self.operatingData['clippedmask'] = clippedmask
             if (self.operatingData['intervaltype'] == 0):
@@ -101,10 +101,12 @@ class ZMQCHIRPSDataWorker():
             elif (self.operatingData['intervaltype'] == 1):
                 value = dc.getMonthValueByDictionary(self.operatingData)
                 dateOfOperation = str(self.operatingData['month'])+"/"+str(self.operatingData['year'])
+                self.logger.debug("DateOfOperation: "+str(dateOfOperation))
                 return {"date":dateOfOperation,"epochTime":self.operatingData['epochTime'],'value':value}
             elif (self.operatingData['intervaltype'] == 2):
                 value = dc.getYearValueByDictionary(self.operatingData)
                 dateOfOperation = str(self.operatingData['year'])
+                self.logger.debug("DateOfOperation: "+str(dateOfOperation))
                 return {"date":dateOfOperation,"epochTime":self.operatingData['epochTime'],'value':value}
         except Exception, e:
             self.logger.warn("Error: "+str(e))

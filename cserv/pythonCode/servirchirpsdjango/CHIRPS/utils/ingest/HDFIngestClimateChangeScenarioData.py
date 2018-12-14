@@ -80,7 +80,7 @@ def ingestSubProcess_Year(current_DataTypeNumber, year):
     dataStore = dataS.datastorage(current_DataTypeNumber, year, forWriting=True)
     indexer = params.dataTypes[current_DataTypeNumber]['indexer']
     inputdir = params.dataTypes[current_DataTypeNumber]['inputDataLocation']
-    
+    print("inputdir: " + inputdir)
     # Iterate through each file and do the processing
     for filename in os.listdir(inputdir):
         if filename.endswith(".tif"):
@@ -94,24 +94,30 @@ def ingestSubProcess_Year(current_DataTypeNumber, year):
             
             # We only want items for the current year
             compareYear = str(dictionary['year'])
+            #print("compareYear: " + compareYear)			
             if compareYear == inputYear:
                 year = dictionary['year']
                 month = dictionary['month']
                 day = dictionary['day']
             
                 # Open / Read the file
+                #print("opening ds")				
                 ds = georead.openGeoTiff(fileToProcess)
+                #print("GetProjection")					
                 prj=ds.GetProjection()
+                #print("GetGeoTransform")					
                 grid = ds.GetGeoTransform()
-
+                #print("readBandFromFile")	
                 # Index it.
                 img =  georead.readBandFromFile(ds, 1)
                 ds = None
+                #print("getIndexBasedOnDate")					
                 index = indexer.getIndexBasedOnDate(day,month,year)
                 #print "Index:",index
                 dataStore.putData(index, img)
-            
+                #print("putData")	           
                 processedFileNames.append(fileonly)
+                #print("processedFileNames")				
                 itemsCounter += 1
             else:
                 skippedFileNames.append(fileonly)
@@ -119,9 +125,13 @@ def ingestSubProcess_Year(current_DataTypeNumber, year):
     
     # Close and save the data
     dataStore.close()
+    print("data should be in ds now")
     if(itemsCounter > 0):
-        dataS.writeSpatialInformation(params.dataTypes[current_DataTypeNumber]['directory'],prj,grid,year)
-
+        print("trying to writeSpatialInformation")
+        try:
+			dataS.writeSpatialInformation(params.dataTypes[current_DataTypeNumber]['directory'],prj,grid,year)
+        except Exception, e:
+			print("Here's the error: " +  str(e))
         #print("Debug: processedFileNames: " + str(processedFileNames))
         #print("Debug: skippedFileNames: " + str(skippedFileNames))
         print("Finished processing, " + str(itemsCounter) + ", data items for year: " + str(year))
@@ -170,27 +180,30 @@ def ingestDataset(climate_Ensemble, climate_Variable, run_YYYYMM_String):
     intervalType = intervalString.split(" ")[1]
     time_DeltaArgs = {intervalType:intervalValue}
     future_End_DateTime = datetime.datetime.utcnow() + datetime.timedelta(**time_DeltaArgs)
-    
+    print("  Process to get the datetimes - completed")  
     # These forecasts always start in the same month and year as the time this script will run.. so use that. (input param in the future?)
     #current_Start_DateTime = datetime.datetime.utcnow()
     current_Start_DateTime = datetime.datetime.strptime(run_YYYYMM_String, modelRun_DateFormat)
     future_End_DateTime = current_Start_DateTime + datetime.timedelta(**time_DeltaArgs)
     current_Forecast_YYYY = current_Start_DateTime.strftime('%Y')  # YYYY
     #current_Forecast_YYYYMM = current_Start_DateTime.strftime('%Y%m')  # YYYYMM
-    
+    print("  setting datetimes - completed")    
     # Modeling these vars after the existing code base.
     #dataType = int(current_DataTypeNumber)
     #year = int(current_Forecast_YYYY)
     dataTypeNumber_Int =  int(current_DataTypeNumber) # 'datatype' in the existing code base and in this context refers to datatype number.. #params.dataTypes
     currentYear = int(current_Forecast_YYYY)
+    print("currentYear: " + str(currentYear))
     nextYear = currentYear + 1
-    
+    print("  setting nextYear - completed")     
     # ks note: Issue with forecast models that run beyond the current year end where the 'next year' data ends up at the beginning of the current year.. 
     # Do this process for the current year and for the next year (note for forecasts run before July, the second run may not produce any out put.. thats ok!
 
     prjGrid_Object = None   # retObject = {"projection":prj,"grid":grid}
     prjGrid_Object = ingestSubProcess_Year(dataTypeNumber_Int, currentYear)
+    print("  ingestSubProcess_Year current - completed: " + str(currentYear)    	)
     prjGrid_Object2 = ingestSubProcess_Year(dataTypeNumber_Int, nextYear)
+    print("  ingestSubProcess_Year nextYear - completed: " + str(nextYear)) 	
     
     # Write meta/current run info JSON string to a text file
     # Filename should be the same everytime (data overwritten)
@@ -198,7 +211,7 @@ def ingestDataset(climate_Ensemble, climate_Variable, run_YYYYMM_String):
     # Ensemble number
     # Start forecast date year, month, day
     # End forecast date year, month, day
-    
+    print("Getting capability variables")   
     capabilities_DateFormatString = "%Y_%m_%d"
     capabilities_Info = {
                          "name":params.dataTypes[current_DataTypeNumber]['name'],
@@ -223,11 +236,15 @@ def ingestDataset(climate_Ensemble, climate_Variable, run_YYYYMM_String):
                          }
     
     # Write the capabilities info to the bddb
-    theJSONString = json.dumps(capabilities_Info)
-    # Create a connection to the DB, set the new values, close the connection
-    conn = bdp.BDDbConnector_Capabilities()
-    conn.set_DataType_Capabilities_JSON(current_DataTypeNumber, theJSONString)
-    conn.close()
+    try:
+		theJSONString = json.dumps(capabilities_Info)
+		print("The json: " + str(theJSONString))
+		# Create a connection to the DB, set the new values, close the connection
+		conn = bdp.BDDbConnector_Capabilities()
+		conn.set_DataType_Capabilities_JSON(current_DataTypeNumber, theJSONString)
+		conn.close()
+    except Exception, e:
+		print("Here's the error: " +  str(e))
     
     print("API Datatype Capabilities for datatype number: " +str(current_DataTypeNumber) + " written to local DB as: " + str(theJSONString))
     

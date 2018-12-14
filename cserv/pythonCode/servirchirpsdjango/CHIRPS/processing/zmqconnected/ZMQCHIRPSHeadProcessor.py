@@ -582,7 +582,32 @@ class ZMQCHIRPSHeadProcessor():
         
     def __writeMask__(self,uid,array,bounds):
         mst.writeHMaskToTempStorage(uid,array,bounds)
+    def __is_custom_job_type__MonthlyGEFSRainfallAnalysis__(self, request):
+        # # Inputs: From ZMQ (from the API Layer):      ( A location, ( (layerid + featureids) OR ( geometry ) ), custom_job_type ( Hard coded String "MonthlyRainfallAnalysis" ), uniqueid  )
+        try:
+            # uniqueid = request['uniqueid']
+            # custom_job_type = request['custom_job_type']
+            # # if(custom_job_type == 'MonthlyRainfallAnalysis'):
+            # self.logger.info("(" + self.name + "):__preProcessIncomingRequest__: uniqueid: " + str(
+            #     uniqueid) + ", custom_job_type: " + custom_job_type)
+            #
+            # self.logger.info(
+            #     "TODO, FINISH THE custom_job_type PART OF THIS PREPROCESS_INCOMING_REQUEST PIPELINE....remove the return statement before finishing.")
 
+            custom_job_type = request['custom_job_type']
+            if (custom_job_type == "MonthlyGEFSRainfallAnalysis"):
+                return True
+            else:
+                return False #None
+
+        except Exception as e:
+            uniqueid = request['uniqueid']
+            self.logger.warn("(" + self.name + "):Couldn't find custom_job_type in '__is_custom_job_type__MonthlyRainfallAnalysis__' in HeadProcessor: uniqueid: " + str(
+                uniqueid) + " Exception Error Message: " + str(e))
+            return e, False  # REMOVE THIS RETURN PATH, POSSIBLE EXISTING BEHAVIOR SHOULD HAPPEN HERE.
+
+        return False
+		
     def __is_custom_job_type__MonthlyRainfallAnalysis__(self, request):
         # # Inputs: From ZMQ (from the API Layer):      ( A location, ( (layerid + featureids) OR ( geometry ) ), custom_job_type ( Hard coded String "MonthlyRainfallAnalysis" ), uniqueid  )
         try:
@@ -614,6 +639,7 @@ class ZMQCHIRPSHeadProcessor():
         # Check for Custom Job Type Here.
         self.derived_product = False  # Default
         is_job_type__MonthlyRainfallAnalysis = self.__is_custom_job_type__MonthlyRainfallAnalysis__(request) #False
+        is_job_type__MonthlyGEFSRainfallAnalysis = self.__is_custom_job_type__MonthlyGEFSRainfallAnalysis__(request) 
         if(is_job_type__MonthlyRainfallAnalysis == True):
             self.logger.info("(" + self.name + "):__preProcessIncomingRequest__: This IS a 'MonthlyRainfallAnalysis' type.  ")
 
@@ -661,7 +687,52 @@ class ZMQCHIRPSHeadProcessor():
                 self.logger.warn("(" + self.name + "): MonthlyRainfallAnalysis_Type: Error processing Request in HeadProcessor: uniqueid: " + str(
                     uniqueid) + " Exception Error Message: " + str(e))
                 return e, None
+        elif (is_job_type__MonthlyGEFSRainfallAnalysis == True):
+            self.logger.info("(" + self.name + "):__preProcessIncomingRequest__: This IS a 'CHIRPS-GEFS MonthlyRainfallAnalysis' type.  ")
+            # Set up the Monthly Rainfall Analysis type here. (Note, there are return statements on both of these paths.. this should probably be moved to a separate pipeline.
+            try:
+                # Monthly Rainfall Analysis Setup.
+                # So far, all we get as inputs from the client are the uniqueid and a geometry.
 
+                # Following along the normal_ish code
+                uniqueid = request['uniqueid']
+                self.derived_product = True     # Signals the progress counter in a various way.
+                self.__insertProgressDb__(uniqueid)
+                self.__write_JobStarted_To_DB__(uniqueid, str(request))
+                self.logger.info("(" + self.name + "):__preProcessIncomingRequest__: (MonthlyGEFSRainfallAnalysis_Type): uniqueid: " + str(uniqueid))
+                self.logger.info("(" + self.name + "):__preProcessIncomingRequest__: (MonthlyGEFSRainfallAnalysis_Type): uniqueid: " + str(request))
+
+                #self.mathop = pMath.mathOperations(operationtype, 1, params.dataTypes[datatype]['fillValue'], None)
+                self.logger.info(
+                    "(" + self.name + "):__preProcessIncomingRequest__: (MonthlyGEFSRainfallAnalysis_Type): Don't forget about this: self.mathop, it is used again in the finish job code.   ")
+                self.isDownloadJob = False
+                self.dj_OperationName = "NotDLoad"
+                self.derived_opname = "MonthlyGEFSRainfallAnalysis"
+
+                # HERE IS WHAT WE ACTUALLY NEED TO RETURN...
+                # Some processing of all the input params (logging things along the way)
+                # # Geometry one is a little complex but the example below does work.
+                # Then A bunch of stuff to setup a worklist
+                # return None, worklist
+
+                #worklist = []
+                worklist = analysisTools.get_workList_for_headProcessor_for_MonthlyGEFSRainfallAnalysis_types(uniqueid, request)
+                # if (params.DEBUG_LIVE == True):
+                #     self.logger.debug(
+                #         "(" + self.name + "):__preProcessIncomingRequest__ : (MonthlyRainfallAnalysis_Type): worklist array value: " + str(worklist))
+                self.logger.info("(" + self.name + "):__preProcessIncomingRequest__ : (MonthlyRainfallAnalysis_Type): worklist length array value: " + str(len(worklist)))
+                # With these two lines here, everything just goes into the ether.
+
+                #not_finished_yet = "TODO! NOT FINISHED YET!"
+                #return not_finished_yet, None
+
+                # Sets off the job task runners.
+                return None, worklist
+
+            except Exception as e:
+                self.logger.warn("(" + self.name + "): MonthlyRainfallAnalysis_Type: Error processing Request in HeadProcessor: uniqueid: " + str(
+                    uniqueid) + " Exception Error Message: " + str(e))
+                return e, None
         else:
             self.logger.info("(" + self.name + "):__preProcessIncomingRequest__: This is NOT a 'MonthlyRainfallAnalysis' type.  ")
 

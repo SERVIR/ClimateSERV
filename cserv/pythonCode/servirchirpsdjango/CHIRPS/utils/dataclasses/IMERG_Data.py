@@ -46,7 +46,7 @@ class IMERG_Data:
     def get_Expected_Tif_FileName(self, theYear, theMonth, theDay):
         theMonthSTR = str("%02d" % theMonth)    # Convert to two character string
         theDaySTR = str("%02d" % theDay)
-        
+        print "using data class in django"
         retFileName = ""
         retFileName += "3B-HHR-"
         retFileName += self._get_EarlyLate_StringPart()
@@ -74,6 +74,7 @@ class IMERG_Data:
         	retFileName += "-S053000-E055959.0330.V05A.1day.tif"
         else:
         	retFileName += "-S023000-E025959.0150.V05A.1day.tif"
+        print retFileName
         return retFileName
         
     
@@ -83,6 +84,8 @@ class IMERG_Data:
         
         retString = ""
         retString += self.FTP_RootFilePath
+        retString += "/"
+        retString += str(theYear)
         retString += "/"
         retString += theMonthSTR
         retString += "/"

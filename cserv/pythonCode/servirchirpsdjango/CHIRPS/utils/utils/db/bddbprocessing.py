@@ -15,14 +15,18 @@ def setupBSDDB():
     logger = llog.getNamedLogger("request_processor")
     logger.info("Creating db")
     bddb = BDDbConnector()
-    
-    os.chmod(params.newdbfilepath, 0777)
-    
+    try:
+		os.chmod(params.newdbfilepath, 0777)
+    except:
+		pass
     # KS Refactor 2015 - Adding a second BDDB for storing API capabilities JSON Strings // key vals are, datatypeNumber:JSONString
     #logger = llog.getNamedLogger("")
     logger.info("Creating capabilities db")
     bddb_Capabilities = BDDbConnector_Capabilities()
-    os.chmod(params.capabilities_db_filepath, 0777)
+    try:
+		os.chmod(params.capabilities_db_filepath, 0777)
+    except:
+		pass
     
 
 class BDDbConnector:

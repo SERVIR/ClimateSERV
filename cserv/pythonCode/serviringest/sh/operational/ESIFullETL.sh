@@ -3,7 +3,7 @@
 #This script download new data		# OPERATIONAL
 #####################################################################
 
-python=$(python -c "import os; print(os.environ['_'])")
+python="/usr/bin/python" #python=(python -c "import os; print(os.environ['_'])")
 rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonCode/serviringest
 
 autoDate=$(date +'%Y')

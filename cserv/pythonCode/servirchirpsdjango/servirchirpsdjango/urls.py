@@ -25,8 +25,9 @@ urlpatterns = [
     url(r'^getCapabilitiesForDataset/',getCapabilitiesForDataset), 
     url(r'^getClimateScenarioInfo/',getClimateScenarioInfo),    # ks refactor 2015 // New API Hook getClimateScenarioInfo
     url(r'^getRequestLogs/',getRequestLogs),    # ks refactor 2015 // New API Hook getRequestLogs
-    url(r'^getFileForJobID/',getFileForJobID), 
+    url(r'^getFileForJobID/',getFileForJobID),
+    url(r'^submitMonthlyGEFSRainfallAnalysisRequest/',submitMonthlyGEFSRainfallAnalysisRequest),
     #url(r'^getFileURLForJobID/','servirchirps.views.getFileURLForJobID'),  # ks refactor 2015 // New API Hook for downloading files from completed jobs.
     url(r'^scriptAccess/',scriptAccess),  # New path for Serverside Script access.
-	url(r'^submitMonthlyRainfallAnalysisRequest/',submitMonthlyRainfallAnalysisRequest)
+    url(r'^submitMonthlyRainfallAnalysisRequest/',submitMonthlyRainfallAnalysisRequest)
 ]
