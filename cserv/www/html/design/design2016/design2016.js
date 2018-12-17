@@ -945,6 +945,21 @@ function init_ChartUI_DateCreated()
 		  }) 
 		});
 	}
+	else if(dataType == "32")
+	{
+		$.getJSON( "json/stats.json", function( data ) {
+			bdata = data;
+		  var items = [];
+		  $.each( bdata.items, function( val, item ) {
+			if(item.name == "gefsprecip"){
+				var chartCreatedDate_String = "CHIRPS-GEFS final is up to: ";
+				theSplitDate = item.Latest.split(" ");
+				chartCreatedDate_String += theSplitDate[1] + "/" + theSplitDate[0] + "/" + theSplitDate[2] + ", subsequent data is from the CHIRPS-GEFS initial data stream.";
+				$("#chartUI_ChartCreatedDate_Label").html(chartCreatedDate_String);
+			}
+		  }) 
+		});
+	}
 	else
 	{
 	

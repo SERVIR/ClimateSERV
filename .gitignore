@@ -1,2 +1,26 @@
 # Exclude pyc files
 *.pyc
+/zipout/*
+/results/*
+/mask/*
+/logs/*
+/image/*
+/db/*
+index2.txt
+index0.txt
+/gis/*
+/cserv/www/html/gee-gateway-master/
+/cserv/pythonCode/serviringest/CHIRPS_renamed/
+/cserv/pythonCode/serviringest/old_renamed/
+/cserv/pythonCode/servirchirpsdjango/CHIRPS/utils/utils_renamed/
+*.log
+/cserv/nmmeInputTemp/
+/cserv/pythonCode/servirchirpsdjango/CHIRPS/dataclasses/IMERG_Data_old.py
+/cserv/pythonCode/servirchirpsdjango/CHIRPS/processing/zmqconnected/ZMQCHIRPSDataWorker.py5.2.2018
+/cserv/pythonCode/servirchirpsdjango/CHIRPS/processing/zmqconnected/ZMQCHIRPSHeadProcessor.py5.2.2018
+/cserv/pythonCode/servirchirpsdjango/CHIRPS/utils/ftp/ftpCHIRPSGEFSPrecipDownloader5.7.2018.py
+/cserv/pythonCode/serviringest/sh/operational/nohup.out
+/cserv/pythonCode/serviringest/sh/operational/restartScreen.sh
+
+
+

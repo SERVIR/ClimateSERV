@@ -109,7 +109,7 @@ def ingest_IMERG(startYYYYMMDD, endYYYYMMDD):
             # Index it.
             img =  georead.readBandFromFile(ds, 1)
             #imgScaled = img / 10
-			print img
+            #print img
             ds = None
             index = indexer.getIndexBasedOnDate(theDay, theMonth, theYear)
             #print "Index:",index

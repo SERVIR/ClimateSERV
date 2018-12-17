@@ -11,5 +11,3 @@ export PYTHONPATH=${PYTHONPATH}:${rootdir}
 echo "Running Cleanup"
 python CHIRPS/utils/cleanup/Cleanup.py
 echo "Done running Cleanup"
-
-

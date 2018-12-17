@@ -71,19 +71,8 @@ if (window.location.hostname === 'localhost2')
 // KS Refactor 2015 // Get Climate model info from the server and do init related to all of that
 function getClimateModelInfo()
 {
-    //$.getJSON(baserequesturl+'getClimateScenarioInfo/?callback=?', function(data) {
-    //    processClimateModelInfo(data);
-    //});
-    $.ajax({
-        url: baserequesturl + 'getClimateScenarioInfo/?callback=?',
-        type: "GET",
-        dataType: 'jsonp',
-        success: function (data, status, error) {
-            processClimateModelInfo(data);
-        },
-        error: function (data, status, error) {
-            console.log('error', data, status, error);
-        }
+    $.getJSON(baserequesturl+'getClimateScenarioInfo/?callback=?', function(data) {
+        processClimateModelInfo(data);
     });
 }
 

@@ -4,7 +4,7 @@
 <script>
 if (window.location.href.toLowerCase().indexOf("agriserv") != -1)
 {
-	window.location = 'agriservindex.html';
+	window.location = 'https://climateserv.servirglobal.net/agriservindex.html';
 }
 
 function event_GetStarted_programatically_Button_Clicked()
@@ -31,7 +31,8 @@ function event_GetStarted_programatically_Button_Clicked()
         <script src="js/libs/savefig/saveSvgAsPng.js"></script>
         <script src="js/libs/dimple/dimple.v2.1.0.js"></script>
         <script src="js/libs/jquery-sidebar/jquery.sidebar.js"></script>
-        
+<script src="https://cdn.maptiks.com/maptiks-ol.min.js"></script> 
+<script>maptiks.trackcode='3f007e25-e83f-48c5-8994-950615c7f000';</script>        
         
         <!-- Design 2016 -->
         <!-- <script src="js/libs/jquery/jquery.js"></script>-->
@@ -480,6 +481,7 @@ display:none;
                                                                 </div>
                                                             </div>
                                                         </button>
+														<!-- <p style="color:white; background-color:red; margin-top:50px;">We are experiencing issues with our server, please excuse us while we figure out how to fix it.</p> -->
                                                     </div>               
                                                 </div>
                                             </div>
@@ -1641,7 +1643,8 @@ var sourceBase_Original = new ol.source.WMTS(
 // Base Layer (OPENLAYERS.layer.Tile
 var baseLayer = new ol.layer.Tile(
 {
-    source: sourceBase
+    source: sourceBase,
+    maptiks_id: 'ClimateSERV_BASE'
 });
 
 //Base layer for map
@@ -1668,6 +1671,7 @@ var view = new ol.View(
 var map = new ol.Map(
 {
     target: 'map',
+    maptiks_id: "ClimateSERV",
     layers: [baseLayer],
     controls: ol.control.defaults().extend([new ol.control.ScaleLine()]),
     view: view
