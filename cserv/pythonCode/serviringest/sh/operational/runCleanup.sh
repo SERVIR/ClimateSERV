@@ -4,12 +4,12 @@
 #####################################################################
 
 python=$(python -c "import os; print(os.environ['_'])")
-rootdir=/data/data/cserv/pythonCode/serviringest
+rootdir=/data/data/cserv/pythonCode/servirchirpsdjango
 
 cd ${rootdir}
 export PYTHONPATH=${PYTHONPATH}:${rootdir}
 echo "Running Cleanup"
-$python CHIRPS/utils/cleanup/Cleanup.py
+python CHIRPS/utils/cleanup/Cleanup.py
 echo "Done running Cleanup"
 
 
