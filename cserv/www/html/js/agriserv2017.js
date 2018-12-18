@@ -22,7 +22,7 @@ if (confirm_value == true) {
 
 } else {
     isLocalMode = false;
-    var hostName = "climateserv.servirglobal.net"; //"chirps.nsstc.nasa.gov";
+    var hostName = "agriserv.servirglobal.net"; //"chirps.nsstc.nasa.gov";
     var baseurl = "https://" + hostName + "/";
     var baserequesturl = "https://" + hostName + "/chirps/";
 
@@ -1119,12 +1119,13 @@ function set_SecondChanceFlag_For_UseCaseA_Request(valueToSet, ServerJobID) {
         }
     }
 }
-
+var gincoming_Raw_Data_Object;
 // Eventually, this will need to be a pipeline to support multiple types of use cases.. 
 // but for now, just using a single function of entry... gotta get the thing working first..
 function process_RawData__For_UseCase_A_Object(incoming_Raw_Data_Object) {
     // Because we can't know if this object has the props we want, and we need to make this alpha working yesterday!!
     try {
+		gincoming_Raw_Data_Object = incoming_Raw_Data_Object;
         var localID = incoming_Raw_Data_Object.localJobID;
         var serverJobID = incoming_Raw_Data_Object.serverJobID;
         var rawData = incoming_Raw_Data_Object.result.data;
@@ -1188,7 +1189,7 @@ function process_RawData__For_UseCase_A_Object(incoming_Raw_Data_Object) {
 
     }
     catch (errGenericResultsError) {
-
+alert(errGenericResultsError)
     }
 }
 
@@ -1840,7 +1841,8 @@ function convert_PolygonString_To_102100_ForSystemInput(featureCollection) {
     
     return retString;
 }
-
+var rq;
+var gserverJobID;
 // MultiRequest_Component - submit_New_DataRequest
 // -Reusable Function to make the requests for submitting new datajobs to cserv (Takes all the params it needs)
 function agriserv_AJAX__Submit_New_DataRequest(dataTypeValue, operationValue, dateintervalValue, dateBeginValue, dateEndValue, isUsePolystring, polygonString, layerid, featureids, localJobID) {
@@ -1867,12 +1869,12 @@ function agriserv_AJAX__Submit_New_DataRequest(dataTypeValue, operationValue, da
     // Make the request, set up the handlers (pass the info we need into it)
     $.ajax(
         {
-            url: baserequesturl + 'submitDataRequest/?callback=?',
-            type: "post",
+            url: baserequesturl + 'submitDataRequest/',
+            type: "get",
             data: req_Data,
-            dataType: "jsonp",
             jsonpCallback: 'successCallback',
             async: true,
+			crossDomain: true,
             beforeSend: function () {
 
             },
@@ -1884,8 +1886,12 @@ function agriserv_AJAX__Submit_New_DataRequest(dataTypeValue, operationValue, da
                 // localJobID
 
                 // This code used to take the 'uniqueid' (which is the server job id) and process it (goes into a queue to check status)
-                var serverJobID = result[0];
-
+                var serverJobID = eval(result)[0];
+				if(serverJobID.length < 5)
+				{
+					 serverJobID = result
+				}
+gserverJobID = serverJobID;
                 // Starting Job Progress Value
                 var startingProgressValue = 0.0;
 
@@ -1895,7 +1901,8 @@ function agriserv_AJAX__Submit_New_DataRequest(dataTypeValue, operationValue, da
             },
             error: function (request, error) {
                 try {
-                    console.log("Agriserv, Submit New Data Request: Got an error when communicating with the server.  Error Message: " + error);
+					rq = request;
+                    console.log("Agriserv, Submit New Data Request: Got an error when communicating with the server.  Error Message:::: " + error);
                 }
                 catch (exErr) { }
 
@@ -1915,12 +1922,12 @@ function agriserv_AJAX__getDataRequestProgress(serverJobID, localJobID) {
 
     $.ajax(
         {
-            url: baserequesturl + 'getDataRequestProgress/?callback=?',
-            type: "post",
+            url: baserequesturl + 'getDataRequestProgress/',
+            type: "get",
             data: req_Data,
-            dataType: "jsonp",
             jsonpCallback: 'successCallback',
             async: true,
+			crossDomain: true,
             beforeSend: function () {
 
             },
@@ -1929,7 +1936,7 @@ function agriserv_AJAX__getDataRequestProgress(serverJobID, localJobID) {
             },
             success: function (result) {
                 // Check the job progress in the response, 
-                var jobProgressResponse = result[0];
+                var jobProgressResponse = eval(result)[0];
                 BillyZjobProgressResponse = jobProgressResponse;
 
                 var jobCount = requests_Waiting_ToMake.length;
@@ -1980,7 +1987,7 @@ function agriserv_AJAX__getDataRequestProgress(serverJobID, localJobID) {
             },
             error: function (request, error) {
                 try {
-                    console.log("Agriserv, Check Job Status: Got an error when communicating with the server.  Error Message: " + error);
+                    console.log("Agriserv, Check Job Status: Got an error when communicating with the server.  EEEEError Message: " + error);
                 }
                 catch (exerrr) { }
 
@@ -1990,17 +1997,17 @@ function agriserv_AJAX__getDataRequestProgress(serverJobID, localJobID) {
             }
         });
 }
-
+var myresult;
 // Get the raw data from the submitted request and send it to another function for routing and processing.
 function agriserv_AJAX__getDataFromRequest(serverJobID, localJobID) {
     var req_Data = { 'id': serverJobID }
     $.ajax(
         {
-            url: baserequesturl + 'getDataFromRequest/?callback=?',
-            type: "post",
+            url: baserequesturl + 'getDataFromRequest/',
+            type: "get",
             data: req_Data,
-            dataType: "jsonp",
             jsonpCallback: 'successCallback',
+			crossDomain: true,
             async: true,
             beforeSend: function () {
 
@@ -2009,10 +2016,11 @@ function agriserv_AJAX__getDataFromRequest(serverJobID, localJobID) {
 
             },
             success: function (result) {
+				myresult = JSON.parse(result);
                 var resultObj = {
                     "serverJobID": serverJobID,
                     "localJobID": localJobID,
-                    "result": result,
+                    "result": myresult,
                 };
 
                 // Sending the raw data for processing
