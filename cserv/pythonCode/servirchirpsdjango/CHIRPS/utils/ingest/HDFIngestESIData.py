@@ -12,6 +12,13 @@ import CHIRPS.utils.file.h5datastorage as dataS
 import json
 import datetime
 
+def getESIDate(item):
+	if item['name'] == 'esi4week':
+		return item
+
+def getDatePattern(url):
+	return url.split('_')[2].split('.')[0]
+
 def processYearByDirectory(dataType,year, inputdir):
     '''
     
@@ -20,11 +27,17 @@ def processYearByDirectory(dataType,year, inputdir):
     :param inputdir:
     '''
     ###Process the incoming data
-   
+
+    filePattern = None
+    with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
+		data = json.load(f)
+		theDate = filter(getESIDate, data['items'])[0]['Latest']
+		filePattern = theDate.split(' ')[2] + str("%03d" % ((datetime.datetime.strptime(theDate, '%d %M %Y') - datetime.datetime(2019,1,1)).days + 1,))
+    
     dataStore = dataS.datastorage(dataType, year, forWriting=True)
     indexer = params.dataTypes[dataType]['indexer']
     for filename in os.listdir(inputdir):
-        if filename.endswith(".tif"):
+        if filename.endswith(".tif") and int(getDatePattern(filename)) > int(filePattern):
             
             fileToProcess = inputdir+"/"+filename
             print "Processing "+fileToProcess
@@ -73,7 +86,7 @@ def processYearByDirectory(dataType,year, inputdir):
             dataStore.putData(index, img)
             
     dataStore.close()
-    dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
+    #dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
     
 
 if __name__ == '__main__':

@@ -71,6 +71,10 @@ class datastorage(object):
         if (os.path.isfile(outputfile) !=  True) :
             indexLastDay = dit.convertEpochToJulianDay(dit.convertDayMonthYearToEpoch(31, 12, year))
             self.f = h5py.File(outputfile,'a')
+            try:
+				os.chmod(outputfile, 0o777)
+            except:
+				pass
             return self.f.create_dataset("data", (indexLastDay,size[1],size[0]), dtype='float32', compression="lzf", fillvalue=params.getFillValue(dataType))
         else:
             print 'file exists'

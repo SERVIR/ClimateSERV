@@ -12,6 +12,8 @@ import urllib2
 import requests
 from bs4 import BeautifulSoup as bs
 import CHIRPS.utils.configuration.parameters as params
+import json
+from datetime import datetime
 
 validFile = re.compile(r"\.tif")
 gzFilePattern = re.compile(r"\.tif\.gz$")
@@ -66,20 +68,24 @@ def getFilesForYear(files_urls,yearToGet):
 				fileToWriteTo = open(rootoutputdir4WK+str(yearToGet)+"/"+fileToProcess, 'wb')
 				fileToWriteTo.write(res.read())
 				fileToWriteTo.close()
+				os.chmod(rootoutputdir4WK+str(yearToGet)+"/"+fileToProcess, 0o777)
 				if (gzFilePattern.search(fileToProcess)):
 					try :
 						print "Gunzipping the file: ",fileToProcess
 						gunzipFile(rootoutputdir4WK+str(yearToGet)+"/"+fileToProcess)
+						os.chmod(rootoutputdir4WK+str(yearToGet)+"/"+fileToProcess.replace(".gz", ""), 0o777)
 					except IOError:
 						print "************error processing "+fileToProcess
 			if "12WK" in fileToProcess:
 				fileToWriteTo = open(rootoutputdir12WK+str(yearToGet)+"/"+fileToProcess, 'wb')
 				fileToWriteTo.write(res.read())
 				fileToWriteTo.close()
+				os.chmod(rootoutputdir12WK+str(yearToGet)+"/"+fileToProcess, 0o777)
 				if (gzFilePattern.search(fileToProcess)):
 					try :
 						print "Gunzipping the file: ",fileToProcess
 						gunzipFile(rootoutputdir12WK+str(yearToGet)+"/"+fileToProcess)
+						os.chmod(rootoutputdir12WK+str(yearToGet)+"/"+fileToProcess.replace(".gz", ""), 0o777)
 					except IOError:
 						print "************error processing "+fileToProcess
 
@@ -102,14 +108,23 @@ def createEndDirectory(year):
         os.makedirs(fullPath)
     else:
         print "Directory already exists "+fullPath
-        
+		
+def getESIDate(item):
+	if item['name'] == 'esi4week':
+		return item
+def getDatePattern(url):
+	return url.split('_')[2].split('.')[0]
 def processYear(yearToGet):
     '''
     
     :param yearToGet:
     '''
-    
+    filePattern = None
     print "-------------------------------Working on ",yearToGet,"------------------------------------"
+    with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
+		data = json.load(f)
+		theDate = filter(getESIDate, data['items'])[0]['Latest']
+		filePattern = theDate.split(' ')[2] + str("%03d" % ((datetime.strptime(theDate, '%d %M %Y') - datetime(2019,1,1)).days + 1,))
     response = requests.get('https://geo.nsstc.nasa.gov/SPoRT/outgoing/crh/4servir/')
     soup = bs(response.text,"html.parser")
     urls = []
@@ -117,8 +132,10 @@ def processYear(yearToGet):
     for i, link in enumerate(soup.findAll('a')):
 		_FULLURL = "https://geo.nsstc.nasa.gov/SPoRT/outgoing/crh/4servir/" + link.get('href')
 		if _FULLURL.endswith('.tif.gz'):
-			urls.append(_FULLURL)
-			names.append(soup.select('a')[i].attrs['href'])
+			#check if datepattern is greater than filePattern
+			if int(getDatePattern(link.get('href'))) > int(filePattern):
+				urls.append(_FULLURL)
+				names.append(soup.select('a')[i].attrs['href'])
     names_urls = zip(names, urls)
     getFilesForYear(names_urls, yearToGet)
     print "-----------------------------Done working on ",yearToGet,"---------------------------------"
