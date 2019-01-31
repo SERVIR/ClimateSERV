@@ -12,8 +12,11 @@ import CHIRPS.utils.file.h5datastorage as dataS
 import json
 import datetime
 
+dataName = None
+
 def getESIDate(item):
-	if item['name'] == 'esi4week':
+	print "dataName: ", dataName
+	if item['name'] == dataName:
 		return item
 
 def getDatePattern(url):
@@ -27,7 +30,11 @@ def processYearByDirectory(dataType,year, inputdir):
     :param inputdir:
     '''
     ###Process the incoming data
-
+    global dataName
+    if dataType == 29:
+		dataName = 'esi4week'
+    else:
+		dataName = 'esi12week'
     filePattern = None
     with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
 		data = json.load(f)
@@ -58,10 +65,6 @@ def processYearByDirectory(dataType,year, inputdir):
             index = indexer.getIndexBasedOnDate(day,month,year)
             print "Index:",index
             try:
-            	if dataType == 29:
-					dataName = 'esi4week'
-            	else:
-					dataName = 'esi12week'
             	changed = False
             	with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
 					data = json.load(f)
