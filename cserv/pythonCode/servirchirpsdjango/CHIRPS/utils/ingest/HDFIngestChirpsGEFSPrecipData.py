@@ -21,6 +21,7 @@ def processYearByDirectory(dataType,year, inputdir, nlastdate):
     :param inputdir:
     '''
     ###Process the incoming data
+    print inputdir
     dataupdated = False
     dataStore = dataS.datastorage(dataType, year, forWriting=True)
     indexer = params.dataTypes[dataType]['indexer']
@@ -59,12 +60,9 @@ def processYearByDirectory(dataType,year, inputdir, nlastdate):
 					with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
 						data = json.load(f)
 						for item in data['items']:
-							print(item['name'])
 							if(item['name'] == 'gefsprecip'):
 								ldatestring = item['Latest']
 								ldate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
-								print("in here")
-								print("ldate: " + str(ldate))
 								if ldate < filedate:
 									print("file date is later")
 									item['Latest'] = sdate
@@ -98,6 +96,7 @@ if __name__ == '__main__':
     theDate = getLastGEFSPrecipDate()
     day,month,year=theDate.split(' ')
     ldatestring = day + " " + month + " " + year
+    #ldatestring = "01" + " " + "01" + " " + "2019"
     lastdate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
     print "-------------------------------------------------------------Processing ",year,"-----------------------------------------------------"
 

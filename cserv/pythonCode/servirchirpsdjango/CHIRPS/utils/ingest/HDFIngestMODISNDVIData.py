@@ -20,6 +20,7 @@ def processYearByDirectory(dataType,year, inputdir):
     :param inputdir:
     '''
     ###Process the incoming data
+    prj= None
     indexList = [0] * 70
     highestIndex = 0;
     dataStore = dataS.datastorage(dataType, year, forWriting=True)
@@ -112,7 +113,8 @@ def processYearByDirectory(dataType,year, inputdir):
     #print sortedIndexList
     #print dataStore.getData(0)            
     dataStore.close() 
-    dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
+    if prj is not None:
+        dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
 
     #averageDecadalData(dataType, year, indexList)
 	

@@ -112,6 +112,7 @@ if __name__ == '__main__':
     print day.zfill(2) 
     print month.zfill(2) 
     print year
+    print "*******************should be getting 2019************************"
     createEndDirectory(year)
     getFilesForDate(year, month, day)
     print "Done"

@@ -27,6 +27,13 @@ def processDataStarting(yyyy, mm, dd):
 
         if os.path.exists(fileToProcess) and os.path.getsize(fileToProcess) > 0:
             print "file exists, ingest started on: " +fileToProcess
+            directory, fileonly = os.path.split(fileToProcess)
+            dictionary = dateutils.breakApartChripsName(fileonly)
+            year = dictionary['year']
+            month = dictionary['month']
+            day = dictionary['day']
+            sdate = "{0} {1} {2}".format(day, month, year)
+            filedate = datetime.datetime.strptime(sdate, "%d %m %Y")
             ds = georead.openGeoTiff(fileToProcess)
             prj=ds.GetProjection()
             grid = ds.GetGeoTransform()
@@ -44,14 +51,10 @@ def processDataStarting(yyyy, mm, dd):
 					with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
 						data = json.load(f)
 						for item in data['items']:
-							print(item['name'])
 							if(item['name'] == 'chirp'):
 								ldatestring = item['Latest']
-								ldate = date.strftime("%d %m %Y") #datetime.datetime.strptime(ldatestring, "%d %m %Y")
-								print("in here")
-								print("ldate: " + str(ldate))
+								ldate = date #.strftime("%d %m %Y") #datetime.datetime.strptime(ldatestring, "%d %m %Y")
 								if ldate < filedate:
-									print("file date is later")
 									item['Latest'] = sdate
 									changed = True
 						if changed:

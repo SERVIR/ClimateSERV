@@ -76,7 +76,8 @@ def breakApartemodisName(filename):
     index = int(parts[0][2:-2])-1
     area = parts[0][0:2]
     year = int("20"+parts[0][-2:])
-    dateAtFile = dit.EveryTenDaysIndex().indexAndYearToDate(year, index)
+    dateAtFile = dit.DecadalIndex().getDateBasedOnIndex(index, year)
+	#dateAtFile = dit.EveryTenDaysIndex().indexAndYearToDate(year, index)
     #calculate day month year
     day =dateAtFile.day
     month = dateAtFile.month
@@ -94,7 +95,8 @@ def breakApartemodisNameAdjust(filename, adjust):
     index = int(parts[0][adjust:-2])-1
     area = parts[0][0:adjust]
     year = int("20"+parts[0][-2:])
-    dateAtFile = dit.EveryTenDaysIndex().indexAndYearToDate(year, index)
+    dateAtFile = dit.DecadalIndex().getDateBasedOnIndex(index, year)
+    #dateAtFile = dit.EveryTenDaysIndex().indexAndYearToDate(year, index)
     #calculate day month year
     day =dateAtFile.day
     month = dateAtFile.month

@@ -2,8 +2,8 @@
 #####################################################################
 #This script download new data
 #####################################################################
-
-python=$(python -c "import os; print(os.environ['_'])")
+#export DJANGO_SETTINGS_MODULE
+#python=$(python -c "import os; print(os.environ['_'])")
 rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonCode/serviringest
 #if [ -z "$1" ]
 #  then
@@ -20,7 +20,8 @@ rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonC
 #START_YEAR=$1
 #END_YEAR=$2
 autoDate=$(date +'%Y')
-#autoDate='2011'
+#autoDate='2014'
+#END_YEAR='2017'
 
 
 cd ${rootdir}

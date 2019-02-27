@@ -21,7 +21,7 @@ def processYearByDirectory(dataType,year, inputdir):
     :param inputdir:
     '''
     ###Process the incoming data
-   
+    prj= None
     #dataStore = dataS.datastorage(dataType, year, forWriting=True)
     indexer = params.dataTypes[dataType]['indexer']
     for filename in os.listdir(inputdir):
@@ -103,7 +103,8 @@ def processYearByDirectory(dataType,year, inputdir):
                img = None
                dataStore.close()
     #dataStore.close()
-    dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
+    if prj is not None:
+        dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
     
 
 if __name__ == '__main__':

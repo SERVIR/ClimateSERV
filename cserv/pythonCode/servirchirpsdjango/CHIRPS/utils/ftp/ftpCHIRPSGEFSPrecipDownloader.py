@@ -17,7 +17,7 @@ import datetime
 validFile = re.compile(r"\.tif")
 gzFilePattern = re.compile(r"\.tif\.gz$")
 patternWithoutgz = re.compile(r"(.*)\.gz$")
-rootftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_last/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
+rootftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_10day/' #'/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_last/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
 rootfirstftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_first/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
 rootoutputdir =  params.dataTypes[32]['inputDataLocation']
 
@@ -135,6 +135,8 @@ if __name__ == '__main__':
     day,month,year=theDate.split(' ')
     createEndDirectory(year)
     processFilesFromLastDate(year, month, day)
+    #processFilesFromLastDate("2019", "01", "01")
+    time.sleep(5)
     print "Done"
 
 

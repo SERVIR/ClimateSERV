@@ -21,6 +21,7 @@ index0.txt
 /cserv/pythonCode/servirchirpsdjango/CHIRPS/utils/ftp/ftpCHIRPSGEFSPrecipDownloader5.7.2018.py
 /cserv/pythonCode/serviringest/sh/operational/nohup.out
 /cserv/pythonCode/serviringest/sh/operational/restartScreen.sh
+*.json
 
 
 

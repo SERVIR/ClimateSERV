@@ -3,7 +3,7 @@
 #This script download new data		# OPERATIONAL
 #####################################################################
 
-python=$(python -c "import os; print(os.environ['_'])")
+#python=$(python -c "import os; print(os.environ['_'])")
 rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonCode/serviringest
 #if [ -z "$1" ]
 #  then

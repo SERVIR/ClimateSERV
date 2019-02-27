@@ -62,6 +62,7 @@ def getFilesForYearAndMonth(ftp,yearToGet, monthToGet):
                 print "Downloading ",fileToProcess
                 fileToWriteTo = open(rootoutputdir+str(yearToGet)+"/"+fileToProcess, 'wb')
                 ftp.retrbinary('RETR '+fileToProcess, fileToWriteTo.write)
+                time.sleep(1)
                 fileToWriteTo.close()
                 time.sleep(1)
                 if (gzFilePattern.search(fileToProcess)):

@@ -15,7 +15,7 @@ import CHIRPS.utils.configuration.parameters as params
 # Old USGS Path 
 #roothttp ='http://earlywarning.usgs.gov/ftp2/eMODIS/west/'
 # New USGS Path
-roothttp ='https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/fews/web/africa/southern/dekadal/emodis/ndvi_c6/temporallysmoothedndvi/downloads/monthly/'
+roothttp ='https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/fews/web/africa/southern/dekadal/emodis/ndvi_c6/temporallysmoothedndvi/downloads/dekadal/'
 
 rootoutputdir = params.dataTypes[5]['inputDataLocation']
 
@@ -37,13 +37,15 @@ def should_rename_files(year_from_zip, list_of_filenames):
 def rename_files_to_new_format(folder_path_to_files, list_of_filenames):
     print("Attempting to rename files to match the new naming format.  This is so that the ingest will properly handle them.")
     for current_filename in list_of_filenames:
+        print "************Current " + current_filename + " ***************"
         part_to_save_pre = current_filename[0:2]
         part_to_switch_1 = current_filename[2:4]
         part_to_switch_2 = current_filename[4:6]
-        part_to_save_post = current_filename[6:10]
+        part_to_save_post = current_filename[-4:]
         new_filename = part_to_save_pre + part_to_switch_2 + part_to_switch_1 + part_to_save_post
         fullpath_to_current_file = os.path.join(folder_path_to_files, current_filename)
         fullpath_to_new_filename = os.path.join(folder_path_to_files, new_filename)
+        print "************New  " + new_filename + " ***************"
         try:
             os.rename(fullpath_to_current_file, fullpath_to_new_filename)
         except:
@@ -72,7 +74,7 @@ def getFileForYearAndMonth(yearToGet,monthToGet):
     filenum = "{:0>2d}{:0>2d}".format(yearToGet-2000,monthToGet)
     year_from_zip = int(filenum[0:2])
     month_from_zip = int(filenum[2:4])
-    url = roothttp+"south"+filenum+'.zip'
+    url = roothttp+"sa"+filenum+'.zip'
     print url
     enddirectory =  rootoutputdir+str(yearToGet)+"/"
     endfilename = enddirectory+"south"+filenum+'.zip'
@@ -86,6 +88,7 @@ def getFileForYearAndMonth(yearToGet,monthToGet):
             isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
             z.extractall(enddirectory)
         if isRenameFiles == True:
+            print "renaming process fired off"
             rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
         removeTFWfiles(enddirectory)
         print "EndFile ",endfilename

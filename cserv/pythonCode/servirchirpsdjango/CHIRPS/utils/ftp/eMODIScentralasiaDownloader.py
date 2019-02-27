@@ -14,7 +14,7 @@ import CHIRPS.utils.configuration.parameters as params
 
 
 # USGS Path
-roothttp ='https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/fews/web/asia/centralasia/dekadal/emodis/ndvi_c6/temporallysmoothedndvi/downloads/monthly/'
+roothttp ='https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/fews/web/asia/centralasia/dekadal/emodis/ndvi_c6/temporallysmoothedndvi/downloads/dekadal/'
 
 rootoutputdir = params.dataTypes[28]['inputDataLocation']
 
@@ -50,7 +50,7 @@ def rename_files_to_new_format(folder_path_to_files, list_of_filenames):
               part_to_save_pre = current_filename[0:3]
               part_to_switch_1 = current_filename[3:4]
               part_to_switch_2 = current_filename[4:6]
-              part_to_save_post = current_filename[6:10]
+              part_to_save_post = current_filename[-4:]
         new_filename = part_to_save_pre + part_to_switch_2 + part_to_switch_1 + part_to_save_post
         fullpath_to_current_file = os.path.join(folder_path_to_files, current_filename)
         fullpath_to_new_filename = os.path.join(folder_path_to_files, new_filename)

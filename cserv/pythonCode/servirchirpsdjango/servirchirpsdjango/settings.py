@@ -206,7 +206,7 @@ LOGGING = {
     },
              
     'log_file_chirps':{
-        'level': 'INFO',
+        'level': 'DEBUG',
         'class': 'logging.handlers.RotatingFileHandler',
         'filename': '/data/data/cserv/chirps.log',#'/Users/jeburks/temp/chirps.log',
         'maxBytes': '16777216', # 16megabytes
@@ -229,7 +229,7 @@ LOGGING = {
 },
 'loggers': {
     'servirchirps': {
-        'handlers': ['console'],
+        'handlers': ['log_file_chirps'],
         'level': 'INFO',
         'propagate':False,
     },

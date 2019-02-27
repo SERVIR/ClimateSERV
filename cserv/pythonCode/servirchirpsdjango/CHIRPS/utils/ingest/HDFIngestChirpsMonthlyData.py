@@ -9,6 +9,7 @@ Some Portions of this code were taking from
 
 import sys
 import datetime
+import time
 import calendar
 import os
 import json
@@ -103,7 +104,7 @@ def ingest_CHIRPSMonthly(startYYYYMM, endYYYYMM):
             # Open / Read the file
             ds = georead.openGeoTiff(fileToProcess)
             #ds = georead.openGeoTiff_WithUpdateFlag(fileToProcess)
-            
+            time.sleep(t)
             # If the dataset format does not come with a correct projection and transform, this is where to override them.
             # Set a new projection (since the IMERG data does not come with one already..)
             #ds.SetProjection(IMERG_DataClass.get_DefaultProjection_String())

@@ -11,6 +11,7 @@ import sys
 import CHIRPS.utils.file.h5datastorage as dataS
 import json
 import datetime
+import time
 
 
 def processYearByDirectory(dataType,year, inputdir):
@@ -40,9 +41,10 @@ def processYearByDirectory(dataType,year, inputdir):
             ds = georead.openGeoTiff(fileToProcess)
             prj=ds.GetProjection()
             grid = ds.GetGeoTransform()
+            time.sleep(1)
+            img = georead.readBandFromFile(ds, 1)
 
-            img =  georead.readBandFromFile(ds, 1)
-            ds = None
+            
             index = indexer.getIndexBasedOnDate(day,month,year)
             print "Index:",index
             try:
@@ -50,14 +52,10 @@ def processYearByDirectory(dataType,year, inputdir):
             	with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
 					data = json.load(f)
 					for item in data['items']:
-						print(item['name'])
 						if(item['name'] == 'chirps'):
 							ldatestring = item['Latest']
 							ldate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
-							print("in here")
-							print("ldate: " + str(ldate))
 							if ldate < filedate:
-								print("file date is later")
 								item['Latest'] = sdate
 								changed = True
 					if changed:
@@ -65,10 +63,12 @@ def processYearByDirectory(dataType,year, inputdir):
 						json.dump(data, f, indent=4)
 						f.truncate()     # remove remaining part
             except Exception as e:
-				print(e)
-				pass			
+				print("******************" + e + "****************************")
+				pass
+            time.sleep(1)				
             dataStore.putData(index, img)
-            
+            time.sleep(1)
+            ds = None
     dataStore.close()
     dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
     

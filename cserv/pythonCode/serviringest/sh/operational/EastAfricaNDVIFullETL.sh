@@ -20,7 +20,8 @@ rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonC
 #START_YEAR=$1
 #END_YEAR=$2
 autoDate=$(date +'%Y')
-#autoDate='2011'
+#autoDate='2005'
+#END_YEAR='2017'
 
 cd ${rootdir}
 export PYTHONPATH=${PYTHONPATH}:${rootdir}

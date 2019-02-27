@@ -237,12 +237,14 @@ def ingestDataset(climate_Ensemble, climate_Variable, run_YYYYMM_String):
     
     # Write the capabilities info to the bddb
     try:
-		theJSONString = json.dumps(capabilities_Info)
+		print "Trying to write the capabilities_Info"
+                theJSONString = json.dumps(capabilities_Info)
 		print("The json: " + str(theJSONString))
 		# Create a connection to the DB, set the new values, close the connection
 		conn = bdp.BDDbConnector_Capabilities()
 		conn.set_DataType_Capabilities_JSON(current_DataTypeNumber, theJSONString)
 		conn.close()
+                print "Writing JSON complete"
     except Exception, e:
 		print("Here's the error: " +  str(e))
     
@@ -333,8 +335,10 @@ if __name__ == '__main__':
                 print("-Ingesting Ensemble: " + str(current_Ensemble) + ", Variable: " + str(current_Variable) )
                 try:
                     ingestDataset(current_Ensemble, current_Variable, the_YYYYMM_String)
+                    print "ingestData complete"
                 except:
                     e = sys.exc_info()[0]
+                    print "ingestDataset Failed"
                     errorStr1 = "--ERROR!! AN ERROR OCCURED WHILE INGESTING: Ensemble: " + str(current_Ensemble) + ", Variable: " + str(current_Variable) 
                     errorStr2 = "--System Error Message: " + str(e)
                     errorLog.append(errorStr1)

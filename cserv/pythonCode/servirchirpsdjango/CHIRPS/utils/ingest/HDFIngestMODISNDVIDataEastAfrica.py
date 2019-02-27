@@ -21,7 +21,7 @@ def processYearByDirectory(dataType,year, inputdir):
     :param inputdir:
     '''
     ###Process the incoming data
-   
+    prj= None
     dataStore = dataS.datastorage(dataType, year, forWriting=True)
     indexer = params.dataTypes[dataType]['indexer']
     for filename in os.listdir(inputdir):
@@ -37,8 +37,10 @@ def processYearByDirectory(dataType,year, inputdir):
             month = dictionary['month']
 
             day = dictionary['day']
+            print "day: ", day
             sdate = "{0} {1} {2}".format(day, month, year)
             filedate = datetime.datetime.strptime(sdate, "%d %m %Y")
+            print filedate 
             ds = georead.openGeoTiff(fileToProcess)
             prj=ds.GetProjection()
             grid = ds.GetGeoTransform()
@@ -98,7 +100,8 @@ def processYearByDirectory(dataType,year, inputdir):
             dataStore.putData(index, img)
             
     dataStore.close()
-    dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
+    if prj is not None:
+        dataS.writeSpatialInformation(params.dataTypes[dataType]['directory'],prj,grid,year)
     
 
 if __name__ == '__main__':

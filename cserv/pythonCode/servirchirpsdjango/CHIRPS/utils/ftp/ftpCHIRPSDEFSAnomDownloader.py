@@ -10,6 +10,10 @@ import gzip
 import os
 import sys
 import CHIRPS.utils.configuration.parameters as params
+import time
+import json
+import datetime
+
 
 validFile = re.compile(r"\.tif")
 gzFilePattern = re.compile(r"\.tif\.gz$")
@@ -43,14 +47,17 @@ def gunzipFile(fileInput):
     
     
     
-def getFilesForYearAndMonth(ftp,yearToGet, monthToGet):
+def getFilesForYearAndMonth(ftp,yearToGet, monthToGet, day):
     '''
     
     :param ftp:
     :param yearToGet:
     :param monthToGet:
     '''
-    print "Getting files for Year:",yearToGet,"Month: ",monthToGet
+    ldatestring = day + " " + monthToGet + " " + yearToGet
+    ldate = datetime.datetime.strptime(ldatestring, "%d %m %Y")
+    print "Getting files after Year:",yearToGet," Month: ",monthToGet, " Date: ",day
+    print "rootftpdir: " + rootftpdir  
     ftp.cwd(rootftpdir)
     print "Get List of files for ",yearToGet," ",monthToGet
     files = ftp.nlst()
@@ -58,16 +65,29 @@ def getFilesForYearAndMonth(ftp,yearToGet, monthToGet):
     for fileToProcess in filteredfiles:
         if validFile.search(fileToProcess):
             if  re.search('anom.'+str(yearToGet), fileToProcess):
-                print "Downloading ",fileToProcess
-                fileToWriteTo = open(rootoutputdir+str(yearToGet)+"/"+fileToProcess, 'wb')
-                ftp.retrbinary('RETR '+fileToProcess, fileToWriteTo.write)
-                fileToWriteTo.close()
-                if (gzFilePattern.search(fileToProcess)):
-                    try :
-                        print "Gunzipping the file: ",fileToProcess
-                        gunzipFile(rootoutputdir+str(yearToGet)+"/"+fileToProcess)
-                    except IOError:
-                        print "************error processing "+fileToProcess
+                filesplit = fileToProcess.split('.') 
+                fyear = filesplit[1]
+                fmonth = filesplit[2][:2]
+                fday = filesplit[2][2:]
+                fdatestring = fday + " " + fmonth + " " + fyear
+                fdate = datetime.datetime.strptime(fdatestring, "%d %m %Y")
+                if fdate > ldate:
+					file_path = rootoutputdir+str(yearToGet)+"/"+fileToProcess
+
+					print "Downloading ",fileToProcess
+					fileToWriteTo = open(rootoutputdir+str(yearToGet)+"/"+fileToProcess, 'wb')
+					ftp.retrbinary('RETR '+fileToProcess, fileToWriteTo.write)
+					fileToWriteTo.close()
+					time.sleep(1)
+					if (gzFilePattern.search(fileToProcess)):
+						try :
+							print "Gunzipping the file: ",fileToProcess
+							gunzipFile(rootoutputdir+str(yearToGet)+"/"+fileToProcess)
+						except IOError:
+							print "************error processing "+fileToProcess
+
+                else:
+					print "Have later data, no need to download: " +  fdatestring
 
 
 def createEndDirectory(year):
@@ -81,8 +101,22 @@ def createEndDirectory(year):
         os.makedirs(fullPath)
     else:
         print "Directory already exists "+fullPath
+
+def getLastGEFSAnomDate():
+	try:
+		changed = False
+		with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
+			data = json.load(f)
+			for item in data['items']:
+				if(item['name'] == 'gefsanom'):
+					ldatestring = item['Latest']
+					return ldatestring
+	except Exception as e:
+		print(e)
+		pass
+
         
-def processYearAndMonth(yearToGet, monthToGet):
+def processFilesFromLastDate(yearToGet, monthToGet, lastDate):
     '''
     
     :param yearToGet:
@@ -93,26 +127,21 @@ def processYearAndMonth(yearToGet, monthToGet):
     ftp = FTP('chg-ftpout.geog.ucsb.edu')
     ftp.login()
     ftp.set_pasv(True)
-    getFilesForYearAndMonth(ftp  , yearToGet, monthToGet)
+    getFilesForYearAndMonth(ftp  , yearToGet, monthToGet, lastDate)
     ftp.quit()
     print "-----------------------------Done working on ",monthToGet,"/",yearToGet,"---------------------------------"
 
 
 if __name__ == '__main__':
     print "Starting Downloading CHIRPS GEFS Anom Data"
-    args = len(sys.argv)
-    if (args < 3):
-        print "Usage: Startyear endyear"
-        sys.exit()
-    else :
-        print "Working on years ",sys.argv[1],"-",sys.argv[2]
-        #####Go get range of years
-        years = range(int(sys.argv[1]),int(sys.argv[2])+1)
-        print years
-        for year in years:
-            createEndDirectory(year)
-            processYearAndMonth(year,'all')
-        print "Done"
+
+    theDate = getLastGEFSAnomDate()
+    day,month,year=theDate.split(' ')
+    createEndDirectory(year)
+    processFilesFromLastDate(year, month, day)
+    #processFilesFromLastDate("2019", "01", "01")
+    time.sleep(5)
+    print "Done"
 
 
 
