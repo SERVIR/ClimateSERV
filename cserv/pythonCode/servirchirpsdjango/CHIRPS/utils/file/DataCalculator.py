@@ -243,9 +243,9 @@ def getDayValue(year,month,day,bounds,clippedmask,dataType,operationsType, polyg
             # Get the image band and write the data array values to it.  Flush the Cache and set the NoDataValue (This is the step that writes data to the output file)
             outDataArray = hdf_Data_Array
             outBand = outDS.GetRasterBand(bandName)
-            outBand.WriteArray(outDataArray, 0, 0)
-            outBand.FlushCache() 
+            outBand.WriteArray(outDataArray, 0, 0) 
             outBand.SetNoDataValue(noData_Value)
+            outBand.FlushCache()
             
             #logger.debug("Alert: 5")
             
