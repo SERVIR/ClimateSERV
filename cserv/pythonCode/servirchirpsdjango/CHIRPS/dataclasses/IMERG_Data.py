@@ -4,9 +4,11 @@ Created on March 2016
 @author: Kris Stanton
 
 '''
+import re
 import urllib2
 import ftplib
 import CHIRPS.utils.configuration.parameters as params
+
 
 class IMERG_EarlyLate_EnumType(object):
     early = 1
@@ -37,8 +39,36 @@ class IMERG_Data:
             return "E"
         else:
             return "L"
-    
+    def listFiles(self, files, patern):
+        matchedFiles = []
+ 
+        for filename in files:
+            if re.match(patern, filename):
+				matchedFiles.append(filename)
+        return matchedFiles
+		
     def get_Expected_Tif_FileName(self, theYear, theMonth, theDay):
+        theMonthSTR = str("%02d" % theMonth)    # Convert to two character string
+        theDaySTR = str("%02d" % theDay)
+        print "using data class in django"
+        retFileName = ""
+        retFileName += "3B-HHR-"
+        retFileName += self._get_EarlyLate_StringPart()
+        retFileName += ".MS.MRG.3IMERG."
+        retFileName += str(theYear)
+        retFileName += theMonthSTR
+        retFileName += theDaySTR
+        theFile = ""
+		#"(.*)3B-HHR-L.MS.MRG.3IMERG.20190401-S233000-E235959.1410.(.*).1day.tif"
+        testPatterns = 	["-S233000-E235959.1410.(.*).1day.tif", "-S233000-E235959.1410.(.*).1day.tif", "-S143000-E145959.0870.(.*).1day.tif", "-S053000-E055959.0330.(.*).1day.tif", "-S053000-E055959.0150.(.*).1day.tif" , "-S023000-E025959.0150.(.*).1day.tif"]
+        for pattern in testPatterns:
+        	fullNamePattern = retFileName + pattern
+        	theFile = self.get_File_Name_or_None(theMonthSTR, fullNamePattern)
+        	if theFile is not None:
+				return theFile
+        return ""
+		
+    def get_Expected_Tif_FileNameOld(self, theYear, theMonth, theDay):
         print '**********running file at servirchirpsdjango\CHIRPS\dataclasses\ ' 
         theMonthSTR = str("%02d" % theMonth)    # Convert to two character string
         theDaySTR = str("%02d" % theDay)
@@ -96,23 +126,26 @@ class IMERG_Data:
         print '**********post' + retFileName 
         return retFileName
         
-    
     def get_Expected_FTP_FilePath_To_Tif(self, theYear, theMonth, theDay):
         theMonthSTR = str("%02d" % theMonth)    # Convert to two character string
         theDaySTR = str("%02d" % theDay)
         
         retString = ""
         retString += self.Data_Directory
-        retString += "/"
+        #retString += "/"
         if self.needsYear:
 			retString += str(theYear)
 			retString += "/"
         retString += theMonthSTR
         retString += "/"
-        
-        retString += self.get_Expected_Tif_FileName(theYear, theMonth, theDay)
+        filename = self.get_Expected_Tif_FileName(theYear, theMonth, theDay)
+        if len(filename) > 0:
+            retString += filename
+        else:
+            retString = ""
         self.needsYear = True
         return retString
+		
     def if_File_Exists(self, month, filename):
         hasFile = False
         datapath = self.Data_Directory.replace('url', 'file') + month + "/" + filename
@@ -125,7 +158,17 @@ class IMERG_Data:
         except Exception,e:
             print e, " ftp issue"
         return hasFile
-		
+
+    def get_File_Name_or_None(self, month, filenamepattern):
+        hasFile = False
+        path = self.Data_Directory.replace("url", "patternpath") + month
+        pattern = filenamepattern #"3B-HHR-L.MS.MRG.3IMERG.20190430-S233000-E235959.1410.(.*).1day.tif"
+        response = urllib2.urlopen(path + "&pattern=" + pattern).read()
+        if len(response) > 0:
+            return response.split("/")[-1]
+        else:
+            return None
+			  
     def if_File_Exists_Year(self, year, month, filename):
         hasFile = False
         datapath = self.Data_Directory.replace('url', 'file') + year + "/" + month + "/" + filename

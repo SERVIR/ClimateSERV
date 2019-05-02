@@ -58,7 +58,8 @@ def download_IMERG(startYYYYMMDD, endYYYYMMDD):
                     "ftpPathTo_tif":tifPath,
                     "ftpPathTo_tfw":tfwPath
                     }
-        expected_FTP_FilePaths.append(objToAdd)
+        if len(tifPath.strip()) > 0:
+			expected_FTP_FilePaths.append(objToAdd)
         #expected_FTP_FilePaths_TIF.append(tifPath)
         #expected_FTP_FilePaths_TFW.append(tfwPath)
         
@@ -83,13 +84,12 @@ def download_IMERG(startYYYYMMDD, endYYYYMMDD):
         
         isError = False
         errorLog = []
-        
-        # print progress
         if(downloadCounter % 10 == 0):
             print("-Downloaded: " + str(downloadCounter) + " rasters so far..")
         # Get the file names
         filenameOnly_Tif = ftpFullFilePaths['ftpPathTo_tif'].split('/')[-1]
-        filenameOnly_Tfw = ftpFullFilePaths['ftpPathTo_tfw'].split('/')[-1]
+        filenameOnly_Tfw = filenameOnly_Tif[:-2] + "fw" # Remove part of the extension
+        #ftpFullFilePaths['ftpPathTo_tfw'].split('/')[-1]
         
         # Make local filenames
         local_FullFilePath_ToSave_Tif = os.path.join(dataDestinationFolder, filenameOnly_Tif)
@@ -97,7 +97,7 @@ def download_IMERG(startYYYYMMDD, endYYYYMMDD):
         
         # Get directoryPath and Filename for FTP Server
         ftp_PathTo_TIF = ftpFullFilePaths['ftpPathTo_tif'] #IMERG_DataClass._get_FTP_FolderPath_From_FullFilePath(ftpFullFilePaths['ftpPathTo_tif'])
-        ftp_PathTo_TWF= ftpFullFilePaths['ftpPathTo_tfw']# IMERG_DataClass._get_FTP_FolderPath_From_FullFilePath(ftpFullFilePaths['ftpPathTo_tfw'])
+        ftp_PathTo_TWF= ftpFullFilePaths['ftpPathTo_tif'][:-2] + "fw"# IMERG_DataClass._get_FTP_FolderPath_From_FullFilePath(ftpFullFilePaths['ftpPathTo_tfw'])
 
         # Download the Tif
 
