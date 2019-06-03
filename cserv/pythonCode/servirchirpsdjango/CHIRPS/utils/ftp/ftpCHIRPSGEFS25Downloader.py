@@ -1,7 +1,7 @@
 '''
 Created on Jan 24, 2018
 
-@author: Sarva Pulla
+@author: BillyZ
 '''
 from ftplib import FTP
 import re
@@ -17,9 +17,8 @@ import datetime
 validFile = re.compile(r"\.tif")
 gzFilePattern = re.compile(r"\.tif\.gz$")
 patternWithoutgz = re.compile(r"(.*)\.gz$")
-rootftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/10day/precip_mean/' #'/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_last/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
-rootfirstftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_first/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
-rootoutputdir =  params.dataTypes[32]['inputDataLocation']
+rootftpdir ='/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/10day/precip_25prcn/' #'/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/daily_last/' # '/pub/org/chg/products/EWX/data/forecasts/CHIRPS-GEFS_precip/dekad_first/'
+rootoutputdir =  params.dataTypes[35]['inputDataLocation']
 
 
 def gunzipFile(fileInput):
@@ -62,10 +61,10 @@ def getFilesForYearAndMonth(ftp,yearToGet, monthToGet, day):
     #ftp.cwd(rootftpdir + str(yearToGet) + '/')
     print "Get List of files for ",yearToGet," ",monthToGet
     files = ftp.nlst()
-    filteredfiles = [f for f in files if 'data-mean_'+str(yearToGet) in f]
+    filteredfiles = [f for f in files if 'data-25prcn_'+str(yearToGet) in f]
     for fileToProcess in filteredfiles:
         if validFile.search(fileToProcess):
-            if  re.search('data-mean_'+str(yearToGet), fileToProcess):
+            if  re.search('data-25prcn_'+str(yearToGet), fileToProcess):
                 print fileToProcess
                 filesplit = fileToProcess.split('_') 
                 fyear = filesplit[2][:4]
@@ -113,7 +112,7 @@ def getLastGEFSPrecipDate():
 		with open('/data/data/cserv/www/html/json/stats.json', 'r+') as f:
 			data = json.load(f)
 			for item in data['items']:
-				if(item['name'] == 'gefsprecip'):
+				if(item['name'] == 'gefsprecip25'):
 					ldatestring = item['Latest']
 					return ldatestring
 	except Exception as e:

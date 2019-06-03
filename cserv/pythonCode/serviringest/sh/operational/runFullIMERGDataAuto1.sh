@@ -9,8 +9,8 @@ python=$(python -c "import os; print(os.environ['_'])")
 rootdir=/data/data/cserv/pythonCode/servirchirpsdjango #/data/data/cserv/pythonCode/serviringest
 
 autoDate=$(date +'%Y')
-START_YYYYMMDD=$1
-END_YYYYMMDD=$2
+START_YYYYMMDD=autoDate
+END_YYYYMMDD=autoDate
 
 cd ${rootdir}
 export PYTHONPATH=${PYTHONPATH}:${rootdir}
