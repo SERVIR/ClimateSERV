@@ -454,7 +454,24 @@ dataTypes = [
               'inputDataLocation':'/data/data2/image/input/IMERGTest/',
               'data_category':'IMERG'
             },
-
+			{'number':35,
+              'name':'Chirps-GEFS-Precip','description':'Global CHIRPS GEFS 25th Percentile Dataset ',
+              'size':[7200,2000],
+              'directory':'/data/data3/image/processed/gefs_precip_25/',
+              'fillValue':-9999.,
+              'indexer': dit.DailyIndex(), #dit.DecadalIndex(),
+              'inputDataLocation':'/data/data3/image/input/gefs_precip_25/',
+              'data_category':'CHIRPS'
+              },
+			  {'number':36,
+              'name':'Chirps-GEFS-Precip','description':'Global CHIRPS GEFS 75th Percentile Dataset ',
+              'size':[7200,2000],
+              'directory':'/data/data3/image/processed/gefs_precip_75/',
+              'fillValue':-9999.,
+              'indexer': dit.DailyIndex(), #dit.DecadalIndex(),
+              'inputDataLocation':'/data/data3/image/input/gefs_precip_75/',
+              'data_category':'CHIRPS'
+              },
              
              # There will be more added here in time.
              
