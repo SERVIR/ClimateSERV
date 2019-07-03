@@ -24,7 +24,7 @@ def should_rename_files(year_from_zip, list_of_filenames):
         print 'current_filename: ' + current_filename
         parts = current_filename.split(".")
         ending = parts[-1]
-        year = parts[0][-2:]
+        year = parts[0].replace("m", "")[-2:]
         part_to_compare = year #current_filename[5:7]
         # compre these strings, if they do NOT match.. then return True
         # Double cast here to remove extra zeros from the strings..
@@ -41,16 +41,17 @@ def should_rename_files(year_from_zip, list_of_filenames):
 def rename_files_to_new_format(folder_path_to_files, list_of_filenames):
     print("Attempting to rename files to match the new naming format.  This is so that the ingest will properly handle them.")
     for current_filename in list_of_filenames:
-        if(len(current_filename) == 11):
-              part_to_save_pre = current_filename[0:3]
-              part_to_switch_1 = current_filename[3:5]
-              part_to_switch_2 = current_filename[5:7]
-              part_to_save_post = current_filename[7:11]
+        newCurrentFileName = current_filename.replace("m", "")
+        if(len(newCurrentFileName ) == 11):
+              part_to_save_pre = newCurrentFileName [0:3]
+              part_to_switch_1 = newCurrentFileName [3:5]
+              part_to_switch_2 = newCurrentFileName [5:7]
+              part_to_save_post = newCurrentFileName [7:11]
         else:
-              part_to_save_pre = current_filename[0:3]
-              part_to_switch_1 = current_filename[3:4]
-              part_to_switch_2 = current_filename[4:6]
-              part_to_save_post = current_filename[-4:]
+              part_to_save_pre = newCurrentFileName [0:3]
+              part_to_switch_1 = newCurrentFileName [3:4]
+              part_to_switch_2 = newCurrentFileName [4:6]
+              part_to_save_post = newCurrentFileName [-4:]
         new_filename = part_to_save_pre + part_to_switch_2 + part_to_switch_1 + part_to_save_post
         fullpath_to_current_file = os.path.join(folder_path_to_files, current_filename)
         fullpath_to_new_filename = os.path.join(folder_path_to_files, new_filename)
@@ -77,24 +78,25 @@ def removeTFWfilesForName(directory, name):
         if filename.endswith(name + ".tfw") or filename.endswith(name + ".zip"):
             #print "Removing "+directory+filename
             os.remove(directory+filename)
-
-def getFileForYearAndMonth(yearToGet,monthToGet):
+def getFileForYearAndDekadal(yearToGet,dekadalToGet):
     '''
 
     :param yearToGet:
     :param monthToGet:
     '''
-    print "-------------------------------Working on ",monthToGet,"/",yearToGet,"------------------------------------"
-    filenum = "{:0>2d}{:0>2d}".format(yearToGet-2000,monthToGet)
+    print "-------------------------------Working on ",dekadalToGet,"/",yearToGet,"------------------------------------"
+    filenum = "{:0>2d}{:0>2d}".format(yearToGet-2000,dekadalToGet)
+    revfilenum = "{:0>2d}{:0>2d}".format(dekadalToGet,yearToGet-2000)
     year_from_zip = int(filenum[0:2])
-    month_from_zip = int(filenum[2:4])
+    dekad_from_zip = int(filenum[2:4])
     url = roothttp+"cta"+filenum+'.zip'
     print url
     enddirectory =  rootoutputdir+str(yearToGet)+"/"
     endfilename = enddirectory+"cta"+filenum+'.zip'
+    revEndfilename = enddirectory+"cta"+revfilenum+'.tif'
     print endfilename
     print str(os.path.exists(endfilename) or filenum == '0103')
-    if os.path.exists(endfilename):
+    if (os.path.exists(endfilename.replace(".zip", ".tif"))) or (os.path.exists(revEndfilename)):
 		print "File already here " 
     else:
 		try:
@@ -111,7 +113,7 @@ def getFileForYearAndMonth(yearToGet,monthToGet):
 			print "EndFile ",endfilename
 		except:
 			os.remove(endfilename)
-    print "-----------------------------Done working on ",monthToGet,"/",yearToGet,"---------------------------------"
+    print "-----------------------------Done working on ",dekadalToGet,"/",yearToGet,"---------------------------------"
 
 def createEndDirectory(year):
     '''
@@ -141,7 +143,8 @@ if __name__ == '__main__':
         print years
         for year in years:
             createEndDirectory(year)
-            for month in range(1,13):
-                print "Processing Month:",month," Year ",year
-                getFileForYearAndMonth(year,month)
+            for dekadal in range(1,36):
+                print "Processing dekadal:",dekadal," Year ",year
+                getFileForYearAndDekadal(year,dekadal)
+                #getFileForYearAndMonth(year,month)
         print "Done"

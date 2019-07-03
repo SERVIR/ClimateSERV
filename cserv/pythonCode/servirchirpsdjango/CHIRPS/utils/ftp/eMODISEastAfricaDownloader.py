@@ -62,39 +62,42 @@ def removeTFWfiles(directory):
             #print "Removing "+directory+filename
             os.remove(directory+filename)
 
-def getFileForYearAndMonth(yearToGet,monthToGet):
+def getFileForYearAndDekadal(yearToGet,dekadalToGet):
     '''
 
     :param yearToGet:
     :param monthToGet:
     '''
-    print "-------------------------------Working on ",monthToGet,"/",yearToGet,"------------------------------------"
-    filenum = "{:0>2d}{:0>2d}".format(yearToGet-2000,monthToGet)
+    print "-------------------------------Working on ",dekadalToGet,"/",yearToGet,"------------------------------------"
+    filenum = "{:0>2d}{:0>2d}".format(yearToGet-2000,dekadalToGet)
+    revfilenum = "{:0>2d}{:0>2d}".format(dekadalToGet,yearToGet-2000)
     year_from_zip = int(filenum[0:2])
-    month_from_zip = int(filenum[2:4])
+    dekad_from_zip = int(filenum[2:4])
     url = roothttp+"ea"+filenum+'.zip'
     print url
     enddirectory =  rootoutputdir+str(yearToGet)+"/"
     endfilename = enddirectory+"east"+filenum+'.zip'
+    revEndfilename = enddirectory+"ea"+revfilenum+'.tif'
     print endfilename
-    urllib.urlretrieve (url, endfilename)
-    list_of_filenames_inside_zipfile = []
-    isRenameFiles = False
-    try:
-        urllib.urlretrieve (url, endfilename)
-        list_of_filenames_inside_zipfile = []
-        isRenameFiles = False
-        with zipfile.ZipFile(endfilename, "r") as z:
-            list_of_filenames_inside_zipfile = z.namelist()
-            isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
-            z.extractall(enddirectory)
-        if isRenameFiles == True:
-            rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
-        removeTFWfiles(enddirectory)
-        print "EndFile ",endfilename
-    except:
-        os.remove(endfilename)
-    print "-----------------------------Done working on ",monthToGet,"/",yearToGet,"---------------------------------"
+    print str(os.path.exists(endfilename) or filenum == '0103')
+    if (os.path.exists(endfilename.replace(".zip", ".tif"))) or (os.path.exists(revEndfilename)):
+		print "File already here " 
+    else:
+		try:
+			urllib.urlretrieve (url, endfilename)
+			list_of_filenames_inside_zipfile = []
+			isRenameFiles = False
+			with zipfile.ZipFile(endfilename, "r") as z:
+				list_of_filenames_inside_zipfile = z.namelist()
+				isRenameFiles = should_rename_files(year_from_zip, list_of_filenames_inside_zipfile)
+				z.extractall(enddirectory)
+			if isRenameFiles == True:
+				rename_files_to_new_format(enddirectory, list_of_filenames_inside_zipfile)
+			removeTFWfiles(enddirectory)
+			print "EndFile ",endfilename
+		except:
+			os.remove(endfilename)
+    print "-----------------------------Done working on ",dekadalToGet,"/",yearToGet,"---------------------------------"
 
 
 def createEndDirectory(year):
@@ -127,7 +130,7 @@ if __name__ == '__main__':
         print years
         for year in years:
             createEndDirectory(year)
-            for month in range(1,13):
-                print "Processing Month:",month," Year ",year
-                getFileForYearAndMonth(year,month)
+            for dekadal in range(1,36):
+                print "Processing Month:",dekadal," Year ",year
+                getFileForYearAndDekadal(year,dekadal)
         print "Done"
